@@ -1,0 +1,516 @@
+package com.example.dailytodolist;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
+public class LoginActivity extends BaseActivity {
+
+    private EditText emailInput, passwordInput;
+    private TextView actionButton, forgotPasswordLink, bottomLink, guestLink, eyeIcon;
+    private TextView checkIcon, appTitle, tagline;
+    private LinearLayout googleButton, innerGradientIcon, outerIconFrame;
+    private CheckBox rememberCheckbox;
+    private LinearLayout mainLayout, loginCard;
+    private LinearLayout emailFieldContainer, passwordFieldContainer;
+    private boolean isPasswordVisible = false;
+    private boolean isDarkMode = false;
+
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+
+    // Add GoogleSignInHelper variable
+    private GoogleSignInHelper googleSignInHelper;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        sharedPreferences = getSharedPreferences("TodoAppPrefs", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+
+        initViews();
+        applyAllGradients();
+        loadSavedCredentials();
+        applyDarkMode();
+
+        // Initialize Google Sign-In
+        initGoogleSignIn();
+
+        setupClickListeners();
+
+        // Update header text with string resources
+        if (appTitle != null) {
+            appTitle.setText(R.string.app_name);
+        }
+        if (tagline != null) {
+            tagline.setText(R.string.tagline);
+        }
+    }
+
+    private void initGoogleSignIn() {
+        googleSignInHelper = GoogleSignInHelper.getInstance();
+        googleSignInHelper.init(this, new GoogleSignInHelper.GoogleSignInCallback() {
+            @Override
+            public void onSuccess(GoogleSignInAccount account) {
+                // Google sign in successful
+                String userId = account.getId();
+                String userName = account.getDisplayName();
+                String userEmail = account.getEmail();
+
+                if (userName == null || userName.isEmpty()) {
+                    userName = userEmail != null ? userEmail.split("@")[0] : "GoogleUser";
+                }
+
+                UserManager.getInstance().setUser(UserManager.AccountType.GOOGLE, userId, userName, userEmail);
+                UserManager.getInstance().saveSession(LoginActivity.this);
+
+                Toast.makeText(LoginActivity.this, getString(R.string.welcome_back, userName), Toast.LENGTH_SHORT).show();
+
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(LoginActivity.this, "Google Sign-In failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void initViews() {
+        mainLayout = findViewById(R.id.mainLayout);
+        loginCard = findViewById(R.id.loginCard);
+        innerGradientIcon = findViewById(R.id.innerGradientIcon);
+        outerIconFrame = findViewById(R.id.outerIconFrame);
+
+        // Initialize header elements
+        checkIcon = findViewById(R.id.checkIcon);
+        appTitle = findViewById(R.id.appTitle);
+        tagline = findViewById(R.id.tagline);
+
+        emailInput = findViewById(R.id.emailInput);
+        passwordInput = findViewById(R.id.passwordInput);
+
+        // Get the container LinearLayouts for email and password
+        emailFieldContainer = (LinearLayout) emailInput.getParent();
+        passwordFieldContainer = (LinearLayout) passwordInput.getParent();
+
+        actionButton = findViewById(R.id.actionButton);
+        forgotPasswordLink = findViewById(R.id.forgotPasswordLink);
+        bottomLink = findViewById(R.id.bottomLink);
+        guestLink = findViewById(R.id.guestLink);
+        eyeIcon = findViewById(R.id.eyeIcon);
+
+        googleButton = findViewById(R.id.googleButton);
+        rememberCheckbox = findViewById(R.id.rememberCheckbox);
+
+        // Set hint text from resources
+        if (emailInput != null) {
+            emailInput.setHint(R.string.email_hint);
+        }
+        if (passwordInput != null) {
+            passwordInput.setHint(R.string.password_hint);
+        }
+        if (rememberCheckbox != null) {
+            rememberCheckbox.setText(R.string.remember_me);
+        }
+        if (actionButton != null) {
+            actionButton.setText(R.string.login);
+        }
+        if (guestLink != null) {
+            guestLink.setText(R.string.continue_as_guest);
+        }
+        if (forgotPasswordLink != null) {
+            forgotPasswordLink.setText(R.string.forgot_password);
+        }
+
+        TextView googleText = findViewById(R.id.googleText);
+        if (googleText != null) {
+            googleText.setText(R.string.sign_in_with_google);
+        }
+
+        TextView orText = findViewById(R.id.orText);
+        if (orText != null) {
+            orText.setText(R.string.or);
+        }
+
+        TextView orContinueText = findViewById(R.id.orContinueText);
+        if (orContinueText != null) {
+            orContinueText.setText(R.string.or_continue_as);
+        }
+
+        TextView dontHaveAccount = findViewById(R.id.dontHaveAccount);
+        if (dontHaveAccount != null) {
+            dontHaveAccount.setText(R.string.dont_have_account);
+        }
+
+        if (bottomLink != null) {
+            bottomLink.setText(R.string.sign_up);
+        }
+
+        TextView emailLabel = findViewById(R.id.emailLabel);
+        if (emailLabel != null) {
+            emailLabel.setText(R.string.email);
+        }
+
+        TextView passwordLabel = findViewById(R.id.passwordLabel);
+        if (passwordLabel != null) {
+            passwordLabel.setText(R.string.password);
+        }
+    }
+
+    private void applyDarkMode() {
+        isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+
+        if (isDarkMode) {
+            // ===== HEADER COLORS FOR DARK MODE =====
+            if (checkIcon != null) checkIcon.setTextColor(android.graphics.Color.BLACK);
+            if (appTitle != null) appTitle.setTextColor(android.graphics.Color.BLACK);
+            if (tagline != null) tagline.setTextColor(android.graphics.Color.BLACK);
+
+            // ===== WHITE SQUARE (outerIconFrame) becomes BLACK in dark mode =====
+            if (outerIconFrame != null) {
+                GradientDrawable darkFrameBg = new GradientDrawable();
+                darkFrameBg.setShape(GradientDrawable.RECTANGLE);
+                darkFrameBg.setCornerRadius(30 * getResources().getDisplayMetrics().density);
+                darkFrameBg.setColor(android.graphics.Color.parseColor("#1E1E1E"));
+                darkFrameBg.setStroke(2, android.graphics.Color.parseColor("#333333"));
+                outerIconFrame.setBackground(darkFrameBg);
+            }
+
+            // Login card background - dark
+            if (loginCard != null) loginCard.setBackgroundResource(R.drawable.dark_card_bg);
+
+            // Email and Password field containers - set dark background
+            if (emailFieldContainer != null) {
+                GradientDrawable darkFieldBg = new GradientDrawable();
+                darkFieldBg.setShape(GradientDrawable.RECTANGLE);
+                darkFieldBg.setCornerRadius(12 * getResources().getDisplayMetrics().density);
+                darkFieldBg.setColor(android.graphics.Color.parseColor("#2D2D2D"));
+                emailFieldContainer.setBackground(darkFieldBg);
+            }
+
+            if (passwordFieldContainer != null) {
+                GradientDrawable darkFieldBg = new GradientDrawable();
+                darkFieldBg.setShape(GradientDrawable.RECTANGLE);
+                darkFieldBg.setCornerRadius(12 * getResources().getDisplayMetrics().density);
+                darkFieldBg.setColor(android.graphics.Color.parseColor("#2D2D2D"));
+                passwordFieldContainer.setBackground(darkFieldBg);
+            }
+
+            // Text colors
+            TextView emailLabel = findViewById(R.id.emailLabel);
+            TextView passwordLabel = findViewById(R.id.passwordLabel);
+            TextView dontHaveAccount = findViewById(R.id.dontHaveAccount);
+            TextView orText = findViewById(R.id.orText);
+            TextView orContinueText = findViewById(R.id.orContinueText);
+            TextView googleText = findViewById(R.id.googleText);
+
+            if (emailLabel != null) emailLabel.setTextColor(getColor(R.color.white));
+            if (passwordLabel != null) passwordLabel.setTextColor(getColor(R.color.white));
+            if (dontHaveAccount != null) dontHaveAccount.setTextColor(getColor(R.color.dark_text_secondary));
+            if (orText != null) orText.setTextColor(getColor(R.color.dark_text_secondary));
+            if (orContinueText != null) orContinueText.setTextColor(getColor(R.color.dark_text_secondary));
+            if (googleText != null) googleText.setTextColor(getColor(R.color.white));
+
+            // EditText styles
+            if (emailInput != null) {
+                emailInput.setTextColor(getColor(R.color.white));
+                emailInput.setHintTextColor(android.graphics.Color.parseColor("#A0A0A0"));
+            }
+
+            if (passwordInput != null) {
+                passwordInput.setTextColor(getColor(R.color.white));
+                passwordInput.setHintTextColor(android.graphics.Color.parseColor("#A0A0A0"));
+            }
+
+            // Checkbox text color
+            if (rememberCheckbox != null) {
+                rememberCheckbox.setTextColor(getColor(R.color.white));
+                rememberCheckbox.setButtonTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#9C27B0")));
+            }
+
+            // Guest button styling for dark mode
+            if (guestLink != null) {
+                guestLink.setTextColor(android.graphics.Color.parseColor("#A0A0A0"));
+                GradientDrawable guestBg = new GradientDrawable();
+                guestBg.setShape(GradientDrawable.RECTANGLE);
+                guestBg.setCornerRadius(25 * getResources().getDisplayMetrics().density);
+                guestBg.setStroke(2, android.graphics.Color.parseColor("#404040"));
+                guestBg.setColor(android.graphics.Color.TRANSPARENT);
+                guestLink.setBackground(guestBg);
+            }
+
+            // Google button styling for dark mode
+            if (googleButton != null) {
+                GradientDrawable googleBg = new GradientDrawable();
+                googleBg.setShape(GradientDrawable.RECTANGLE);
+                googleBg.setCornerRadius(25 * getResources().getDisplayMetrics().density);
+                googleBg.setStroke(2, android.graphics.Color.parseColor("#404040"));
+                googleBg.setColor(android.graphics.Color.TRANSPARENT);
+                googleButton.setBackground(googleBg);
+            }
+
+            // Forgot password link color
+            if (forgotPasswordLink != null) {
+                String currentTheme = sharedPreferences.getString("selected_theme", ThemeManager.THEME_DEFAULT);
+                int[] gradientColors = ThemeManager.getThemeGradientColors(this, currentTheme);
+                int accentColor = gradientColors[0];
+                forgotPasswordLink.setTextColor(accentColor);
+            }
+
+            // Bottom link color
+            if (bottomLink != null) {
+                String currentTheme = sharedPreferences.getString("selected_theme", ThemeManager.THEME_DEFAULT);
+                int[] gradientColors = ThemeManager.getThemeGradientColors(this, currentTheme);
+                int accentColor = gradientColors[0];
+                bottomLink.setTextColor(accentColor);
+            }
+
+        } else {
+            // ===== HEADER COLORS FOR LIGHT MODE =====
+            if (checkIcon != null) checkIcon.setTextColor(android.graphics.Color.WHITE);
+            if (appTitle != null) appTitle.setTextColor(android.graphics.Color.WHITE);
+            if (tagline != null) tagline.setTextColor(android.graphics.Color.WHITE);
+
+            // ===== WHITE SQUARE (outerIconFrame) back to WHITE in light mode =====
+            if (outerIconFrame != null) {
+                outerIconFrame.setBackgroundResource(R.drawable.outer_icon_frame);
+            }
+
+            // Light mode - restore original
+            if (loginCard != null) loginCard.setBackgroundResource(R.drawable.white_card_bg);
+
+            // Restore email field container
+            if (emailFieldContainer != null) {
+                emailFieldContainer.setBackgroundResource(R.drawable.input_field_bg);
+            }
+
+            // Restore password field container
+            if (passwordFieldContainer != null) {
+                passwordFieldContainer.setBackgroundResource(R.drawable.input_field_bg);
+            }
+
+            // Restore EditText styles
+            if (emailInput != null) {
+                emailInput.setTextColor(getColor(R.color.theme_text_primary));
+                emailInput.setHintTextColor(getColor(R.color.theme_text_secondary));
+            }
+
+            if (passwordInput != null) {
+                passwordInput.setTextColor(getColor(R.color.theme_text_primary));
+                passwordInput.setHintTextColor(getColor(R.color.theme_text_secondary));
+            }
+
+            // Restore guest button
+            if (guestLink != null) {
+                guestLink.setTextColor(getColor(R.color.login_guest_text));
+                guestLink.setBackgroundResource(R.drawable.guest_button_bg);
+            }
+
+            // Restore Google button
+            if (googleButton != null) {
+                googleButton.setBackgroundResource(R.drawable.google_button_bg);
+            }
+
+            // Restore checkbox text
+            if (rememberCheckbox != null) {
+                rememberCheckbox.setTextColor(getColor(R.color.login_text_primary));
+                rememberCheckbox.setButtonTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#9C27B0")));
+            }
+        }
+    }
+
+    private void applyAllGradients() {
+        String currentTheme = sharedPreferences.getString("selected_theme", ThemeManager.THEME_DEFAULT);
+        int[] gradientColors = ThemeManager.getThemeGradientColors(this, currentTheme);
+        int accentColor = gradientColors[0];
+
+        // 1. Apply gradient to main background
+        if (mainLayout != null) {
+            GradientDrawable gradientDrawable = new GradientDrawable(
+                    GradientDrawable.Orientation.TL_BR,
+                    gradientColors
+            );
+            mainLayout.setBackground(gradientDrawable);
+        }
+
+        // 2. Apply gradient to Login button
+        if (actionButton != null) {
+            GradientDrawable buttonGradient = new GradientDrawable(
+                    GradientDrawable.Orientation.LEFT_RIGHT,
+                    gradientColors
+            );
+            buttonGradient.setCornerRadius(27 * getResources().getDisplayMetrics().density);
+            actionButton.setBackground(buttonGradient);
+        }
+
+        // 3. Apply gradient to Inner Square Icon
+        if (innerGradientIcon != null) {
+            GradientDrawable iconGradient = new GradientDrawable(
+                    GradientDrawable.Orientation.TL_BR,
+                    gradientColors
+            );
+            iconGradient.setCornerRadius(20 * getResources().getDisplayMetrics().density);
+            innerGradientIcon.setBackground(iconGradient);
+        }
+
+        // Update accent text colors (but not in dark mode where they might be overridden)
+        if (!isDarkMode) {
+            if (forgotPasswordLink != null) forgotPasswordLink.setTextColor(accentColor);
+            if (bottomLink != null) bottomLink.setTextColor(accentColor);
+            if (eyeIcon != null) eyeIcon.setTextColor(accentColor);
+        } else {
+            if (eyeIcon != null) eyeIcon.setTextColor(accentColor);
+        }
+    }
+
+    private void loadSavedCredentials() {
+        boolean isRemembered = sharedPreferences.getBoolean("remember_me", false);
+        if (isRemembered) {
+            String savedEmail = sharedPreferences.getString("email", "");
+            String savedPassword = sharedPreferences.getString("password", "");
+            emailInput.setText(savedEmail);
+            passwordInput.setText(savedPassword);
+            rememberCheckbox.setChecked(true);
+        }
+    }
+
+    private void setupClickListeners() {
+        actionButton.setOnClickListener(v -> performLogin());
+
+        forgotPasswordLink.setOnClickListener(v -> {
+            String email = emailInput.getText().toString().trim();
+            if (email.isEmpty()) {
+                Toast.makeText(LoginActivity.this, R.string.enter_email_first, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(LoginActivity.this, getString(R.string.reset_link_sent, email), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        bottomLink.setOnClickListener(v -> {
+            Toast.makeText(LoginActivity.this, R.string.sign_up_coming_soon, Toast.LENGTH_SHORT).show();
+        });
+
+        guestLink.setOnClickListener(v -> {
+            UserManager.getInstance().setGuest();
+            UserManager.getInstance().saveSession(LoginActivity.this);
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        });
+
+        googleButton.setOnClickListener(v -> {
+            // Start Google Sign-In
+            if (googleSignInHelper != null) {
+                googleSignInHelper.signIn();
+            } else {
+                Toast.makeText(LoginActivity.this, "Google Sign-In not initialized", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        eyeIcon.setOnClickListener(v -> togglePasswordVisibility());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (googleSignInHelper != null) {
+            googleSignInHelper.handleActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void togglePasswordVisibility() {
+        if (isPasswordVisible) {
+            passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            eyeIcon.setText("👁");
+            isPasswordVisible = false;
+        } else {
+            passwordInput.setTransformationMethod(null);
+            eyeIcon.setText("👁‍🗨");
+            isPasswordVisible = true;
+        }
+        passwordInput.setSelection(passwordInput.getText().length());
+    }
+
+    private void performLogin() {
+        String email = emailInput.getText().toString().trim();
+        String password = passwordInput.getText().toString().trim();
+
+        if (email.isEmpty()) {
+            emailInput.setError(getString(R.string.email_required));
+            emailInput.requestFocus();
+            return;
+        }
+
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailInput.setError(getString(R.string.valid_email));
+            emailInput.requestFocus();
+            return;
+        }
+
+        if (password.isEmpty()) {
+            passwordInput.setError(getString(R.string.password_required));
+            passwordInput.requestFocus();
+            return;
+        }
+
+        if (password.length() < 3) {
+            passwordInput.setError(getString(R.string.password_min_length));
+            passwordInput.requestFocus();
+            return;
+        }
+
+        if (rememberCheckbox.isChecked()) {
+            editor.putBoolean("remember_me", true);
+            editor.putString("email", email);
+            editor.putString("password", password);
+            editor.apply();
+        } else {
+            editor.putBoolean("remember_me", false);
+            editor.remove("email");
+            editor.remove("password");
+            editor.apply();
+        }
+
+        UserManager.getInstance().setUser(UserManager.AccountType.LOCAL,
+                "local_" + email.replaceAll("[^a-zA-Z0-9]", "_"),
+                email.split("@")[0], email);
+        UserManager.getInstance().saveSession(this);
+
+        Toast.makeText(this, getString(R.string.welcome_back, email.split("@")[0]), Toast.LENGTH_SHORT).show();
+
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+        applyAllGradients();
+        applyDarkMode();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        applyAllGradients();
+        applyDarkMode();
+    }
+}

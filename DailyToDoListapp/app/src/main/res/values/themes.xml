@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base Modern Theme -->
+    <style name="Theme.DailyToDoList" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:windowBackground">@color/surface_light</item>
+        <item name="colorPrimary">@color/gradient_start</item>
+        <item name="colorPrimaryVariant">@color/gradient_end</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/accent_purple</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+    </style>
+
+    <!-- Light Theme - Modern Blue/Purple Gradient -->
+    <style name="Theme.DailyToDoList.Light" parent="Theme.DailyToDoList">
+        <item name="android:windowBackground">@color/surface_light</item>
+        <item name="colorPrimary">@color/gradient_start</item>
+        <item name="colorPrimaryVariant">@color/gradient_end</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+    </style>
+
+    <!-- Pink Theme -->
+    <style name="Theme.DailyToDoList.Pink" parent="Theme.DailyToDoList">
+        <item name="android:windowBackground">@color/pink_background</item>
+        <item name="colorPrimary">@color/pink_gradient_start</item>
+        <item name="colorPrimaryVariant">@color/pink_gradient_end</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+    </style>
+
+    <!-- Dark Theme -->
+    <style name="Theme.DailyToDoList.Dark" parent="Theme.DailyToDoList">
+        <item name="android:windowBackground">@color/dark_background</item>
+        <item name="colorPrimary">@color/dark_gradient_start</item>
+        <item name="colorPrimaryVariant">@color/dark_gradient_end</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">#B0B0B0</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

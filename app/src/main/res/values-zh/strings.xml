@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">每日待办清单</string>
+
+    <!-- Profile Strings -->
+    <string name="profile">个人资料</string>
+    <string name="guest">游客</string>
+    <string name="guest_account">游客账户</string>
+    <string name="local_account">本地账户</string>
+    <string name="member_since">注册时间</string>
+    <string name="tasks_completed">完成任务</string>
+    <string name="total_coins">总金币</string>
+    <string name="account_settings">账户设置</string>
+    <string name="edit_profile_name">编辑资料名称</string>
+    <string name="switch_account">切换账户</string>
+    <string name="manage_account">管理账户</string>
+    <string name="theme_preferences">主题偏好</string>
+
+    <string name="appearance">外观</string>
+    <string name="dark_light_mode">深色/浅色模式</string>
+    <string name="language">语言</string>
+    <string name="language_settings">语言设置</string>
+    <string name="you_are_on_profile">您已在个人资料页面</string>
+    <string name="youre_on_themes">您已在主题页面</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">首页</string>
+    <string name="nav_calendar">日历</string>
+    <string name="nav_shop">商店</string>
+    <string name="nav_themes">主题</string>
+
+    <!-- Dialog Strings -->
+    <string name="edit_name">编辑名称</string>
+    <string name="enter_new_name">输入新名称</string>
+    <string name="cancel">取消</string>
+    <string name="save">保存</string>
+    <string name="name_updated">名称已更新为 %s！✨</string>
+    <string name="name_cannot_be_empty">名称不能为空</string>
+    <string name="manage_account_title">管理账户</string>
+    <string name="change_password">修改密码</string>
+    <string name="update_email">更新邮箱</string>
+    <string name="delete_account">删除账户</string>
+    <string name="select_account">选择账户</string>
+    <string name="guest_account_option">游客账户</string>
+    <string name="local_account_option">本地账户</string>
+    <string name="google_account_option">Google 账户</string>
+
+    <!-- Account Switch -->
+    <string name="switched_to_guest">已切换到游客账户</string>
+    <string name="switched_to_local">已切换到本地账户</string>
+    <string name="google_coming_soon">Google 登录 - 即将推出</string>
+
+    <!-- Delete Account -->
+    <string name="delete_account_title">删除账户</string>
+    <string name="delete_account_message">确定要永久删除您的账户吗？此操作无法撤销。</string>
+    <string name="delete">删除</string>
+
+    <!-- Logout -->
+    <string name="logout_title">退出登录</string>
+    <string name="logout_message">确定要退出登录吗？</string>
+    <string name="logout_success">已成功退出登录</string>
+
+    <!-- Dark Mode -->
+    <string name="dark_mode_applied">已应用深色模式</string>
+    <string name="light_mode_applied">已应用浅色模式</string>
+
+    <!-- Language Selection -->
+    <string name="select_language">选择语言</string>
+    <string name="english">English</string>
+    <string name="chinese">中文</string>
+    <string name="language_changed">语言已更改。正在重启...</string>
+
+    <!-- Calendar & Shop -->
+    <string name="calendar">日历</string>
+    <string name="shop">商店</string>
+
+    <!-- Toast Messages -->
+    <string name="account_reset_to_default">账户已重置为默认值</string>
+
+    <!-- Themes Strings -->
+    <string name="themes">主题</string>
+    <string name="available_themes">可用主题</string>
+    <string name="default_theme">默认主题</string>
+    <string name="hot_pink">热粉色</string>
+    <string name="lime_blue">青柠蓝</string>
+    <string name="mint_green">薄荷绿</string>
+    <string name="sunset_orange">日落橙</string>
+    <string name="cyan_hot_pink">青色热粉</string>
+    <string name="cyan_indigo">青色靛蓝</string>
+    <string name="yellow_red">黄红色</string>
+    <string name="cream_rose">奶油玫瑰</string>
+    <string name="yellow_cyan">黄青色</string>
+    <string name="magenta_blue">洋红蓝</string>
+    <string name="applied">已应用</string>
+    <string name="not_applied">未应用</string>
+    <string name="apply_theme">应用主题</string>
+
+    <!-- Shop Strings -->
+    <string name="themes_available_in_shop">商店可用的主题</string>
+    <string name="owned">已拥有</string>
+    <string name="coins_text">金币</string>
+    <string name="purchase_title">购买</string>
+    <string name="applied_text">已应用！</string>
+    <string name="daily_coins_reward">您获得了10个每日金币！</string>
+    <string name="insufficient_coins_message">金币不足！完成任务或明天回来领取每日金币！</string>
+    <string name="purchase_confirmation_message" formatted="false">是否要购买 %s 花费 %d 金币？\n\n当前金币：%d</string>
+    <string name="buy">购买</string>
+    <string name="theme_purchased">购买成功！</string>
+    <string name="already_owned">您已拥有此主题！</string>
+
+    <!-- Main Activity Strings -->
+    <string name="todays_tasks">今日任务</string>
+    <string name="no_tasks_today">今天没有任务！</string>
+    <string name="take_a_break">休息一下，放松身心。您值得拥有！😊</string>
+    <string name="add_new_task_hint">添加新任务...</string>
+    <string name="daily_quote">每日名言</string>
+    <string name="edit">✏️ 编辑</string>
+    <string name="default_quote">追逐你的梦想</string>
+    <string name="default_quote_author">— 继续前进 😊</string>
+
+    <!-- Main Activity Additional Strings -->
+    <string name="daily_coins_reward_message">🎉 您获得了10个每日金币！ 🎉</string>
+    <string name="coins_earned_main">获得 %d 金币！🪙</string>
+    <string name="task_completed_message">任务完成！🎉</string>
+    <string name="task_uncompleted_message">任务未完成</string>
+    <string name="task_deleted_message">任务已删除</string>
+    <string name="task_added_message">任务已添加！✨</string>
+    <string name="edit_quote">编辑名言</string>
+    <string name="quote_updated">名言已更新！</string>
+    <string name="quote_cannot_be_empty">名言不能为空</string>
+    <string name="already_on_home">已在主页</string>
+
+    <!-- Calendar Strings -->
+    <string name="selected_prefix">选中日期：</string>
+    <string name="tasks_for_date_label">📋 该日期的任务：</string>
+    <string name="already_on_calendar">已在日历页面</string>
+    <string name="coins_earned">获得 %d 金币！🪙</string>
+    <string name="task_added_calendar">任务已添加到日历！✨</string>
+    <string name="enter_task_name">请输入任务名称</string>
+    <string name="sun">日</string>
+    <string name="mon">一</string>
+    <string name="tue">二</string>
+    <string name="wed">三</string>
+    <string name="thu">四</string>
+    <string name="fri">五</string>
+    <string name="sat">六</string>
+    <string name="add">+ 添加</string>
+    <string name="no_tasks">该日期没有任务</string>
+    <string name="add_new_task">添加新任务...</string>
+    <!-- Login Activity Strings -->
+    <string name="tagline">规划你的一天。成就更多。</string>
+    <string name="email">邮箱</string>
+    <string name="email_hint">请输入邮箱</string>
+    <string name="password">密码</string>
+    <string name="password_hint">请输入密码</string>
+    <string name="remember_me">记住我</string>
+    <string name="forgot_password">忘记密码？</string>
+    <string name="login">登录 →</string>
+    <string name="or">或</string>
+    <string name="sign_in_with_google">使用 Google 登录</string>
+    <string name="dont_have_account">还没有账号？</string>
+    <string name="sign_up">注册</string>
+    <string name="or_continue_as">或继续作为</string>
+    <string name="continue_as_guest">继续以游客身份</string>
+    <!-- Login Additional Strings -->
+    <string name="enter_email_first">请先输入您的邮箱</string>
+    <string name="reset_link_sent">密码重置链接已发送至 %s</string>
+    <string name="sign_up_coming_soon">跳转到注册页面</string>
+    <string name="email_required">邮箱是必填项</string>
+    <string name="valid_email">请输入有效的邮箱地址</string>
+    <string name="password_required">密码是必填项</string>
+    <string name="password_min_length">密码必须至少3个字符</string>
+    <string name="welcome_back">欢迎回来，%s！👋</string>
+
+    <string name="log_out">退出登录</string>
+
+</resources>

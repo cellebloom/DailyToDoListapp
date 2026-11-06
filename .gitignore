@@ -1,0 +1,67 @@
+# ==========================================================================
+# Android / Gradle generated output
+# NOTE: patterns without a leading slash match at ANY depth, so "build/"
+# covers both ./build and ./app/build (and the stale nested project).
+# ==========================================================================
+build/
+.gradle/
+/captures
+.externalNativeBuild
+.cxx
+
+# Build artifacts
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+*.hprof
+
+# ==========================================================================
+# Local machine configuration (contains absolute paths)
+# ==========================================================================
+local.properties
+/local.properties
+
+# ==========================================================================
+# IDE — machine-specific files only
+# ==========================================================================
+*.iml
+*.ipr
+*.iws
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+/.idea/deploymentTargetSelector.xml
+/.idea/deviceManager.xml
+
+# ==========================================================================
+# OS noise
+# ==========================================================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==========================================================================
+# Large media demo assets (not needed in version control)
+# ==========================================================================
+*.mp4
+*.mov
+*.avi
+
+# ==========================================================================
+# Stray duplicate files
+# ==========================================================================
+/gradlew - Copy
+
+# ==========================================================================
+# Signing material — must never be committed
+# ==========================================================================
+*.jks
+*.keystore
+*.p12
+*.pem
+*.pfx

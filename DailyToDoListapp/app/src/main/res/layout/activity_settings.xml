@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="?android:windowBackground">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="30dp">
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="← Back"
+            android:backgroundTint="?colorPrimary"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Settings"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="?android:textColorPrimary"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <!-- Theme Selection -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose Theme"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="?colorPrimary"
+        android:layout_marginBottom="20dp"/>
+
+    <RadioGroup
+        android:id="@+id/themeRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp">
+
+        <!-- Light Theme -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/theme_preview_light"/>
+
+        <RadioButton
+            android:id="@+id/lightRadio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Light Mode"
+            android:textSize="16sp"
+            android:textColor="?android:textColorPrimary"
+            android:buttonTint="?colorPrimary"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- Pink Theme -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/theme_preview_pink"/>
+
+        <RadioButton
+            android:id="@+id/pinkRadio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pink Mode"
+            android:textSize="16sp"
+            android:textColor="?android:textColorPrimary"
+            android:buttonTint="?colorPrimary"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- Dark Theme -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/theme_preview_dark"/>
+
+        <RadioButton
+            android:id="@+id/darkRadio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dark Mode"
+            android:textSize="16sp"
+            android:textColor="?android:textColorPrimary"
+            android:buttonTint="?colorPrimary"
+            android:layout_marginBottom="20dp"/>
+    </RadioGroup>
+
+    <!-- Apply Button -->
+    <Button
+        android:id="@+id/applyButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Apply Theme"
+        android:backgroundTint="?colorPrimary"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"/>
+
+</LinearLayout>

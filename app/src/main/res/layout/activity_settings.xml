@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="24dp">
+
+            <TextView
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="&lt; Back"
+                android:textSize="16sp"
+                android:textColor="?colorPrimary"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Settings"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="?android:textColorPrimary"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose Theme"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="?android:textColorPrimary"
+            android:layout_marginBottom="20dp"/>
+
+        <RadioGroup
+            android:id="@+id/themeRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp">
+
+            <RadioButton
+                android:id="@+id/defaultRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Default Purple"
+                android:textSize="16sp"
+                android:textColor="?android:textColorPrimary"
+                android:buttonTint="?colorPrimary"
+                android:layout_marginBottom="12dp"/>
+
+            <RadioButton
+                android:id="@+id/hotpinkRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hot Pink"
+                android:textSize="16sp"
+                android:textColor="?android:textColorPrimary"
+                android:buttonTint="?colorPrimary"
+                android:layout_marginBottom="12dp"/>
+
+            <RadioButton
+                android:id="@+id/limeRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lime Blue"
+                android:textSize="16sp"
+                android:textColor="?android:textColorPrimary"
+                android:buttonTint="?colorPrimary"
+                android:layout_marginBottom="12dp"/>
+
+            <RadioButton
+                android:id="@+id/mintRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mint Green"
+                android:textSize="16sp"
+                android:textColor="?android:textColorPrimary"
+                android:buttonTint="?colorPrimary"
+                android:layout_marginBottom="12dp"/>
+
+            <RadioButton
+                android:id="@+id/sunsetRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sunset Orange"
+                android:textSize="16sp"
+                android:textColor="?android:textColorPrimary"
+                android:buttonTint="?colorPrimary"
+                android:layout_marginBottom="12dp"/>
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/applyButton"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Apply Theme"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:background="@drawable/action_button_bg"
+            android:clickable="true"
+            android:focusable="true"/>
+
+    </LinearLayout>
+</ScrollView>

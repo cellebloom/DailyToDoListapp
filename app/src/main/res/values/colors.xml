@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ============================================ -->
+    <!-- Gradient Theme Colors (from your drawable files) -->
+    <!-- ============================================ -->
+
+    <!-- Default Theme -->
+    <color name="gradient_start">#2196F3</color>
+    <color name="gradient_end">#9C27B0</color>
+    <color name="default_start">#2196F3</color>
+    <color name="default_end">#9C27B0</color>
+
+    <!-- Cream Rose -->
+    <color name="cream_rose_start">#FFE5B8</color>
+    <color name="cream_rose_end">#FF0058</color>
+
+    <!-- Cyan Hot Pink -->
+    <color name="cyan_hotpink_start">#00E1FD</color>
+    <color name="cyan_hotpink_end">#FC007A</color>
+
+    <!-- Cyan Indigo -->
+    <color name="cyan_indigo_start">#00E5FF</color>
+    <color name="cyan_indigo_end">#1200FF</color>
+
+    <!-- Hot Pink -->
+    <color name="hotpink_start">#FF1493</color>
+    <color name="hotpink_end">#000000</color>
+    <color name="hot_pink_start">#FF1493</color>
+    <color name="hot_pink_end">#000000</color>
+
+    <!-- Lime Blue -->
+    <color name="lime_start">#00FF5B</color>
+    <color name="lime_end">#0014FF</color>
+    <color name="lime_blue_start">#00FF5B</color>
+    <color name="lime_blue_end">#0014FF</color>
+
+    <!-- Magenta Electric Blue -->
+    <color name="magenta_blue_start">#FF0A6C</color>
+    <color name="magenta_blue_end">#2D27FF</color>
+
+    <!-- Sunset -->
+    <color name="sunset_start">#FFE53B</color>
+    <color name="sunset_end">#FF0058</color>
+
+    <!-- Yellow Cyan -->
+    <color name="yellow_cyan_start">#FFE53B</color>
+    <color name="yellow_cyan_end">#00FFFF</color>
+
+    <!-- Yellow Red -->
+    <color name="yellow_red_start">#FFE53B</color>
+    <color name="yellow_red_end">#FF2525</color>
+
+    <!-- Mint Theme -->
+    <color name="mint_start">#70D0A0</color>
+    <color name="mint_end">#E0F0F0</color>
+
+    <!-- ============================================ -->
+    <!-- Dynamic Theme Colors (used by the app)       -->
+    <!-- ============================================ -->
+    <color name="theme_gradient_start">#9C27B0</color>
+    <color name="theme_gradient_end">#2196F3</color>
+    <color name="theme_accent">#9C27B0</color>
+    <color name="theme_accent_light">#E1BEE7</color>
+    <color name="theme_button_start">#9C27B0</color>
+    <color name="theme_button_end">#2196F3</color>
+    <color name="theme_text_primary">#1F2B48</color>
+    <color name="theme_text_secondary">#5E6F8D</color>
+    <color name="theme_card_bg">#FFFFFF</color>
+    <color name="theme_status_bar">#1A1A2E</color>
+
+    <!-- ============================================ -->
+    <!-- Modern Login Theme Colors                    -->
+    <!-- ============================================ -->
+    <color name="login_bg">#F5F5F5</color>
+    <color name="login_card_bg">#FFFFFF</color>
+    <color name="login_text_primary">#1F2B48</color>
+    <color name="login_text_secondary">#5E6F8D</color>
+    <color name="login_label_color">#2C3E66</color>
+    <color name="login_input_bg">#F8FAFD</color>
+    <color name="login_input_border">#E2E8F0</color>
+    <color name="login_input_text">#1E293B</color>
+    <color name="login_input_hint">#B9C2D4</color>
+    <color name="login_button_bg">#2196F3</color>
+    <color name="login_button_text">#FFFFFF</color>
+    <color name="login_forgot_password">#2196F3</color>
+    <color name="login_divider">#E2EDF2</color>
+    <color name="login_or_text">#8D9BB0</color>
+    <color name="login_google_bg">#FFFFFF</color>
+    <color name="login_google_text">#1F2A44</color>
+    <color name="login_signup_text">#49607C</color>
+    <color name="login_signup_link">#2196F3</color>
+    <color name="login_guest_text">#2D3B5E</color>
+    <color name="login_guest_border">#CFDFED</color>
+    <color name="login_remember_me">#2196F3</color>
+
+    <!-- ============================================ -->
+    <!-- Base Palette (shared across all themes)      -->
+    <!-- ============================================ -->
+    <color name="base_bg">#F0F0F0</color>
+    <color name="base_card_border">#E0E0E0</color>
+    <color name="base_secondary">#D0D0D0</color>
+    <color name="base_muted">#C0C0C0</color>
+    <color name="base_text_secondary">#B0B0B0</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+
+    <!-- ============================================ -->
+    <!-- Default Purple Theme                        -->
+    <!-- ============================================ -->
+    <color name="default_primary">#2196F3</color>
+    <color name="default_secondary">#9C27B0</color>
+    <color name="default_accent">#E94560</color>
+    <color name="default_bg_light">#F5F5F5</color>
+    <color name="default_bg_dark">#121212</color>
+    <color name="default_surface_light">#FFFFFF</color>
+    <color name="default_surface_dark">#1E1E1E</color>
+    <color name="default_text_primary_light">#1F2B48</color>
+    <color name="default_text_primary_dark">#FFFFFF</color>
+    <color name="default_text_secondary_light">#5E6F8D</color>
+    <color name="default_text_secondary_dark">#A9B7D4</color>
+
+    <!-- ============================================ -->
+    <!-- Hot Pink Theme                               -->
+    <!-- ============================================ -->
+    <color name="hotpink_primary">#FF1493</color>
+    <color name="hotpink_secondary">#000000</color>
+    <color name="hotpink_accent">#FF1493</color>
+    <color name="hotpink_bg_light">#FFF0F5</color>
+    <color name="hotpink_bg_dark">#1A1020</color>
+    <color name="hotpink_surface_light">#FFFFFF</color>
+    <color name="hotpink_surface_dark">#2A1A30</color>
+    <color name="hotpink_text_primary_light">#501020</color>
+    <color name="hotpink_text_primary_dark">#FFFFFF</color>
+    <color name="hotpink_text_secondary_light">#7E5A6A</color>
+    <color name="hotpink_text_secondary_dark">#C0A0B0</color>
+
+    <!-- ============================================ -->
+    <!-- Lime Blue Theme                              -->
+    <!-- ============================================ -->
+    <color name="lime_primary">#00FF5B</color>
+    <color name="lime_secondary">#0014FF</color>
+    <color name="lime_accent">#00FF5B</color>
+    <color name="lime_bg_light">#F0F8FF</color>
+    <color name="lime_bg_dark">#102020</color>
+    <color name="lime_surface_light">#FFFFFF</color>
+    <color name="lime_surface_dark">#1A2A30</color>
+    <color name="lime_text_primary_light">#103050</color>
+    <color name="lime_text_primary_dark">#FFFFFF</color>
+    <color name="lime_text_secondary_light">#6A8A9E</color>
+    <color name="lime_text_secondary_dark">#A0C0D0</color>
+
+    <!-- ============================================ -->
+    <!-- Mint Green Theme                             -->
+    <!-- ============================================ -->
+    <color name="mint_primary">#70D0A0</color>
+    <color name="mint_secondary">#E0F0F0</color>
+    <color name="mint_accent">#50A0F0</color>
+    <color name="mint_bg_light">#F0FFF0</color>
+    <color name="mint_bg_dark">#102010</color>
+    <color name="mint_surface_light">#FFFFFF</color>
+    <color name="mint_surface_dark">#1A301A</color>
+    <color name="mint_text_primary_light">#105030</color>
+    <color name="mint_text_primary_dark">#FFFFFF</color>
+    <color name="mint_text_secondary_light">#6A9E7A</color>
+    <color name="mint_text_secondary_dark">#A0D0B0</color>
+
+    <!-- ============================================ -->
+    <!-- Sunset Orange Theme                          -->
+    <!-- ============================================ -->
+    <color name="sunset_primary">#FFE53B</color>
+    <color name="sunset_secondary">#FF0058</color>
+    <color name="sunset_accent">#FFE53B</color>
+    <color name="sunset_bg_light">#FFF5F0</color>
+    <color name="sunset_bg_dark">#201010</color>
+    <color name="sunset_surface_light">#FFFFFF</color>
+    <color name="sunset_surface_dark">#301A10</color>
+    <color name="sunset_text_primary_light">#503010</color>
+    <color name="sunset_text_primary_dark">#FFFFFF</color>
+    <color name="sunset_text_secondary_light">#9E8A6A</color>
+    <color name="sunset_text_secondary_dark">#D0C0A0</color>
+
+    <!-- ============================================ -->
+    <!-- To-Do App Specific Colors                    -->
+    <!-- ============================================ -->
+    <color name="todo_card_bg">#FFFFFF</color>
+    <color name="todo_text_primary">#1F2B48</color>
+    <color name="todo_text_secondary">#5E6F8D</color>
+    <color name="todo_divider">#E2EDF2</color>
+    <color name="todo_quote_text">#7F8C8D</color>
+    <color name="todo_quote_author">#9C27B0</color>
+    <color name="todo_delete">#D32F2F</color>
+
+    <!-- ============================================ -->
+    <!-- Status Colors                                -->
+    <!-- ============================================ -->
+    <color name="accent_green">#4CAF50</color>
+    <color name="accent_orange">#FF9800</color>
+    <color name="accent_red">#F44336</color>
+    <color name="delete_red">#F44336</color>
+    <color name="completed_task">#4CAF50</color>
+    <color name="pending_task">#FF9800</color>
+    <color name="delete_color">#F44336</color>
+
+    <!-- ============================================ -->
+    <!-- Legacy compatibility                         -->
+    <!-- ============================================ -->
+    <color name="surface_white">#FFFFFF</color>
+    <color name="surface_light">#F8F9FA</color>
+    <color name="card_shadow">#1A000000</color>
+    <color name="text_primary">#2C3E50</color>
+    <color name="text_secondary">#7F8C8D</color>
+    <color name="text_hint">#BDC3C7</color>
+    <color name="switch_thumb">#FFFFFF</color>
+    <color name="switch_track">#BDBDBD</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="transparent_black">#33000000</color>
+    <color name="calendar_date_dark">#2C3E66</color>
+    <color name="nav_inactive">#666666</color>
+    <color name="task_indicator">#E8F0FE</color>
+    <!-- Dark Mode Colors -->
+    <color name="dark_card_bg">#1E1E1E</color>
+    <color name="dark_text_secondary">#A0A0A0</color>
+    <color name="dark_input_bg">#2A2A2A</color>
+
+
+
+
+
+</resources>

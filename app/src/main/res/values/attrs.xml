@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Custom theme attributes -->
+    <attr name="backgroundPrimary" format="color" />
+    <attr name="backgroundSecondary" format="color" />
+    <attr name="surfaceColor" format="color" />
+    <attr name="cardBackground" format="color" />
+    <attr name="textPrimary" format="color" />
+    <attr name="textSecondary" format="color" />
+    <attr name="textHint" format="color" />
+    <attr name="dividerColor" format="color" />
+    <attr name="iconTint" format="color" />
+    <attr name="tabActive" format="color" />
+    <attr name="tabInactive" format="color" />
+</resources>

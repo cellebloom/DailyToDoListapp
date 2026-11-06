@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Night variants mirror the light theme names so ThemeManager can use -->
+    <!-- the same style resource name regardless of day/night.               -->
+    <!-- All 5 dark themes are defined in values/themes.xml directly.        -->
+    <!-- This file provides the night-qualified overrides for system auto.   -->
+
+    <style name="Base.Theme.DailyToDoList" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/default_secondary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/default_primary</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:statusBarColor">@color/default_bg_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">@color/default_bg_dark</item>
+        <item name="android:windowLightNavigationBar">false</item>
+
+    </style>
+
+</resources>

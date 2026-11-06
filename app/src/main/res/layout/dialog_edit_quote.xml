@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quote:"
+        android:textSize="14sp"
+        android:textColor="#2C3E66"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/quoteEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your quote..."
+        android:textSize="14sp"
+        android:background="@drawable/input_field_bg"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:minLines="2"
+        android:maxLines="4"
+        android:gravity="top" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Author:"
+        android:textSize="14sp"
+        android:textColor="#2C3E66"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/authorEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter author name..."
+        android:textSize="14sp"
+        android:background="@drawable/input_field_bg"
+        android:padding="12dp" />
+
+</LinearLayout>

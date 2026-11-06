@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:padding="28dp">
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Daily Reward!"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/default_text_primary_light"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/coinsText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="+10"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:textColor="@color/default_primary"
+        android:gravity="center"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/streakText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="1 Day Streak"
+        android:textSize="16sp"
+        android:textColor="@color/base_text_secondary"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:id="@+id/claimButton"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Claim Reward"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:background="@drawable/action_button_bg"
+        android:clickable="true"
+        android:focusable="true"/>
+
+</LinearLayout>

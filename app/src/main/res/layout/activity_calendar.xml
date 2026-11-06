@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/calendarHeaderTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/calendar"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="8dp" />
+
+    </LinearLayout>
+
+    <!-- ScrollView -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <!-- Calendar Card -->
+            <LinearLayout
+                android:id="@+id/calendarCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/white_card_bg"
+                android:padding="12dp"
+                android:elevation="4dp"
+                android:layout_marginBottom="12dp">
+
+                <!-- Month and Year -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:id="@+id/prevMonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="◀"
+                        android:textSize="24sp"
+                        android:textColor="#9C27B0"
+                        android:padding="12dp"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                    <TextView
+                        android:id="@+id/monthYearText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="May 2026"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="#2C3E66"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:id="@+id/nextMonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="▶"
+                        android:textSize="24sp"
+                        android:textColor="#9C27B0"
+                        android:padding="12dp"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                </LinearLayout>
+
+                <!-- Day Headers -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="7"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:text="@string/sun" android:textSize="10sp" android:textStyle="bold" android:textColor="#E94560" android:gravity="center" />
+                    <TextView android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:text="@string/mon" android:textSize="10sp" android:textStyle="bold" android:textColor="#2C3E66" android:gravity="center" />
+                    <TextView android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:text="@string/tue" android:textSize="10sp" android:textStyle="bold" android:textColor="#2C3E66" android:gravity="center" />
+                    <TextView android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:text="@string/wed" android:textSize="10sp" android:textStyle="bold" android:textColor="#2C3E66" android:gravity="center" />
+                    <TextView android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:text="@string/thu" android:textSize="10sp" android:textStyle="bold" android:textColor="#2C3E66" android:gravity="center" />
+                    <TextView android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:text="@string/fri" android:textSize="10sp" android:textStyle="bold" android:textColor="#2C3E66" android:gravity="center" />
+                    <TextView android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:text="@string/sat" android:textSize="10sp" android:textStyle="bold" android:textColor="#2C3E66" android:gravity="center" />
+                </LinearLayout>
+
+                <!-- Calendar Grid -->
+                <GridView
+                    android:id="@+id/calendarGrid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:numColumns="7"
+                    android:verticalSpacing="2dp"
+                    android:horizontalSpacing="0dp"
+                    android:stretchMode="columnWidth" />
+
+                <!-- Selected Date -->
+                <TextView
+                    android:id="@+id/selectedDateText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/selected_prefix"
+                    android:textSize="13sp"
+                    android:textColor="#9C27B0"
+                    android:textStyle="bold"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_gravity="center" />
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E2EDF2"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Add Task Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <EditText
+                        android:id="@+id/taskNameInput"
+                        android:layout_width="0dp"
+                        android:layout_height="44dp"
+                        android:layout_weight="1"
+                        android:hint="@string/add_new_task"
+                        android:textSize="13sp"
+                        android:background="@drawable/input_field_bg"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp" />
+
+                    <TextView
+                        android:id="@+id/addTaskButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:text="@string/add"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="#FFFFFF"
+                        android:gravity="center"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:layout_marginStart="8dp"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Tasks for Selected Date Card -->
+            <LinearLayout
+                android:id="@+id/tasksCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="200dp"
+                android:orientation="vertical"
+                android:background="@drawable/white_card_bg"
+                android:padding="12dp"
+                android:elevation="4dp"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:id="@+id/tasksLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tasks_for_date_label"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#2C3E66"
+                    android:layout_marginBottom="16dp"
+                    android:layout_gravity="center" />
+
+                <LinearLayout
+                    android:id="@+id/tasksListContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone" />
+
+                <!-- Empty State Layout -->
+                <LinearLayout
+                    android:id="@+id/emptyStateLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="32dp"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/emptyStateEmoji"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📋"
+                        android:textSize="64sp"
+                        android:layout_marginBottom="16dp" />
+
+                    <TextView
+                        android:id="@+id/noTasksText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/no_tasks"
+                        android:textSize="14sp"
+                        android:textColor="#7F8C8D"
+                        android:gravity="center" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Bottom Navigation Bar -->
+    <LinearLayout
+        android:id="@+id/footerNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#FFFFFF"
+        android:elevation="8dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+
+        <LinearLayout android:id="@+id/navHome" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🏠" android:textSize="22sp" />
+            <TextView android:id="@+id/navHomeText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_home" android:textSize="11sp" android:textColor="#555555" />
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/navCalendar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📅" android:textSize="22sp" />
+            <TextView android:id="@+id/navCalendarText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_calendar" android:textSize="11sp" android:textColor="#9C27B0" android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/navShop" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🛒" android:textSize="22sp" />
+            <TextView android:id="@+id/navShopText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_shop" android:textSize="11sp" android:textColor="#555555" />
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/navThemes" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🎨" android:textSize="22sp" />
+            <TextView android:id="@+id/navThemesText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_themes" android:textSize="11sp" android:textColor="#555555" />
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/navProfile" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="👤" android:textSize="22sp" />
+            <TextView android:id="@+id/navProfileText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/profile" android:textSize="11sp" android:textColor="#555555" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base Material 3 Theme -->
+    <style name="Base.Theme.DailyToDoList" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/default_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/default_accent</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:statusBarColor">@color/default_start</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+
+    <!-- Modern Login Theme -->
+    <style name="Theme.DailyToDoList.Login" parent="Base.Theme.DailyToDoList">
+        <item name="colorPrimary">@color/login_button_bg</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/login_forgot_password</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:windowBackground">@color/login_bg</item>
+        <item name="android:colorBackground">@color/login_card_bg</item>
+        <item name="android:textColorPrimary">@color/login_text_primary</item>
+        <item name="android:textColorSecondary">@color/login_text_secondary</item>
+        <item name="android:statusBarColor">@color/default_start</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="colorControlNormal">#6B8DB5</item>
+        <item name="colorControlActivated">@color/login_remember_me</item>
+    </style>
+
+    <!-- Default Purple Theme - Light -->
+    <style name="Theme.DailyToDoList.Default.Light" parent="Base.Theme.DailyToDoList">
+        <item name="colorPrimary">@color/default_primary</item>
+        <item name="colorSecondary">@color/default_secondary</item>
+        <item name="colorPrimaryVariant">@color/default_accent</item>
+        <item name="android:windowBackground">@color/default_bg_light</item>
+        <item name="android:colorBackground">@color/default_surface_light</item>
+        <item name="android:textColorPrimary">@color/default_text_primary_light</item>
+        <item name="android:textColorSecondary">@color/default_text_secondary_light</item>
+        <item name="android:statusBarColor">@color/default_start</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="colorControlNormal">#6B8DB5</item>
+        <item name="colorControlActivated">@color/default_primary</item>
+    </style>
+
+    <!-- Default Purple Theme - Dark -->
+    <style name="Theme.DailyToDoList.Default.Dark" parent="Base.Theme.DailyToDoList">
+        <item name="colorPrimary">@color/default_secondary</item>
+        <item name="colorSecondary">@color/default_primary</item>
+        <item name="colorPrimaryVariant">@color/default_accent</item>
+        <item name="android:windowBackground">@color/default_bg_dark</item>
+        <item name="android:colorBackground">@color/default_surface_dark</item>
+        <item name="android:textColorPrimary">@color/default_text_primary_dark</item>
+        <item name="android:textColorSecondary">@color/default_text_secondary_dark</item>
+        <item name="android:statusBarColor">@color/default_start</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="colorControlNormal">#6B8DB5</item>
+        <item name="colorControlActivated">@color/default_secondary</item>
+    </style>
+
+    <!-- Hot Pink Theme - Light -->
+    <style name="Theme.DailyToDoList.Hotpink.Light" parent="Base.Theme.DailyToDoList">
+        <item name="colorPrimary">@color/hotpink_primary</item>
+        <item name="colorSecondary">@color/hotpink_secondary</item>
+        <item name="colorPrimaryVariant">@color/hotpink_accent</item>
+        <item name="android:windowBackground">@color/hotpink_bg_light</item>
+        <item name="android:colorBackground">@color/hotpink_surface_light</item>
+        <item name="android:textColorPrimary">@color/hotpink_text_primary_light</item>
+        <item name="android:textColorSecondary">@color/hotpink_text_secondary_light</item>
+        <item name="android:statusBarColor">@color/hotpink_start</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="colorControlNormal">#6B8DB5</item>
+        <item name="colorControlActivated">@color/hotpink_primary</item>
+    </style>
+
+    <!-- Hot Pink Theme - Dark -->
+    <style name="Theme.DailyToDoList.Hotpink.Dark" parent="Base.Theme.DailyToDoList">
+        <item name="colorPrimary">@color/hotpink_secondary</item>
+        <item name="colorSecondary">@color/hotpink_primary</item>
+        <item name="colorPrimaryVariant">@color/hotpink_accent</item>
+        <item name="android:windowBackground">@color/hotpink_bg_dark</item>
+        <item name="android:colorBackground">@color/hotpink_surface_dark</item>
+        <item name="android:textColorPrimary">@color/hotpink_text_primary_dark</item>
+        <item name="android:textColorSecondary">@color/hotpink_text_secondary_dark</item>
+        <item name="android:statusBarColor">@color/hotpink_start</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="colorControlNormal">#6B8DB5</item>
+        <item name="colorControlActivated">@color/hotpink_secondary</item>
+    </style>
+
+    <!-- Lime Blue Theme - Light -->
+    <style name="Theme.DailyToDoList.Lime.Light" parent="Base.Theme.DailyToDoList">
+        <item name="colorPrimary">@color/lime_primary</item>
+        <item name="colorSecondary">@color/lime_secondary</item>
+        <item name="colorPrimaryVariant">@color/lime_accent</item>
+        <item name="android:windowBackground">@color/lime_bg_light</item>
+        <item name="android:colorBackground">@color/lime_surface_light</item>
+        <item name="android:textColorPrimary">@color/lime_text_primary_light</item>
+        <item name="android:textColorSecondary">@color/lime_text_secondary_light</item>
+        <item name="android:statusBarColor">@color/lime_start</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="colorControlNormal">#6B8DB5</item>
+        <item name="colorControlActivated">@color/lime_primary</item>
+    </style>
+
+    <!-- Lime Blue Theme - Dark -->
+    <style name="Theme.DailyToDoList.Lime.Dark" parent="Base.Theme.DailyToDoList">
+        <item name="colorPrimary">@color/lime_secondary</item>
+        <item name="colorSecondary">@color/lime_primary</item>
+        <item name="colorPrimaryVariant">@color/lime_accent</item>
+        <item name="android:windowBackground">@color/lime_bg_dark</item>
+        <item name="android:colorBackground">@color/lime_surface_dark</item>
+        <item name="android:textColorPrimary">@color/lime_text_primary_dark</item>
+        <item name="android:textColorSecondary">@color/lime_text_secondary_dark</item>
+        <item name="android:statusBarColor">@color/lime_start</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="colorControlNormal">#6B8DB5</item>
+        <item name="colorControlActivated">@color/lime_secondary</item>
+    </style>
+
+    <!-- Mint Green Theme - Light -->
+    <style name="Theme.DailyToDoList.Mint.Light" parent="Base.Theme.DailyToDoList">
+        <item name="colorPrimary">@color/mint_primary</item>
+        <item name="colorSecondary">@color/mint_secondary</item>
+        <item name="colorPrimaryVariant">@color/mint_accent</item>
+        <item name="android:windowBackground">@color/mint_bg_light</item>
+        <item name="android:colorBackground">@color/mint_surface_light</item>
+        <item name="android:textColorPrimary">@color/mint_text_primary_light</item>
+        <item name="android:textColorSecondary">@color/mint_text_secondary_light</item>
+        <item name="android:statusBarColor">@color/mint_start</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="colorControlNormal">#6B8DB5</item>
+        <item name="colorControlActivated">@color/mint_primary</item>
+    </style>
+
+    <!-- Mint Green Theme - Dark -->
+    <style name="Theme.DailyToDoList.Mint.Dark" parent="Base.Theme.DailyToDoList">
+        <item name="colorPrimary">@color/mint_secondary</item>
+        <item name="colorSecondary">@color/mint_primary</item>
+        <item name="colorPrimaryVariant">@color/mint_accent</item>
+        <item name="android:windowBackground">@color/mint_bg_dark</item>
+        <item name="android:colorBackground">@color/mint_surface_dark</item>
+        <item name="android:textColorPrimary">@color/mint_text_primary_dark</item>
+        <item name="android:textColorSecondary">@color/mint_text_secondary_dark</item>
+        <item name="android:statusBarColor">@color/mint_start</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="colorControlNormal">#6B8DB5</item>
+        <item name="colorControlActivated">@color/mint_secondary</item>
+    </style>
+
+    <!-- Sunset Orange Theme - Light -->
+    <style name="Theme.DailyToDoList.Sunset.Light" parent="Base.Theme.DailyToDoList">
+        <item name="colorPrimary">@color/sunset_primary</item>
+        <item name="colorSecondary">@color/sunset_secondary</item>
+        <item name="colorPrimaryVariant">@color/sunset_accent</item>
+        <item name="android:windowBackground">@color/sunset_bg_light</item>
+        <item name="android:colorBackground">@color/sunset_surface_light</item>
+        <item name="android:textColorPrimary">@color/sunset_text_primary_light</item>
+        <item name="android:textColorSecondary">@color/sunset_text_secondary_light</item>
+        <item name="android:statusBarColor">@color/sunset_start</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="colorControlNormal">#6B8DB5</item>
+        <item name="colorControlActivated">@color/sunset_primary</item>
+    </style>
+
+    <!-- Sunset Orange Theme - Dark -->
+    <style name="Theme.DailyToDoList.Sunset.Dark" parent="Base.Theme.DailyToDoList">
+        <item name="colorPrimary">@color/sunset_secondary</item>
+        <item name="colorSecondary">@color/sunset_primary</item>
+        <item name="colorPrimaryVariant">@color/sunset_accent</item>
+        <item name="android:windowBackground">@color/sunset_bg_dark</item>
+        <item name="android:colorBackground">@color/sunset_surface_dark</item>
+        <item name="android:textColorPrimary">@color/sunset_text_primary_dark</item>
+        <item name="android:textColorSecondary">@color/sunset_text_secondary_dark</item>
+        <item name="android:statusBarColor">@color/sunset_start</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="colorControlNormal">#6B8DB5</item>
+        <item name="colorControlActivated">@color/sunset_secondary</item>
+    </style>
+
+</resources>
