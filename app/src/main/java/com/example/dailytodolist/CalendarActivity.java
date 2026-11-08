@@ -56,7 +56,7 @@ public class CalendarActivity extends BaseActivity {
         setContentView(R.layout.activity_calendar);
 
         sharedPreferences = getSharedPreferences("TodoAppPrefs", MODE_PRIVATE);
-        isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+        isDarkMode = ThemeManager.isDarkMode(this);
 
         initViews();
         setupCalendar();
@@ -117,7 +117,7 @@ public class CalendarActivity extends BaseActivity {
     }
 
     private void applyDarkMode() {
-        isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+        isDarkMode = ThemeManager.isDarkMode(this);
 
         if (isDarkMode) {
             // DARK MODE - Cards become dark, text becomes white
@@ -653,7 +653,7 @@ public class CalendarActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+        isDarkMode = ThemeManager.isDarkMode(this);
         applyGradientBackground();
         applyDarkMode();
         updateCalendar();

@@ -171,7 +171,67 @@
     <string name="password_required">密码是必填项</string>
     <string name="password_min_length">密码必须至少3个字符</string>
     <string name="welcome_back">欢迎回来，%s！👋</string>
-
     <string name="log_out">退出登录</string>
 
+    <!-- Night mode (tri-state) -->
+    <string name="night_mode_system">跟随系统</string>
+    <string name="night_mode_light">浅色</string>
+    <string name="night_mode_dark">深色</string>
+    <string name="night_mode_changed">外观已更新</string>
+
+    <!-- Add Task Screen -->
+    <string name="back">&lt; 返回</string>
+    <string name="add_task_title">新建任务</string>
+    <string name="task_name_label">任务名称</string>
+    <string name="task_name_hint">你需要做什么？</string>
+    <string name="description_hint">描述（可选）</string>
+    <string name="time_block_label">时间块</string>
+    <string name="category_label">分类</string>
+    <string name="top_priority_check">标记为今日前三优先级</string>
+    <string name="save_task">保存任务</string>
+    <string name="duration_minutes">时长：%d 分钟</string>
+    <string name="duration_invalid">结束时间必须晚于开始时间</string>
+    <string name="pick_start_time">开始时间</string>
+    <string name="pick_end_time">结束时间</string>
+    <string name="schedule_specific_time">安排具体时间</string>
+    <string name="anytime">随时</string>
+
+    <!-- Time block categories -->
+    <string name="cat_study">学习</string>
+    <string name="cat_classes">上课</string>
+    <string name="cat_assignments">作业</string>
+    <string name="cat_personal">个人</string>
+    <string name="cat_break">休息</string>
+    <string name="cat_other">其他</string>
+
+    <!-- Main screen view toggle -->
+    <string name="view_list">列表视图</string>
+    <string name="view_timeline">时间轴</string>
+    <string name="no_tasks_scheduled_hint">今天还没有安排任务 — 去添加一个吧！</string>
+    <string name="no_tasks_scheduled_for_day">这一天还没有安排任务</string>
+
+    <!-- Day selector: abbreviated weekday labels -->
+    <string name="weekday_mon">周一</string>
+    <string name="weekday_tue">周二</string>
+    <string name="weekday_wed">周三</string>
+    <string name="weekday_thu">周四</string>
+    <string name="weekday_fri">周五</string>
+    <string name="weekday_sat">周六</string>
+    <string name="weekday_sun">周日</string>
+    <string name="backlog_header">随时任务</string>
+    <string name="top_priorities_header">今日前三优先级</string>
+    <string name="logout">退出登录</string>
+
+    <!-- End of day review -->
+    <string name="todays_review">今日复盘</string>
+    <string name="end_of_day_review">每日复盘</string>
+    <string name="open_review">每日复盘</string>
+    <string name="energy_tracker">精力记录</string>
+    <string name="energy_morning">上午</string>
+    <string name="energy_afternoon">下午</string>
+    <string name="energy_evening">晚上</string>
+    <string name="went_well_hint">今天哪些地方做得好？</string>
+    <string name="improve_hint">我可以如何改进？</string>
+    <string name="save_review">保存复盘</string>
+    <string name="review_saved">复盘已保存</string>
 </resources>

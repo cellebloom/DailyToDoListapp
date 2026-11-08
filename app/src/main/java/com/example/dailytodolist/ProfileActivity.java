@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
@@ -20,18 +21,18 @@ import java.util.Date;
 import java.util.Locale;
 import android.widget.ArrayAdapter;
 import android.graphics.Color;
-import java.util.Locale;
 import android.content.Context;
 
 public class ProfileActivity extends BaseActivity {
 
     private TextView userName, userType, memberSince, tasksCompleted, totalCoins;
+    private TextView avatarInitial;
 
     private TextView profileTitle;
     private LinearLayout editProfileName, switchAccount, manageAccount, themePreferences, logout, language;
     private LinearLayout mainLayout;
     private CardView[] cards = new CardView[4];
-    private SwitchCompat darkModeSwitch;
+    private com.google.android.material.button.MaterialButtonToggleGroup nightModeGroup;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private boolean isDarkMode = false;
@@ -72,6 +73,30 @@ public class ProfileActivity extends BaseActivity {
         setupNavigation();
     }
 
+    /**
+     * Shows the first character of the user's name in the avatar.
+     *
+     * <p>Falls back to a neutral person icon when the name is blank. Uses a
+     * code-point-aware substring rather than {@code charAt(0)} so a name
+     * starting with an emoji (which is a surrogate pair) is not cut in half and
+     * rendered as a broken glyph.</p>
+     */
+    private void updateAvatarInitial(String name) {
+        if (avatarInitial == null) {
+            return;
+        }
+
+        String trimmed = name == null ? "" : name.trim();
+        if (trimmed.isEmpty()) {
+            avatarInitial.setText("👤");
+            return;
+        }
+
+        int firstCodePoint = trimmed.codePointAt(0);
+        avatarInitial.setText(new String(Character.toChars(firstCodePoint))
+                .toUpperCase(Locale.getDefault()));
+    }
+
     private void initViews() {
         mainLayout = findViewById(R.id.mainLayout);
         userName = findViewById(R.id.userName);
@@ -79,7 +104,8 @@ public class ProfileActivity extends BaseActivity {
         memberSince = findViewById(R.id.memberSince);
         tasksCompleted = findViewById(R.id.tasksCompleted);
         totalCoins = findViewById(R.id.totalCoins);
-        darkModeSwitch = findViewById(R.id.darkModeSwitch);
+        avatarInitial = findViewById(R.id.avatarInitial);
+        nightModeGroup = findViewById(R.id.nightModeGroup);
 
         editProfileName = findViewById(R.id.editProfileName);
         switchAccount = findViewById(R.id.switchAccount);
@@ -116,7 +142,7 @@ public class ProfileActivity extends BaseActivity {
 
     private void applyDarkMode() {
         // FIX: Always get fresh dark mode value from SharedPreferences
-        isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+        isDarkMode = ThemeManager.isDarkMode(this);
 
         // Update profile title - WHITE in both modes (visible on gradient backgrounds)
         if (profileTitle != null) {
@@ -230,10 +256,8 @@ public class ProfileActivity extends BaseActivity {
             darkLightText.setTextColor(isDarkMode ? android.graphics.Color.parseColor("#CCCCCC") : android.graphics.Color.parseColor("#49607C"));
         }
 
-        // Update dark mode switch
-        if (darkModeSwitch != null) {
-            darkModeSwitch.setTextColor(isDarkMode ? android.graphics.Color.parseColor("#FFFFFF") : android.graphics.Color.parseColor("#2C3E66"));
-        }
+        // Night mode is a tri-state toggle group whose colours come from theme
+        // attributes, so nothing needs recolouring here.
 
         updateBottomNavigation();
     }
@@ -401,6 +425,7 @@ public class ProfileActivity extends BaseActivity {
         String joinedDate = sharedPreferences.getString("member_since", getCurrentDate());
 
         userName.setText(name);
+        updateAvatarInitial(name);
 
         if (accountType.equals("Guest")) {
             userType.setText(R.string.guest_account);
@@ -416,8 +441,7 @@ public class ProfileActivity extends BaseActivity {
         }
 
         // FIX: Get fresh dark mode value
-        isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
-        darkModeSwitch.setChecked(isDarkMode);
+        isDarkMode = ThemeManager.isDarkMode(this);
     }
     private String getCurrentDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
@@ -440,13 +464,41 @@ public class ProfileActivity extends BaseActivity {
         totalCoins.setText(String.valueOf(coins));
     }
 
+    /**
+     * Wires the System / Light / Dark choice.
+     *
+     * <p>Delegates to AppCompatDelegate instead of storing a boolean, so "follow
+     * system" behaves correctly and every Activity is recreated when it changes.</p>
+     */
     private void setupDarkModeSwitch() {
-        darkModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            isDarkMode = isChecked;
-            editor.putBoolean("dark_mode", isDarkMode);
-            editor.apply();
-            Toast.makeText(this, isDarkMode ? R.string.dark_mode_applied : R.string.light_mode_applied, Toast.LENGTH_SHORT).show();
-            recreate();
+        if (nightModeGroup == null) {
+            return;
+        }
+
+        int current = ThemeManager.getNightMode(this);
+        int checkedId = R.id.nightModeSystem;
+        if (current == ThemeManager.NIGHT_MODE_LIGHT) {
+            checkedId = R.id.nightModeLight;
+        } else if (current == ThemeManager.NIGHT_MODE_DARK) {
+            checkedId = R.id.nightModeDark;
+        }
+        nightModeGroup.check(checkedId);
+
+        nightModeGroup.addOnButtonCheckedListener((group, id, isChecked) -> {
+            if (!isChecked) {
+                return;
+            }
+            int mode;
+            if (id == R.id.nightModeLight) {
+                mode = ThemeManager.NIGHT_MODE_LIGHT;
+            } else if (id == R.id.nightModeDark) {
+                mode = ThemeManager.NIGHT_MODE_DARK;
+            } else {
+                mode = ThemeManager.NIGHT_MODE_FOLLOW_SYSTEM;
+            }
+
+            ThemeManager.saveNightMode(this, mode);
+            Toast.makeText(this, R.string.night_mode_changed, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -481,7 +533,7 @@ public class ProfileActivity extends BaseActivity {
         saveButton.setText(R.string.save);
         editNameInput.setHint(R.string.enter_new_name);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setView(dialogView);
 
         AlertDialog dialog = builder.create();
@@ -564,7 +616,7 @@ public class ProfileActivity extends BaseActivity {
         TextView englishArrow = dialogView.findViewById(R.id.englishArrow);
         TextView chineseArrow = dialogView.findViewById(R.id.chineseArrow);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -661,7 +713,7 @@ public class ProfileActivity extends BaseActivity {
 
     private void applyDialogTheme(View dialogView, AlertDialog dialog) {
         if (dialog.getWindow() != null) {
-            boolean isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+            boolean isDarkMode = ThemeManager.isDarkMode(this);
 
             if (isDarkMode) {
                 GradientDrawable darkDialogBg = new GradientDrawable();
@@ -716,7 +768,7 @@ public class ProfileActivity extends BaseActivity {
         LinearLayout googleAccountLayout = dialogView.findViewById(R.id.googleAccount);
         TextView cancelButton = dialogView.findViewById(R.id.cancelButton);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -884,7 +936,7 @@ public class ProfileActivity extends BaseActivity {
             deleteAccountArrow = (TextView) deleteAccountLayout.getChildAt(2);
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -1033,7 +1085,7 @@ public class ProfileActivity extends BaseActivity {
 
     private void showChangePasswordDialog() {
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -1057,7 +1109,7 @@ public class ProfileActivity extends BaseActivity {
 
     private void showUpdateEmailDialog() {
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_update_email, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -1080,7 +1132,7 @@ public class ProfileActivity extends BaseActivity {
     }
 
     private void showDeleteAccountConfirmation() {
-        new AlertDialog.Builder(this)
+        new MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.delete_account_title)
                 .setMessage(R.string.delete_account_message)
                 .setPositiveButton(R.string.delete, (dialog2, which2) -> {
@@ -1206,7 +1258,7 @@ public class ProfileActivity extends BaseActivity {
         TextView cancelButton = dialogView.findViewById(R.id.cancelButton);
         TextView logoutButton = dialogView.findViewById(R.id.logoutButton);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
         dialog.show();

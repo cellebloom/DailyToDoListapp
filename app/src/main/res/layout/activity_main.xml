@@ -87,13 +87,79 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/theme_text_primary"
-                    android:layout_marginBottom="20dp" />
+                    android:layout_marginBottom="12dp" />
 
+                <!-- Top 3 Priorities. Hidden entirely when the day has none,
+                     so the section never renders as an empty shell. -->
+                <LinearLayout
+                    android:id="@+id/prioritiesSection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="16dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/prioritiesHeader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/top_priorities_header"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:id="@+id/prioritiesContainer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal" />
+                    </HorizontalScrollView>
+                </LinearLayout>
+
+                <!-- List / Timeline switch. Colours come from theme attributes
+                     so it follows light and dark mode like the rest of the card. -->
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/viewToggleGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:singleSelection="true"
+                    app:selectionRequired="true">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnListView"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:text="@string/view_list"
+                        android:textSize="14sp"
+                        android:checked="true" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnTimelineView"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:text="@string/view_timeline"
+                        android:textSize="14sp" />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                <!-- Height must wrap the content, not take weight: this card is
+                     wrap_content with a minHeight, so a 0dp/weight child would be
+                     squeezed into whatever the 550dp floor leaves over and clip
+                     the timeline to about five hours. -->
                 <LinearLayout
                     android:id="@+id/tasksContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -138,6 +204,89 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
+                        android:visibility="gone" />
+
+                    <!-- Backlog: Anytime tasks, which have no interval and so
+                         cannot be positioned on the hour grid. -->
+                    <LinearLayout
+                        android:id="@+id/backlogSection"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/backlogHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/backlog_header"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="8dp"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+
+                        <HorizontalScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scrollbars="none"
+                            android:layout_marginBottom="12dp">
+
+                            <LinearLayout
+                                android:id="@+id/backlogContainer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal" />
+                        </HorizontalScrollView>
+                    </LinearLayout>
+
+                    <!-- Horizontal day selector, like the top row of a paper
+                         planner. Sits above the grid and drives which date the
+                         timeline renders. hidden in List view. -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/daySelectorRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:nestedScrollingEnabled="false"
+                        android:clipToPadding="false"
+                        android:scrollbars="none"
+                        android:layout_marginBottom="12dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:visibility="gone" />
+
+                    <!-- Inline empty hint for the timeline. Shown only when the
+                         day has no scheduled tasks; the hour grid below it
+                         stays visible so the view still reads as a timeline
+                         rather than a blank or broken screen. -->
+                    <TextView
+                        android:id="@+id/timelineEmptyHint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/no_tasks_scheduled_hint"
+                        android:textSize="13sp"
+                        android:textStyle="italic"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="4dp"
+                        android:visibility="gone" />
+
+                    <!-- Timeline view. Only scheduled tasks are laid out here;
+                         Anytime tasks stay in the list, because they have no
+                         interval to position on a time axis.
+
+                         WrapHeightRecyclerView (not a plain RecyclerView) is
+                         required: wrap_content alone still clamps to the
+                         viewport under an AT_MOST parent spec, which truncated
+                         the grid at about 14:00. It measures against
+                         UNSPECIFIED so all 18 hours from 06:00 to 23:00 are
+                         laid out and the outer ScrollView can reach the end. -->
+                    <com.example.dailytodolist.WrapHeightRecyclerView
+                        android:id="@+id/timelineRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:paddingBottom="32dp"
+                        android:clipToPadding="false"
                         android:visibility="gone" />
 
                 </LinearLayout>
@@ -256,6 +405,21 @@
                     android:layout_gravity="center" />
 
             </LinearLayout>
+
+            <!-- End of Day Review entry -->
+            <TextView
+                android:id="@+id/openReviewButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:gravity="center"
+                android:text="@string/open_review"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="20dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="@drawable/action_button_bg"
+                android:textColor="@android:color/white" />
 
         </LinearLayout>
 

@@ -41,7 +41,7 @@ public class ShopActivity extends BaseActivity {
         editor = sharedPreferences.edit();
 
         // FIX: Initialize dark mode from SharedPreferences like MainActivity does
-        isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+        isDarkMode = ThemeManager.isDarkMode(this);
 
         initViews();
         updateCoinDisplay();
@@ -114,7 +114,7 @@ public class ShopActivity extends BaseActivity {
 
     private void applyDarkMode() {
         // FIX: Always get fresh dark mode value from SharedPreferences
-        isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+        isDarkMode = ThemeManager.isDarkMode(this);
 
         // Update header colors
         if (shopTitle != null) {
@@ -432,7 +432,7 @@ public class ShopActivity extends BaseActivity {
         super.onResume();
         // FIX: This is the most important part - refresh everything when returning to the activity
         // Just like MainActivity does in its onResume()
-        isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+        isDarkMode = ThemeManager.isDarkMode(this);
         updateCoinDisplay();
         updateThemeStatuses();
         applyGradientBackground();

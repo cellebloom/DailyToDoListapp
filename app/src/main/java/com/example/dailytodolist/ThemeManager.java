@@ -28,35 +28,102 @@ public class ThemeManager {
     private static final String PREF_NAME = "TodoAppPrefs";
     private static final String KEY_THEME = "selected_theme";
 
+    /**
+     * Night-mode preference: FOLLOW_SYSTEM, MODE_NIGHT_NO or MODE_NIGHT_YES.
+     *
+     * <p>Replaces the old {@code dark_mode} boolean. A boolean could only express
+     * two states and could never defer to the device, which is exactly why the
+     * app ignored the system setting.</p>
+     */
+    public static final String KEY_NIGHT_MODE = "night_mode";
+    public static final int NIGHT_MODE_FOLLOW_SYSTEM =
+            androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+    public static final int NIGHT_MODE_LIGHT =
+            androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
+    public static final int NIGHT_MODE_DARK =
+            androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
+
+    /** Stored tri-state night mode. Defaults to following the device. */
+    public static int getNightMode(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return prefs.getInt(KEY_NIGHT_MODE, NIGHT_MODE_FOLLOW_SYSTEM);
+    }
+
+    /** Applies a night mode through AppCompat so every screen picks it up. */
+    public static void setNightMode(int mode) {
+        androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(mode);
+    }
+
+    /** Persists and applies a night-mode choice. */
+    public static void saveNightMode(Context context, int mode) {
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .edit()
+                .putInt(KEY_NIGHT_MODE, mode)
+                .apply();
+        setNightMode(mode);
+    }
+
+    /** True when the current configuration resolves to the night palette. */
+    public static boolean isNightModeActive(Context context) {
+        int nightMode = context.getResources().getConfiguration().uiMode
+                & android.content.res.Configuration.UI_MODE_NIGHT_MASK;
+        return nightMode == android.content.res.Configuration.UI_MODE_NIGHT_YES;
+    }
+
+    /**
+     * True when dark mode is currently in effect.
+     *
+     * <p>Reads the resolved configuration rather than a stored flag, so it honours
+     * all three states including "follow system".</p>
+     */
+    public static boolean isDarkMode(Context context) {
+        return isNightModeActive(context);
+    }
+
     public static void applyTheme(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         String themeId = prefs.getString(KEY_THEME, THEME_DEFAULT);
 
-        // Apply theme based on the themeId
+        // Which palette (light or dark) now comes from the Android night-mode
+        // configuration, which AppCompatDelegate drives from the user's choice or
+        // the system setting. Reading the configuration instead of a stored
+        // boolean is what makes "follow system" actually work.
+        if (isNightModeActive(context)) {
+            context.setTheme(getDarkStyleFor(themeId));
+        } else {
+            context.setTheme(getLightStyleFor(themeId));
+        }
+    }
+
+    /** Light style for a theme id. */
+    private static int getLightStyleFor(String themeId) {
         switch (themeId) {
             case THEME_HOTPINK:
-                context.setTheme(R.style.Theme_DailyToDoList_Hotpink_Light);
-                break;
+                return R.style.Theme_DailyToDoList_Hotpink_Light;
             case THEME_LIME:
-                context.setTheme(R.style.Theme_DailyToDoList_Lime_Light);
-                break;
+                return R.style.Theme_DailyToDoList_Lime_Light;
             case THEME_MINT:
-                context.setTheme(R.style.Theme_DailyToDoList_Mint_Light);
-                break;
+                return R.style.Theme_DailyToDoList_Mint_Light;
             case THEME_SUNSET:
-                context.setTheme(R.style.Theme_DailyToDoList_Sunset_Light);
-                break;
-            case THEME_CYAN_HOTPINK:
-            case THEME_CYAN_INDIGO:
-            case THEME_YELLOW_RED:
-            case THEME_CREAM_ROSE:
-            case THEME_YELLOW_CYAN:
-            case THEME_MAGENTA_BLUE:
-                context.setTheme(R.style.Theme_DailyToDoList_Default_Light);
-                break;
+                return R.style.Theme_DailyToDoList_Sunset_Light;
             default:
-                context.setTheme(R.style.Theme_DailyToDoList_Default_Light);
-                break;
+                return R.style.Theme_DailyToDoList_Default_Light;
+        }
+    }
+
+    /** Dark style for a theme id. */
+    private static int getDarkStyleFor(String themeId) {
+        switch (themeId) {
+            case THEME_HOTPINK:
+                return R.style.Theme_DailyToDoList_Hotpink_Dark;
+            case THEME_LIME:
+                return R.style.Theme_DailyToDoList_Lime_Dark;
+            case THEME_MINT:
+                return R.style.Theme_DailyToDoList_Mint_Dark;
+            case THEME_SUNSET:
+                return R.style.Theme_DailyToDoList_Sunset_Dark;
+            default:
+                return R.style.Theme_DailyToDoList_Default_Dark;
         }
     }
 

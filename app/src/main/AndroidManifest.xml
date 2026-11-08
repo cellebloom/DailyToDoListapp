@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.DailyToDoList.Default.Light"
+        android:theme="@style/Base.Theme.DailyToDoList"
         android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
 
@@ -38,42 +38,56 @@
         <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.DailyToDoList.Default.Light"
+            android:theme="@style/Base.Theme.DailyToDoList"
             android:configChanges="uiMode|screenLayout|screenSize|orientation|locale"
             android:exported="false" />
 
         <!-- Calendar Activity -->
         <activity
             android:name=".CalendarActivity"
-            android:theme="@style/Theme.DailyToDoList.Default.Light"
+            android:theme="@style/Base.Theme.DailyToDoList"
             android:configChanges="uiMode|screenLayout|screenSize|orientation|locale"
             android:exported="false" />
 
         <!-- Profile Activity -->
         <activity
             android:name=".ProfileActivity"
-            android:theme="@style/Theme.DailyToDoList.Default.Light"
+            android:theme="@style/Base.Theme.DailyToDoList"
             android:configChanges="uiMode|screenLayout|screenSize|orientation|locale"
             android:exported="false" />
 
         <!-- Settings Activity -->
         <activity
             android:name=".SettingsActivity"
-            android:theme="@style/Theme.DailyToDoList.Default.Light"
+            android:theme="@style/Base.Theme.DailyToDoList"
             android:configChanges="uiMode|screenLayout|screenSize|orientation|locale"
             android:exported="false" />
 
         <!-- Shop Activity -->
         <activity
             android:name=".ShopActivity"
-            android:theme="@style/Theme.DailyToDoList.Default.Light"
+            android:theme="@style/Base.Theme.DailyToDoList"
             android:configChanges="uiMode|screenLayout|screenSize|orientation|locale"
             android:exported="false" />
 
         <!-- Theme Activity -->
         <activity
             android:name=".ThemeActivity"
-            android:theme="@style/Theme.DailyToDoList.Default.Light"
+            android:theme="@style/Base.Theme.DailyToDoList"
+            android:configChanges="uiMode|screenLayout|screenSize|orientation|locale"
+            android:exported="false" />
+
+        <!-- Add Task Activity -->
+        <activity
+            android:name=".AddTaskActivity"
+            android:theme="@style/Base.Theme.DailyToDoList"
+            android:configChanges="uiMode|screenLayout|screenSize|orientation|locale"
+            android:exported="false" />
+
+        <!-- End of day review -->
+        <activity
+            android:name=".ReviewActivity"
+            android:theme="@style/Base.Theme.DailyToDoList"
             android:configChanges="uiMode|screenLayout|screenSize|orientation|locale"
             android:exported="false" />
 

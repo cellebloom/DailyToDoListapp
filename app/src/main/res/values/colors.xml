@@ -226,6 +226,20 @@
     <color name="dark_text_secondary">#A0A0A0</color>
     <color name="dark_input_bg">#2A2A2A</color>
 
+    <!-- ============================================ -->
+    <!-- Time Block Category Colours                  -->
+    <!--   Used for a block's time text now, and for -->
+    <!--   new blocks drawn on the day timeline      -->
+    <!--   later. Kept as resources so no screen     -->
+    <!--   hardcodes a hex value.                    -->
+    <!-- ============================================ -->
+    <color name="block_study">#4A90E2</color>
+    <color name="block_classes">#6040E0</color>
+    <color name="block_assignments">#D02070</color>
+    <color name="block_personal">#F5A623</color>
+    <color name="block_break">#7ED321</color>
+    <color name="block_other">#808080</color>
+
 
 
 

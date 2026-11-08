@@ -39,7 +39,7 @@ public class ThemeActivity extends AppCompatActivity {
         editor = sharedPreferences.edit();
 
         // FIX: Initialize dark mode from SharedPreferences like MainActivity
-        isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+        isDarkMode = ThemeManager.isDarkMode(this);
 
         initViews();
         updateThemeStatuses();
@@ -105,7 +105,7 @@ public class ThemeActivity extends AppCompatActivity {
 
     private void applyDarkMode() {
         // FIX: Always get fresh dark mode value from SharedPreferences
-        isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+        isDarkMode = ThemeManager.isDarkMode(this);
 
         // Update header colors - Light mode = White, Dark mode = Black
         if (themeTitle != null) {
@@ -353,7 +353,7 @@ public class ThemeActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // FIX: Refresh everything when returning to the activity
-        isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+        isDarkMode = ThemeManager.isDarkMode(this);
         applyThemeGradients();
         applyDarkMode();
         updateThemeStatuses();
@@ -371,7 +371,7 @@ public class ThemeActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         // FIX: Get fresh dark mode value on configuration change
-        isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+        isDarkMode = ThemeManager.isDarkMode(this);
         applyThemeGradients();
         applyDarkMode();
     }

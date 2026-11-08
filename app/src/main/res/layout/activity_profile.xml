@@ -38,7 +38,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="96dp">
+            <!-- Extra bottom padding so the last row (Logout) can scroll clear
+                 of the bottom navigation bar instead of ending up underneath it. -->
 
             <!-- Profile Info Card -->
             <androidx.cardview.widget.CardView
@@ -64,6 +69,7 @@
                         android:layout_marginBottom="12dp">
 
                         <TextView
+                            android:id="@+id/avatarInitial"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="👤"
@@ -426,19 +432,57 @@
                         android:paddingTop="12dp"
                         android:paddingBottom="12dp">
 
-                        <TextView
-                            android:id="@+id/darkLightText"
-                            android:layout_width="0dp"
+                        <!-- Tri-state: System / Light / Dark. A two-state switch
+                             could not express "follow the device". -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/dark_light_mode"
-                            android:textSize="14sp"
-                            android:textColor="#49607C" />
+                            android:orientation="vertical">
 
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/darkModeSwitch"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            <TextView
+                                android:id="@+id/darkLightText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/dark_light_mode"
+                                android:textSize="14sp"
+                                android:layout_marginBottom="8dp"
+                                android:textColor="?attr/colorOnSurface" />
+
+                            <com.google.android.material.button.MaterialButtonToggleGroup
+                                android:id="@+id/nightModeGroup"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:singleSelection="true"
+                                app:selectionRequired="true">
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/nightModeSystem"
+                                    style="@style/Widget.Material3.Button.OutlinedButton"
+                                    android:layout_width="0dp"
+                                    android:layout_height="44dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/night_mode_system"
+                                    android:textSize="12sp" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/nightModeLight"
+                                    style="@style/Widget.Material3.Button.OutlinedButton"
+                                    android:layout_width="0dp"
+                                    android:layout_height="44dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/night_mode_light"
+                                    android:textSize="12sp" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/nightModeDark"
+                                    style="@style/Widget.Material3.Button.OutlinedButton"
+                                    android:layout_width="0dp"
+                                    android:layout_height="44dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/night_mode_dark"
+                                    android:textSize="12sp" />
+                            </com.google.android.material.button.MaterialButtonToggleGroup>
+                        </LinearLayout>
 
                     </LinearLayout>
 

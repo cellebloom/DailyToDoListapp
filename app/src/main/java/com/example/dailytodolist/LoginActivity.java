@@ -42,7 +42,7 @@ public class LoginActivity extends BaseActivity {
 
         sharedPreferences = getSharedPreferences("TodoAppPrefs", MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+        isDarkMode = ThemeManager.isDarkMode(this);
 
         initViews();
         applyAllGradients();
@@ -176,7 +176,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void applyDarkMode() {
-        isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+        isDarkMode = ThemeManager.isDarkMode(this);
 
         if (isDarkMode) {
             // ===== HEADER COLORS FOR DARK MODE =====
@@ -502,7 +502,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+        isDarkMode = ThemeManager.isDarkMode(this);
         applyAllGradients();
         applyDarkMode();
     }
