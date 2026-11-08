@@ -223,6 +223,12 @@
     <string name="backlog_header">Anytime</string>
     <string name="top_priorities_header">Top 3 Priorities</string>
 
+    <!-- Time block reminders -->
+    <string name="reminder_channel_description">Notifies you 5 minutes before a scheduled time block begins.</string>
+    <string name="reminder_title">Upcoming time block</string>
+    <string name="reminder_body">Your %1$s starts in 5 minutes!</string>
+    <string name="reminder_untitled_task">task</string>
+
     <!-- End of day review -->
     <string name="todays_review">Today\'s Review</string>
     <string name="end_of_day_review">End of Day Review</string>

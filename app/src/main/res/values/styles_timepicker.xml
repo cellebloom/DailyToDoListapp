@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Theme overlay applied to MaterialTimePicker.
+
+  Why this is needed: MaterialTimePicker inherits colorSurface / colorOnSurface
+  from the activity theme, and our themes are chosen from the app's own
+  "dark_mode" preference. Material3's DayNight parent also folds in the *system*
+  night mode, so when the phone is in light mode but the app is in dark mode (or
+  the reverse) the picker would resolve the wrong palette and render an
+  unreadable dialog. Pinning the overlay to the app's palette removes that
+  mismatch, so the picker always matches the screen that opened it.
+-->
+<resources>
+
+    <!-- Light app palette -->
+    <style name="ThemeOverlay.DailyToDoList.TimePicker.Light"
+        parent="ThemeOverlay.Material3.MaterialTimePicker">
+        <item name="colorSurface">@color/default_surface_light</item>
+        <item name="colorOnSurface">@color/default_text_primary_light</item>
+        <item name="colorOnSurfaceVariant">@color/default_text_secondary_light</item>
+        <item name="colorSurfaceVariant">@color/base_bg</item>
+        <item name="colorOutline">@color/base_card_border</item>
+    </style>
+
+    <!-- Dark app palette -->
+    <style name="ThemeOverlay.DailyToDoList.TimePicker.Dark"
+        parent="ThemeOverlay.Material3.MaterialTimePicker">
+        <item name="colorSurface">@color/default_surface_dark</item>
+        <item name="colorOnSurface">@color/default_text_primary_dark</item>
+        <item name="colorOnSurfaceVariant">@color/default_text_secondary_dark</item>
+        <item name="colorSurfaceVariant">@color/dark_input_bg</item>
+        <item name="colorOutline">@color/dark_text_secondary</item>
+    </style>
+
+</resources>

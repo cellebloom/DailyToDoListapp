@@ -10,6 +10,13 @@
     <!-- For Android 13+ (API 33) -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
+    <!-- Time-block reminders. POST_NOTIFICATIONS is runtime-granted on
+         Android 13+; SCHEDULE_EXACT_ALARM lets the reminder land on the exact
+         minute instead of whenever the system feels like batching it. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -90,6 +97,27 @@
             android:theme="@style/Base.Theme.DailyToDoList"
             android:configChanges="uiMode|screenLayout|screenSize|orientation|locale"
             android:exported="false" />
+
+        <!-- Delivers "starts in 5 minutes" notifications. Not exported: only
+             our own AlarmManager intents reach it. -->
+        <receiver
+            android:name=".TaskReminderReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.example.dailytodolist.TASK_REMINDER" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Alarms do not survive a reboot, so re-arm them on boot. -->
+        <receiver
+            android:name=".BootReminderReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
 
         <!-- File Provider for camera photos -->
         <provider

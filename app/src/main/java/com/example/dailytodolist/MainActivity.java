@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.example.dailytodolist.model.WeekDay;
+import com.example.dailytodolist.util.ReminderScheduler;
 import com.example.dailytodolist.util.TaskStore;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -71,6 +72,11 @@ public class MainActivity extends BaseActivity {
         sharedPreferences = getSharedPreferences("TodoAppPrefs", MODE_PRIVATE);
         isDarkMode = ThemeManager.isDarkMode(this);
 
+        // Create the reminder channel up front so the OS shows a valid channel
+        // even if the first notification is posted from a receiver after a
+        // reboot, when no activity has run yet.
+        ReminderScheduler.ensureChannel(this);
+
         // NEW: Setup the launcher
         addTaskLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -93,6 +99,13 @@ public class MainActivity extends BaseActivity {
                             TaskWithDate newTask = TaskWithDate.fromMinuteOfDay(
                                     title, description, dateIso, startMinute, endMinute,
                                     isTop, category);
+                            // Adopt the id AddTaskActivity already used to arm the
+                            // reminder. Without this the stored task would carry a
+                            // different uuid and the alarm could never be cancelled.
+                            String pendingId = data.getStringExtra(AddTaskActivity.EXTRA_TASK_ID);
+                            if (pendingId != null) {
+                                newTask.restoreId(pendingId);
+                            }
                             tasks.add(newTask);
                             saveTasks();
                             displayTasks();
@@ -713,6 +726,16 @@ public class MainActivity extends BaseActivity {
             task.setChecked(taskCheckbox.isChecked());
             saveTasks();
 
+            // Completing a task cancels its reminder: being told to start
+            // something already finished is worse than no reminder at all.
+            if (taskCheckbox.isChecked()) {
+                ReminderScheduler.cancel(this, task);
+                TaskReminderReceiver.cancelNotification(this, task.getId());
+            } else {
+                // Un-checking re-arms it, so undo restores the full behaviour.
+                ReminderScheduler.schedule(this, task);
+            }
+
             if (taskCheckbox.isChecked() && !wasCompleted) {
                 SharedPreferences prefs = getSharedPreferences("TodoAppPrefs", MODE_PRIVATE);
                 int currentCoins = prefs.getInt("user_coins", 0);
@@ -754,6 +777,13 @@ public class MainActivity extends BaseActivity {
         }
 
         confirmDelete.setOnClickListener(v -> {
+            // Cancel before removing: once the object is gone from the list the
+            // uuid is no longer reachable, and the alarm would fire for a task
+            // the user has explicitly deleted.
+            TaskWithDate toDelete = tasks.get(position);
+            ReminderScheduler.cancel(this, toDelete);
+            TaskReminderReceiver.cancelNotification(this, toDelete.getId());
+
             tasks.remove(position);
             saveTasks();
             refreshCurrentView();

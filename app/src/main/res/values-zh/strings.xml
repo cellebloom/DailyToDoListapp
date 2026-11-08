@@ -222,6 +222,12 @@
     <string name="top_priorities_header">今日前三优先级</string>
     <string name="logout">退出登录</string>
 
+    <!-- Time block reminders -->
+    <string name="reminder_channel_description">在已安排的时间块开始前 5 分钟提醒你。</string>
+    <string name="reminder_title">即将开始</string>
+    <string name="reminder_body">你的「%1$s」将在 5 分钟后开始！</string>
+    <string name="reminder_untitled_task">任务</string>
+
     <!-- End of day review -->
     <string name="todays_review">今日复盘</string>
     <string name="end_of_day_review">每日复盘</string>
