@@ -3,7 +3,6 @@ package com.example.dailytodolist;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -11,7 +10,13 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -19,6 +24,7 @@ import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
 import com.example.dailytodolist.model.TimeCategory;
+import com.example.dailytodolist.model.TimelineEdits;
 import com.example.dailytodolist.util.ReminderScheduler;
 
 import java.util.Calendar;
@@ -68,6 +74,7 @@ public class AddTaskActivity extends BaseActivity {
     private TextInputLayout descriptionLayout;
     private TextView btnStartTime;
     private TextView btnEndTime;
+    private MaterialButton btnSelectDate;
     private TextView durationText;
     private TextView btnSaveTask;
     private TextView backButton;
@@ -81,6 +88,14 @@ public class AddTaskActivity extends BaseActivity {
     private int startMinute = DEFAULT_START_MINUTE;
     private int endMinute = DEFAULT_END_MINUTE;
 
+    /**
+     * Selected date as {@code yyyy-MM-dd}. Defaults to today, so behaviour is
+     * unchanged until the user picks another day. MaterialDatePicker returns a
+     * UTC millis instant, which is converted back with a UTC calendar so the
+     * picked calendar day is stable across time zones.
+     */
+    private String selectedDateIso;
+
     /** Held while the runtime permission dialog is on screen. */
     private Intent pendingResult;
 
@@ -92,6 +107,8 @@ public class AddTaskActivity extends BaseActivity {
         bindViews();
         setupCategorySpinner();
         applyTheme();
+        selectedDateIso = todayIso();
+        updateDateButton();
         updateTimeLabels();
         setupListeners();
     }
@@ -105,6 +122,7 @@ public class AddTaskActivity extends BaseActivity {
         descriptionLayout = findViewById(R.id.descriptionLayout);
         btnStartTime = findViewById(R.id.btnStartTime);
         btnEndTime = findViewById(R.id.btnEndTime);
+        btnSelectDate = findViewById(R.id.btnSelectDate);
         durationText = findViewById(R.id.durationText);
         btnSaveTask = findViewById(R.id.btnSaveTask);
         backButton = findViewById(R.id.backButton);
@@ -130,8 +148,7 @@ public class AddTaskActivity extends BaseActivity {
     private void applyTheme() {
         boolean isDarkMode = ThemeManager.isDarkMode(this);
 
-        int[] gradient = ThemeManager.getThemeGradientColors(
-                this, ThemeManager.getCurrentTheme(this));
+        int[] gradient = GradientHelper.colorsFor(this);
         int accentColor = gradient[0];
 
         if (formCard != null) {
@@ -140,9 +157,11 @@ public class AddTaskActivity extends BaseActivity {
                     : R.drawable.white_card_bg);
         }
 
-        setPillGradient(btnStartTime, gradient);
-        setPillGradient(btnEndTime, gradient);
-        setPillGradient(btnSaveTask, gradient);
+        // Same helper the home screen's Add Task button uses, so the two buttons
+        // cannot drift apart again.
+        GradientHelper.applyPill(btnStartTime, this, gradient);
+        GradientHelper.applyPill(btnEndTime, this, gradient);
+        GradientHelper.applyPill(btnSaveTask, this, gradient);
 
         if (backButton != null) {
             backButton.setTextColor(accentColor);
@@ -154,17 +173,6 @@ public class AddTaskActivity extends BaseActivity {
             taskNameLayout.setBoxStrokeColor(accentColor);
             taskNameLayout.setHintTextColor(ColorStateList.valueOf(accentColor));
         }
-    }
-
-    private void setPillGradient(TextView view, int[] gradient) {
-        if (view == null) {
-            return;
-        }
-        GradientDrawable shape = new GradientDrawable(
-                GradientDrawable.Orientation.LEFT_RIGHT, gradient);
-        shape.setCornerRadius(26 * getResources().getDisplayMetrics().density);
-        view.setBackground(shape);
-        view.setTextColor(getColor(R.color.white));
     }
 
     // ------------------------------------------------------------------
@@ -244,6 +252,78 @@ public class AddTaskActivity extends BaseActivity {
         picker.show(getSupportFragmentManager(), "end_time_picker");
     }
 
+    /** Opens MaterialDatePicker, defaulting its selection to the current date. */
+    private void pickDate() {
+        MaterialDatePicker<Long> picker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText(R.string.select_date)
+                .setSelection(utcMillisForIso(selectedDateIso))
+                .setTheme(datePickerThemeOverlay(ThemeManager.isDarkMode(this)))
+                .build();
+
+        picker.addOnPositiveButtonClickListener(selection -> {
+            if (selection == null) {
+                return;
+            }
+            selectedDateIso = isoForUtcMillis(selection);
+            updateDateButton();
+        });
+        picker.show(getSupportFragmentManager(), "task_date_picker");
+    }
+
+    /** Shows "Today" for the current date, otherwise the picked ISO date. */
+    private void updateDateButton() {
+        if (btnSelectDate == null) {
+            return;
+        }
+        btnSelectDate.setText(selectedDateIso.equals(todayIso())
+                ? getString(R.string.today) : selectedDateIso);
+    }
+
+    /**
+     * Date-picker overlay matching the app palette. MaterialDatePicker otherwise
+     * follows the system night mode, which can disagree with the app's own
+     * light/dark choice (the same problem the time pickers solve).
+     */
+    private int datePickerThemeOverlay(boolean isDarkMode) {
+        return isDarkMode
+                ? R.style.ThemeOverlay_DailyToDoList_DatePicker_Dark
+                : R.style.ThemeOverlay_DailyToDoList_DatePicker_Light;
+    }
+
+    /** Converts {@code yyyy-MM-dd} to the UTC-millis instant the picker expects. */
+    private static long utcMillisForIso(String dateIso) {
+        Calendar utc = Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"));
+        utc.clear();
+        utc.set(Integer.parseInt(dateIso.substring(0, 4)),
+                Integer.parseInt(dateIso.substring(5, 7)) - 1,
+                Integer.parseInt(dateIso.substring(8, 10)));
+        return utc.getTimeInMillis();
+    }
+
+    /** Converts the picker's UTC-millis instant back to a local ISO date. */
+    private static String isoForUtcMillis(long millis) {
+        Calendar utc = Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"));
+        utc.setTimeInMillis(millis);
+        return String.format(Locale.US, "%04d-%02d-%02d",
+                utc.get(Calendar.YEAR),
+                utc.get(Calendar.MONTH) + 1,
+                utc.get(Calendar.DAY_OF_MONTH));
+    }
+
+    /** Adds one calendar day to an ISO date, used by the past-time fallback. */
+    private static String plusOneDay(String dateIso) {
+        Calendar cal = Calendar.getInstance();
+        cal.clear();
+        cal.set(Integer.parseInt(dateIso.substring(0, 4)),
+                Integer.parseInt(dateIso.substring(5, 7)) - 1,
+                Integer.parseInt(dateIso.substring(8, 10)));
+        cal.add(Calendar.DAY_OF_MONTH, 1);
+        return String.format(Locale.US, "%04d-%02d-%02d",
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH) + 1,
+                cal.get(Calendar.DAY_OF_MONTH));
+    }
+
     /**
      * Picks the time-picker overlay that matches the app's palette.
      *
@@ -265,6 +345,9 @@ public class AddTaskActivity extends BaseActivity {
     private void setupListeners() {
         btnStartTime.setOnClickListener(v -> pickStartTime());
         btnEndTime.setOnClickListener(v -> pickEndTime());
+        if (btnSelectDate != null) {
+            btnSelectDate.setOnClickListener(v -> pickDate());
+        }
         btnSaveTask.setOnClickListener(v -> saveTask());
         backButton.setOnClickListener(v -> {
             setResult(RESULT_CANCELED);
@@ -318,6 +401,36 @@ public class AddTaskActivity extends BaseActivity {
                 ? categories[position]
                 : TimeCategory.OTHER;
 
+        // Edge case: the user picked Today but a time that has already gone.
+        // Warn, and on confirmation move the date forward one day instead of
+        // saving a block that would instantly read as "past" on the timeline.
+        String dateIso = selectedDateIso;
+        if (timeScheduling && dateIso.equals(todayIso())
+                && TimelineEdits.isPast(dateIso, endMinute, System.currentTimeMillis())) {
+            Toast.makeText(this, R.string.past_time_warning, Toast.LENGTH_LONG).show();
+            final String tomorrow = plusOneDay(dateIso);
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.select_date)
+                    .setMessage(R.string.past_time_warning)
+                    .setNegativeButton(R.string.cancel, null)
+                    .setPositiveButton(R.string.save_task,
+                            (dialog, which) -> {
+                                selectedDateIso = tomorrow;
+                                updateDateButton();
+                                Toast.makeText(this, R.string.past_time_rescheduled,
+                                        Toast.LENGTH_SHORT).show();
+                                finishTask(title, category, timeScheduling, tomorrow);
+                            })
+                    .show();
+            return;
+        }
+
+        finishTask(title, category, timeScheduling, dateIso);
+    }
+
+    /** Builds the result intent, arms the reminder, and returns to the caller. */
+    private void finishTask(String title, TimeCategory category,
+                            boolean timeScheduling, String dateIso) {
         Intent result = new Intent();
         result.putExtra(EXTRA_TITLE, title);
         result.putExtra(EXTRA_DESCRIPTION, descriptionText());
@@ -329,7 +442,7 @@ public class AddTaskActivity extends BaseActivity {
                 timeScheduling ? endMinute : TaskWithDate.NO_TIME);
         result.putExtra(EXTRA_CATEGORY, category.getStorageKey());
         result.putExtra(EXTRA_TOP_PRIORITY, checkTopPriority.isChecked());
-        result.putExtra(EXTRA_DATE_ISO, todayIso());
+        result.putExtra(EXTRA_DATE_ISO, dateIso);
 
         // Arm the "starts in 5 minutes" reminder before handing the task back.
         // The id is minted here and passed along, so the caller stores the exact
@@ -337,7 +450,6 @@ public class AddTaskActivity extends BaseActivity {
         // skipped by the scheduler.
         ReminderScheduler.ensureChannel(this);
 
-        String dateIso = todayIso();
         int scheduledStart = timeScheduling ? startMinute : TaskWithDate.NO_TIME;
         int scheduledEnd = timeScheduling ? endMinute : TaskWithDate.NO_TIME;
         TaskWithDate pending = TaskWithDate.fromMinuteOfDay(
@@ -355,13 +467,83 @@ public class AddTaskActivity extends BaseActivity {
         // dropping the user's task over it would be a worse trade.
         if (needsNotificationPermission()) {
             pendingResult = result;
-            androidx.core.app.ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
-                    REQUEST_NOTIFICATION_PERMISSION);
+            showPermissionRationale();
             return;
         }
 
         finishWithResult(result);
+    }
+
+    /**
+     * Explains why the app wants notifications <em>before</em> the OS prompt.
+     *
+     * <p><b>Why a pre-dialog at all.</b> Android 13+ only lets an app raise the
+     * POST_NOTIFICATIONS prompt twice; after a second denial it never appears
+     * again and the user has to dig through system settings. Spending one of
+     * those two scarce prompts on someone who has not been told what the
+     * permission buys is a one-way loss, so the rationale is shown first and the
+     * system prompt is raised only on an explicit Allow.</p>
+     *
+     * <p>Every exit path — Allow, Don't Allow, the X, or dismissing by tapping
+     * outside — ends in {@link #finishWithResult}, because the task itself is
+     * already built and must never be dropped over a courtesy permission.</p>
+     */
+    private void showPermissionRationale() {
+        View content = getLayoutInflater().inflate(R.layout.dialog_permission, null);
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
+                // The layout supplies its own rounded MaterialCardView, so the
+                // dialog window must not paint a second background behind it.
+                .setBackgroundInsetStart(0)
+                .setBackgroundInsetEnd(0)
+                .setView(content);
+
+        AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(
+                    new android.graphics.drawable.ColorDrawable(
+                            android.graphics.Color.TRANSPARENT));
+        }
+
+        MaterialButton allow = content.findViewById(R.id.btnPermissionAllow);
+        MaterialButton deny = content.findViewById(R.id.btnPermissionDeny);
+        View close = content.findViewById(R.id.btnPermissionClose);
+
+        // The Allow button carries the app's live theme gradient, matching every
+        // other primary action in the app.
+        GradientHelper.applyPill(allow, this, GradientHelper.colorsFor(this));
+
+        allow.setOnClickListener(v -> {
+            dialog.dismiss();
+            androidx.core.app.ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
+                    REQUEST_NOTIFICATION_PERMISSION);
+        });
+
+        // Both refusals save the task without ever touching the OS prompt, which
+        // preserves the remaining system-dialog allowance for a later attempt.
+        deny.setOnClickListener(v -> {
+            dialog.dismiss();
+            finishPendingWithoutPermission();
+        });
+        close.setOnClickListener(v -> {
+            dialog.dismiss();
+            finishPendingWithoutPermission();
+        });
+
+        // Back press / outside tap is also a refusal, not a hang.
+        dialog.setOnCancelListener(d -> finishPendingWithoutPermission());
+
+        dialog.show();
+    }
+
+    /** Completes the save when the user declines the notification prompt. */
+    private void finishPendingWithoutPermission() {
+        Intent result = pendingResult;
+        pendingResult = null;
+        if (result != null) {
+            finishWithResult(result);
+        }
     }
 
     /** True when this build needs POST_NOTIFICATIONS and it is not granted. */

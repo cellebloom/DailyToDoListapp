@@ -14,6 +14,8 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.dailytodolist.util.ThemeColors;
 import androidx.core.content.ContextCompat;
 
 import java.text.SimpleDateFormat;
@@ -48,6 +50,9 @@ public class CalendarActivity extends BaseActivity {
     private HashMap<String, ArrayList<CalendarTask>> tasksMap;
     private SharedPreferences sharedPreferences;
     private int currentAccentColor;
+    /** Endpoints of the active theme gradient, used for contrast-safe labels. */
+    private int currentGradientStart;
+    private int currentGradientEnd;
     private boolean isDarkMode;
 
     @Override
@@ -119,244 +124,123 @@ public class CalendarActivity extends BaseActivity {
     private void applyDarkMode() {
         isDarkMode = ThemeManager.isDarkMode(this);
 
-        if (isDarkMode) {
-            // DARK MODE - Cards become dark, text becomes white
-
-            // Calendar header text - WHITE
-            if (calendarHeaderText != null) {
-                calendarHeaderText.setTextColor(android.graphics.Color.parseColor("#000000"));
-            }
-
-            // Calendar Card background - DARK
-            if (calendarCard != null) {
-                GradientDrawable darkCardBg = new GradientDrawable();
-                darkCardBg.setShape(GradientDrawable.RECTANGLE);
-                darkCardBg.setCornerRadius(16 * getResources().getDisplayMetrics().density);
-                darkCardBg.setColor(android.graphics.Color.parseColor("#1E1E1E"));
-                calendarCard.setBackground(darkCardBg);
-            }
-
-            // Tasks Card background - DARK
-            if (tasksCard != null) {
-                GradientDrawable darkCardBg = new GradientDrawable();
-                darkCardBg.setShape(GradientDrawable.RECTANGLE);
-                darkCardBg.setCornerRadius(16 * getResources().getDisplayMetrics().density);
-                darkCardBg.setColor(android.graphics.Color.parseColor("#1E1E1E"));
-                tasksCard.setBackground(darkCardBg);
-            }
-
-            // Month/Year text - WHITE
-            if (monthYearText != null) {
-                monthYearText.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
-            }
-
-            // Selected date text - Keep accent color
-            if (selectedDateText != null) {
-                selectedDateText.setTextColor(currentAccentColor);
-            }
-
-            // Task input field - DARK background with WHITE text
-            if (taskNameInput != null) {
-                GradientDrawable darkInputBg = new GradientDrawable();
-                darkInputBg.setShape(GradientDrawable.RECTANGLE);
-                darkInputBg.setCornerRadius(12 * getResources().getDisplayMetrics().density);
-                darkInputBg.setColor(android.graphics.Color.parseColor("#2D2D2D"));
-                darkInputBg.setStroke(1, android.graphics.Color.parseColor("#404040"));
-                taskNameInput.setBackground(darkInputBg);
-                taskNameInput.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
-                taskNameInput.setHintTextColor(android.graphics.Color.parseColor("#A0A0A0"));
-                taskNameInput.setHint(R.string.add_new_task);
-            }
-
-            // "Tasks for this date" label - WHITE
-            if (tasksLabel != null) {
-                tasksLabel.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
-            }
-
-            // "No tasks" text - LIGHT GRAY
-            if (noTasksText != null) {
-                noTasksText.setText(R.string.no_tasks);
-                noTasksText.setTextColor(android.graphics.Color.parseColor("#A0A0A0"));
-            }
-
-            // Empty state emoji - LIGHT GRAY
-            if (emptyStateEmoji != null) {
-                emptyStateEmoji.setTextColor(android.graphics.Color.parseColor("#CCCCCC"));
-            }
-
-            // Find and update day header texts (SUN, MON, etc.)
-            if (calendarCard != null && calendarCard.getChildCount() >= 3) {
-                LinearLayout dayHeadersLayout = (LinearLayout) calendarCard.getChildAt(1);
-                int dayLabelColor = android.graphics.Color.parseColor("#CCCCCC");
-                String[] dayLabels = {getString(R.string.sun), getString(R.string.mon), getString(R.string.tue),
-                        getString(R.string.wed), getString(R.string.thu), getString(R.string.fri),
-                        getString(R.string.sat)};
-                for (int i = 0; i < dayHeadersLayout.getChildCount() && i < dayLabels.length; i++) {
-                    TextView dayLabel = (TextView) dayHeadersLayout.getChildAt(i);
-                    if (dayLabel != null) {
-                        dayLabel.setText(dayLabels[i]);
-                        if (i == 0) {
-                            dayLabel.setTextColor(currentAccentColor);
-                        } else {
-                            dayLabel.setTextColor(dayLabelColor);
-                        }
-                    }
-                }
-            }
-
-            // Divider line
-            if (calendarCard != null && calendarCard.getChildCount() >= 6) {
-                View divider = calendarCard.getChildAt(5);
-                if (divider != null) {
-                    divider.setBackgroundColor(android.graphics.Color.parseColor("#404040"));
-                }
-            }
-
-            // Calendar grid background - DARK
-            if (calendarGrid != null) {
-                GradientDrawable gridBg = new GradientDrawable();
-                gridBg.setShape(GradientDrawable.RECTANGLE);
-                gridBg.setCornerRadius(16 * getResources().getDisplayMetrics().density);
-                gridBg.setColor(android.graphics.Color.parseColor("#2D2D2D"));
-                calendarGrid.setBackground(gridBg);
-            }
-
-            // Footer navigation - DARK background with LIGHT text
-            if (footerNav != null) {
-                GradientDrawable darkFooterBg = new GradientDrawable();
-                darkFooterBg.setShape(GradientDrawable.RECTANGLE);
-                darkFooterBg.setColor(android.graphics.Color.parseColor("#1E1E1E"));
-                footerNav.setBackground(darkFooterBg);
-
-                int footerColor = android.graphics.Color.parseColor("#CCCCCC");
-                LinearLayout navHome = findViewById(R.id.navHome);
-                LinearLayout navCalendar = findViewById(R.id.navCalendar);
-                LinearLayout navShop = findViewById(R.id.navShop);
-                LinearLayout navThemes = findViewById(R.id.navThemes);
-                LinearLayout navProfile = findViewById(R.id.navProfile);
-
-                updateNavItemColors(navHome, footerColor, footerColor);
-                updateNavItemColors(navCalendar, currentAccentColor, currentAccentColor);
-                updateNavItemColors(navShop, footerColor, footerColor);
-                updateNavItemColors(navThemes, footerColor, footerColor);
-                updateNavItemColors(navProfile, footerColor, footerColor);
-            }
-
-            // Prev/Next month buttons - Keep accent color
-            TextView prevMonth = findViewById(R.id.prevMonth);
-            TextView nextMonth = findViewById(R.id.nextMonth);
-            if (prevMonth != null) prevMonth.setTextColor(currentAccentColor);
-            if (nextMonth != null) nextMonth.setTextColor(currentAccentColor);
-
-            // Update existing task card backgrounds to dark mode
-            updateAllTaskCardBackgrounds();
-
-        } else {
-            // LIGHT MODE - Restore original light theme
-
-            // Calendar header text - WHITE (stays white on gradient)
-            if (calendarHeaderText != null) {
-                calendarHeaderText.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
-            }
-
-            // Calendar Card background - WHITE
-            if (calendarCard != null) {
-                calendarCard.setBackgroundResource(R.drawable.white_card_bg);
-            }
-
-            // Tasks Card background - WHITE
-            if (tasksCard != null) {
-                tasksCard.setBackgroundResource(R.drawable.white_card_bg);
-            }
-
-            // Month/Year text - Dark blue
-            if (monthYearText != null) {
-                monthYearText.setTextColor(android.graphics.Color.parseColor("#2C3E66"));
-            }
-
-            // Task input field - Light background
-            if (taskNameInput != null) {
-                taskNameInput.setBackgroundResource(R.drawable.input_field_bg);
-                taskNameInput.setTextColor(getColor(R.color.theme_text_primary));
-                taskNameInput.setHintTextColor(getColor(R.color.theme_text_secondary));
-                taskNameInput.setHint(R.string.add_new_task);
-            }
-
-            // "Tasks for this date" label - Dark blue
-            if (tasksLabel != null) {
-                tasksLabel.setText(R.string.tasks_for_date_label);
-                tasksLabel.setTextColor(android.graphics.Color.parseColor("#2C3E66"));
-            }
-
-            // "No tasks" text - Gray
-            if (noTasksText != null) {
-                noTasksText.setText(R.string.no_tasks);
-                noTasksText.setTextColor(android.graphics.Color.parseColor("#7F8C8D"));
-            }
-
-            // Empty state emoji - Gray
-            if (emptyStateEmoji != null) {
-                emptyStateEmoji.setTextColor(android.graphics.Color.parseColor("#95A5A6"));
-            }
-
-            // Restore day headers with string resources
-            if (calendarCard != null && calendarCard.getChildCount() >= 3) {
-                LinearLayout dayHeadersLayout = (LinearLayout) calendarCard.getChildAt(1);
-                int[] dayColors = {
-                        android.graphics.Color.parseColor("#E94560"), // SUN
-                        android.graphics.Color.parseColor("#2C3E66"), // MON
-                        android.graphics.Color.parseColor("#2C3E66"), // TUE
-                        android.graphics.Color.parseColor("#2C3E66"), // WED
-                        android.graphics.Color.parseColor("#2C3E66"), // THU
-                        android.graphics.Color.parseColor("#2C3E66"), // FRI
-                        android.graphics.Color.parseColor("#2C3E66")  // SAT
-                };
-                String[] dayLabels = {getString(R.string.sun), getString(R.string.mon), getString(R.string.tue),
-                        getString(R.string.wed), getString(R.string.thu), getString(R.string.fri),
-                        getString(R.string.sat)};
-                for (int i = 0; i < dayHeadersLayout.getChildCount() && i < dayColors.length; i++) {
-                    TextView dayLabel = (TextView) dayHeadersLayout.getChildAt(i);
-                    if (dayLabel != null) {
-                        dayLabel.setText(dayLabels[i]);
-                        dayLabel.setTextColor(dayColors[i]);
-                    }
-                }
-            }
-
-            // Restore divider color
-            if (calendarCard != null && calendarCard.getChildCount() >= 6) {
-                View divider = calendarCard.getChildAt(5);
-                if (divider != null) {
-                    divider.setBackgroundColor(android.graphics.Color.parseColor("#E2EDF2"));
-                }
-            }
-
-            // Calendar grid background - Remove dark background
-            if (calendarGrid != null) {
-                calendarGrid.setBackground(null);
-            }
-
-            // Footer navigation - Light background
-            if (footerNav != null) {
-                footerNav.setBackgroundColor(android.graphics.Color.parseColor("#FFFFFF"));
-
-                int footerColorLight = android.graphics.Color.parseColor("#555555");
-                LinearLayout navHome = findViewById(R.id.navHome);
-                LinearLayout navCalendar = findViewById(R.id.navCalendar);
-                LinearLayout navShop = findViewById(R.id.navShop);
-                LinearLayout navThemes = findViewById(R.id.navThemes);
-                LinearLayout navProfile = findViewById(R.id.navProfile);
-
-                updateNavItemColors(navHome, footerColorLight, footerColorLight);
-                updateNavItemColors(navCalendar, android.graphics.Color.parseColor("#9C27B0"), android.graphics.Color.parseColor("#9C27B0"));
-                updateNavItemColors(navShop, footerColorLight, footerColorLight);
-                updateNavItemColors(navThemes, footerColorLight, footerColorLight);
-                updateNavItemColors(navProfile, footerColorLight, footerColorLight);
-            }
-
-            // Update existing task card backgrounds to light mode
-            updateAllTaskCardBackgrounds();
+        // Every colour below is a theme role, so this single path is correct on
+        // all ten palettes; the old dark/light branches are gone.
+        if (calendarHeaderText != null) {
+            calendarHeaderText.setTextColor(
+                    ThemeColors.onGradient(currentGradientStart, currentGradientEnd));
         }
+
+        if (calendarCard != null) {
+            GradientDrawable cardBg = new GradientDrawable();
+            cardBg.setShape(GradientDrawable.RECTANGLE);
+            cardBg.setCornerRadius(16 * getResources().getDisplayMetrics().density);
+            cardBg.setColor(ThemeColors.surface(calendarCard));
+            calendarCard.setBackground(cardBg);
+        }
+
+        if (tasksCard != null) {
+            GradientDrawable cardBg = new GradientDrawable();
+            cardBg.setShape(GradientDrawable.RECTANGLE);
+            cardBg.setCornerRadius(16 * getResources().getDisplayMetrics().density);
+            cardBg.setColor(ThemeColors.surface(tasksCard));
+            tasksCard.setBackground(cardBg);
+        }
+
+        if (monthYearText != null) {
+            monthYearText.setTextColor(ThemeColors.onSurface(monthYearText));
+        }
+
+        if (selectedDateText != null) {
+            // This is a label on a card, not a tinted control, so it reads the
+            // secondary-text role. Using the raw gradient accent here put pink
+            // #FF1493 on the dark card at 3.95:1, below AA for body text.
+            selectedDateText.setTextColor(ThemeColors.onSurfaceVariant(selectedDateText));
+        }
+
+        if (taskNameInput != null) {
+            GradientDrawable inputBg = new GradientDrawable();
+            inputBg.setShape(GradientDrawable.RECTANGLE);
+            inputBg.setCornerRadius(12 * getResources().getDisplayMetrics().density);
+            inputBg.setColor(ThemeColors.surfaceVariant(taskNameInput));
+            inputBg.setStroke(1, ThemeColors.outline(taskNameInput));
+            taskNameInput.setBackground(inputBg);
+            taskNameInput.setTextColor(ThemeColors.onSurface(taskNameInput));
+            taskNameInput.setHintTextColor(ThemeColors.onSurfaceVariant(taskNameInput));
+            taskNameInput.setHint(R.string.add_new_task);
+        }
+
+        if (tasksLabel != null) {
+            tasksLabel.setTextColor(ThemeColors.onSurface(tasksLabel));
+        }
+
+        if (noTasksText != null) {
+            noTasksText.setText(R.string.no_tasks);
+            noTasksText.setTextColor(ThemeColors.onSurfaceVariant(noTasksText));
+        }
+
+        if (emptyStateEmoji != null) {
+            emptyStateEmoji.setTextColor(ThemeColors.onSurfaceVariant(emptyStateEmoji));
+        }
+
+        // Day headers: Sunday is the accent, the rest are supporting text.
+        if (calendarCard != null && calendarCard.getChildCount() >= 3) {
+            LinearLayout dayHeadersLayout = (LinearLayout) calendarCard.getChildAt(1);
+            String[] dayLabels = {getString(R.string.sun), getString(R.string.mon), getString(R.string.tue),
+                    getString(R.string.wed), getString(R.string.thu), getString(R.string.fri),
+                    getString(R.string.sat)};
+            for (int i = 0; i < dayHeadersLayout.getChildCount() && i < dayLabels.length; i++) {
+                TextView dayLabel = (TextView) dayHeadersLayout.getChildAt(i);
+                if (dayLabel != null) {
+                    dayLabel.setText(dayLabels[i]);
+                    dayLabel.setTextColor(i == 0
+                            ? currentAccentColor
+                            : ThemeColors.onSurfaceVariant(dayLabel));
+                }
+            }
+        }
+
+        if (calendarCard != null && calendarCard.getChildCount() >= 6) {
+            View divider = calendarCard.getChildAt(5);
+            if (divider != null) {
+                divider.setBackgroundColor(ThemeColors.outline(divider));
+            }
+        }
+
+        if (calendarGrid != null) {
+            GradientDrawable gridBg = new GradientDrawable();
+            gridBg.setShape(GradientDrawable.RECTANGLE);
+            gridBg.setCornerRadius(16 * getResources().getDisplayMetrics().density);
+            gridBg.setColor(ThemeColors.surfaceVariant(calendarGrid));
+            calendarGrid.setBackground(gridBg);
+        }
+
+        if (footerNav != null) {
+            GradientDrawable footerBg = new GradientDrawable();
+            footerBg.setShape(GradientDrawable.RECTANGLE);
+            footerBg.setColor(ThemeColors.surface(footerNav));
+            footerNav.setBackground(footerBg);
+
+            int footerColor = ThemeColors.onSurfaceVariant(footerNav);
+            LinearLayout navHome = findViewById(R.id.navHome);
+            LinearLayout navCalendar = findViewById(R.id.navCalendar);
+            LinearLayout navShop = findViewById(R.id.navShop);
+            LinearLayout navThemes = findViewById(R.id.navThemes);
+            LinearLayout navProfile = findViewById(R.id.navProfile);
+
+            updateNavItemColors(navHome, footerColor, footerColor);
+            updateNavItemColors(navCalendar, currentAccentColor, currentAccentColor);
+            updateNavItemColors(navShop, footerColor, footerColor);
+            updateNavItemColors(navThemes, footerColor, footerColor);
+            updateNavItemColors(navProfile, footerColor, footerColor);
+        }
+
+        TextView prevMonth = findViewById(R.id.prevMonth);
+        TextView nextMonth = findViewById(R.id.nextMonth);
+        if (prevMonth != null) prevMonth.setTextColor(currentAccentColor);
+        if (nextMonth != null) nextMonth.setTextColor(currentAccentColor);
+
+        updateAllTaskCardBackgrounds();
     }
 
     private void updateAllTaskCardBackgrounds() {
@@ -368,11 +252,8 @@ public class CalendarActivity extends BaseActivity {
                     LinearLayout taskCardLayout = (LinearLayout) innerLayout;
                     if (taskCardLayout.getChildAt(0) instanceof LinearLayout) {
                         LinearLayout taskBackgroundLayout = (LinearLayout) taskCardLayout.getChildAt(0);
-                        if (isDarkMode) {
-                            taskBackgroundLayout.setBackgroundResource(R.drawable.task_card_bg_dark);
-                        } else {
-                            taskBackgroundLayout.setBackgroundResource(R.drawable.task_card_bg_light);
-                        }
+                        // Single themed drawable; the style picks the shade.
+                        taskBackgroundLayout.setBackgroundResource(R.drawable.task_card_bg);
                     }
                 }
             }
@@ -393,6 +274,8 @@ public class CalendarActivity extends BaseActivity {
         String currentTheme = sharedPreferences.getString("selected_theme", ThemeManager.THEME_DEFAULT);
         int[] gradientColors = ThemeManager.getThemeGradientColors(this, currentTheme);
         currentAccentColor = gradientColors[0];
+        currentGradientStart = gradientColors[0];
+        currentGradientEnd = gradientColors[1];
 
         if (mainLayout != null) {
             GradientDrawable gradientDrawable = new GradientDrawable(
@@ -409,7 +292,7 @@ public class CalendarActivity extends BaseActivity {
             );
             buttonGradient.setCornerRadius(27 * getResources().getDisplayMetrics().density);
             addTaskButton.setBackground(buttonGradient);
-            addTaskButton.setTextColor(getColor(R.color.white));
+            addTaskButton.setTextColor(ThemeColors.onGradient(gradientColors[0], gradientColors[1]));
             addTaskButton.setText(R.string.add);
         }
     }
@@ -519,11 +402,9 @@ public class CalendarActivity extends BaseActivity {
         LinearLayout taskCardLayout = (LinearLayout) ((LinearLayout) taskView).getChildAt(0);
 
         if (taskCardLayout != null) {
-            if (isDarkMode) {
-                taskCardLayout.setBackgroundResource(R.drawable.task_card_bg_dark);
-            } else {
-                taskCardLayout.setBackgroundResource(R.drawable.task_card_bg_light);
-            }
+            // One drawable: its solid and stroke now resolve against the active
+            // theme, so the light/dark split is handled by the style itself.
+            taskCardLayout.setBackgroundResource(R.drawable.task_card_bg);
         }
 
         taskNameText.setText(task.name);
@@ -531,23 +412,18 @@ public class CalendarActivity extends BaseActivity {
         taskCheckbox.setChecked(task.isCompleted);
 
         if (task.isCompleted) {
-            taskCheckbox.setButtonTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.RED));
+            taskCheckbox.setButtonTintList(android.content.res.ColorStateList.valueOf(
+                    ContextCompat.getColor(this, R.color.destructive)));
             taskNameText.setPaintFlags(taskNameText.getPaintFlags() | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
-            taskNameText.setTextColor(ContextCompat.getColor(this, R.color.base_text_secondary));
-            taskTimeText.setTextColor(ContextCompat.getColor(this, R.color.base_text_secondary));
+            taskNameText.setTextColor(ThemeColors.onSurfaceVariant(taskNameText));
+            taskTimeText.setTextColor(ThemeColors.onSurfaceVariant(taskTimeText));
         } else {
             taskCheckbox.setButtonTintList(android.content.res.ColorStateList.valueOf(currentAccentColor));
             taskNameText.setPaintFlags(taskNameText.getPaintFlags() & (~android.graphics.Paint.STRIKE_THRU_TEXT_FLAG));
 
-            if (isDarkMode) {
-                taskNameText.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
-                taskTimeText.setTextColor(android.graphics.Color.parseColor("#CCCCCC"));
-                deleteTask.setTextColor(android.graphics.Color.parseColor("#FF6B6B"));
-            } else {
-                taskNameText.setTextColor(ContextCompat.getColor(this, R.color.calendar_date_dark));
-                taskTimeText.setTextColor(ContextCompat.getColor(this, R.color.calendar_date_dark));
-                deleteTask.setTextColor(android.graphics.Color.parseColor("#E74C3C"));
-            }
+            taskNameText.setTextColor(ThemeColors.onSurface(taskNameText));
+            taskTimeText.setTextColor(ThemeColors.onSurfaceVariant(taskTimeText));
+            deleteTask.setTextColor(ContextCompat.getColor(this, R.color.destructive));
         }
 
         String currentDate = dateFormat.format(selectedDate.getTime());
@@ -603,6 +479,27 @@ public class CalendarActivity extends BaseActivity {
 
     private void setupListeners() {
         addTaskButton.setOnClickListener(v -> addNewTask());
+
+        // The calendar is a month overview; the hour grid lives on Home. This
+        // opens Home already switched to Timeline, on the day picked here.
+        View timelineButton = findViewById(R.id.viewDayTimelineButton);
+        if (timelineButton != null) {
+            timelineButton.setOnClickListener(v -> openTimelineForSelectedDate());
+        }
+    }
+
+    /** Launches Home in Timeline view for {@link #selectedDate}. */
+    private void openTimelineForSelectedDate() {
+        if (selectedDate == null) {
+            return;
+        }
+        Intent intent = new Intent(this, MainActivity.class);
+        // CLEAR_TOP + SINGLE_TOP reuses the existing Home instance instead of
+        // stacking a second one, so its day strip keeps its scroll state.
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra(MainActivity.EXTRA_SHOW_TIMELINE, true);
+        intent.putExtra(MainActivity.EXTRA_TIMELINE_DATE, dateFormat.format(selectedDate.getTime()));
+        startActivity(intent);
     }
 
     @Override
@@ -731,11 +628,7 @@ public class CalendarActivity extends BaseActivity {
             if (isCurrentMonth) {
                 dayText.setText(String.valueOf(dayNumber));
 
-                if (isDarkMode) {
-                    dayText.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
-                } else {
-                    dayText.setTextColor(ContextCompat.getColor(CalendarActivity.this, R.color.calendar_date_dark));
-                }
+                dayText.setTextColor(ThemeColors.onSurface(dayText));
 
                 dayText.setTextSize(14);
                 dayText.setTypeface(null, android.graphics.Typeface.BOLD);
@@ -751,12 +644,9 @@ public class CalendarActivity extends BaseActivity {
                     GradientDrawable taskBg = new GradientDrawable();
                     taskBg.setShape(GradientDrawable.RECTANGLE);
                     taskBg.setCornerRadius(25);
-                    if (isDarkMode) {
-                        taskBg.setColor(currentAccentColor);
-                    } else {
-                        taskBg.setColor(ContextCompat.getColor(CalendarActivity.this, R.color.task_indicator));
-                    }
+                    taskBg.setColor(currentAccentColor);
                     dayText.setBackground(taskBg);
+                    dayText.setTextColor(ThemeColors.onPrimary(dayText));
                 }
 
                 if (selectedDate.get(Calendar.YEAR) == currentYear &&
@@ -767,7 +657,7 @@ public class CalendarActivity extends BaseActivity {
                     selectedBg.setCornerRadius(25);
                     selectedBg.setColor(currentAccentColor);
                     dayText.setBackground(selectedBg);
-                    dayText.setTextColor(android.graphics.Color.WHITE);
+                    dayText.setTextColor(ThemeColors.onPrimary(dayText));
                 }
 
             } else {

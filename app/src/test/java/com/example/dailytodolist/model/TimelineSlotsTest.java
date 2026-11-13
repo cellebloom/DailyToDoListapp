@@ -29,7 +29,7 @@ public class TimelineSlotsTest {
         int index = slots.add(new TimelineSlots.TimeBlockRow("Team sync", 9 * 60, 10 * 60));
 
         assertEquals(3, index); // 06,07,08 then 09
-        assertEquals("09:00", slots.getSlotLabel(index));
+        assertEquals("09:00 - 10:00", slots.getSlotLabel(index));
         assertEquals(1, slots.getRowsAt(index).size());
         assertEquals("Team sync", slots.getRowsAt(index).get(0).getTitle());
     }
@@ -41,7 +41,7 @@ public class TimelineSlotsTest {
 
         int index = slots.add(new TimelineSlots.TimeBlockRow("Late start", 9 * 60 + 45, 10 * 60));
 
-        assertEquals("09:00", slots.getSlotLabel(index));
+        assertEquals("09:00 - 10:00", slots.getSlotLabel(index));
     }
 
     @Test
@@ -74,7 +74,7 @@ public class TimelineSlotsTest {
         int index = slots.add(new TimelineSlots.TimeBlockRow("Early", 5 * 60 + 30, 6 * 60));
 
         assertEquals(0, index);
-        assertEquals("06:00", slots.getSlotLabel(index));
+        assertEquals("06:00 - 07:00", slots.getSlotLabel(index));
     }
 
     @Test
@@ -84,7 +84,7 @@ public class TimelineSlotsTest {
         int index = slots.add(new TimelineSlots.TimeBlockRow("Late", 23 * 60 + 30, 24 * 60));
 
         assertEquals(slots.getSlotCount() - 1, index);
-        assertEquals("23:00", slots.getSlotLabel(index));
+        assertEquals("23:00 - 24:00", slots.getSlotLabel(index));
     }
 
     @Test
@@ -101,8 +101,8 @@ public class TimelineSlotsTest {
         TimelineSlots slots = new TimelineSlots(8, 10);
 
         assertEquals(3, slots.getSlotCount());
-        assertEquals("08:00", slots.getSlotLabel(0));
-        assertEquals("10:00", slots.getSlotLabel(2));
+        assertEquals("08:00 - 09:00", slots.getSlotLabel(0));
+        assertEquals("10:00 - 11:00", slots.getSlotLabel(2));
 
         int index = slots.add(new TimelineSlots.TimeBlockRow("Study", 8 * 60, 9 * 60));
         assertEquals(0, index);

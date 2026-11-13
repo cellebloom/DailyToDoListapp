@@ -22,7 +22,7 @@
             android:text="@string/themes"
             android:textSize="28sp"
             android:textStyle="bold"
-            android:textColor="#FFFFFF"
+            android:textColor="?attr/colorOnSurface"
             android:layout_marginBottom="4dp" />
 
         <TextView
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:text="@string/available_themes"
             android:textSize="14sp"
-            android:textColor="#E0E0E0" />
+            android:textColor="?attr/colorOnSurfaceVariant" />
 
     </LinearLayout>
 
@@ -86,7 +86,7 @@
                             android:text="@string/default_theme"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="#2C3E66" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -97,7 +97,7 @@
                         android:text="@string/not_applied"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="#7F8C8D"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:padding="8dp"
                         android:clickable="true"
                         android:focusable="true"
@@ -145,7 +145,7 @@
                             android:text="@string/hot_pink"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="#2C3E66" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -156,7 +156,7 @@
                         android:text="@string/not_applied"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="#7F8C8D"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:padding="8dp"
                         android:clickable="true"
                         android:focusable="true"
@@ -204,7 +204,7 @@
                             android:text="@string/cyan_hot_pink"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="#2C3E66" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -215,7 +215,7 @@
                         android:text="@string/not_applied"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="#7F8C8D"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:padding="8dp"
                         android:clickable="true"
                         android:focusable="true"
@@ -263,7 +263,7 @@
                             android:text="@string/lime_blue"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="#2C3E66" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -274,7 +274,7 @@
                         android:text="@string/not_applied"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="#7F8C8D"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:padding="8dp"
                         android:clickable="true"
                         android:focusable="true"
@@ -322,7 +322,7 @@
                             android:text="@string/cyan_indigo"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="#2C3E66" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -333,7 +333,7 @@
                         android:text="@string/not_applied"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="#7F8C8D"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:padding="8dp"
                         android:clickable="true"
                         android:focusable="true"
@@ -381,7 +381,7 @@
                             android:text="@string/yellow_red"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="#2C3E66" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -392,7 +392,7 @@
                         android:text="@string/not_applied"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="#7F8C8D"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:padding="8dp"
                         android:clickable="true"
                         android:focusable="true"
@@ -440,7 +440,7 @@
                             android:text="@string/cream_rose"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="#2C3E66" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -451,7 +451,7 @@
                         android:text="@string/not_applied"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="#7F8C8D"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:padding="8dp"
                         android:clickable="true"
                         android:focusable="true"
@@ -499,7 +499,7 @@
                             android:text="@string/yellow_cyan"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="#2C3E66" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -510,7 +510,66 @@
                         android:text="@string/not_applied"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="#7F8C8D"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:padding="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="@null" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Mint Green Theme Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/gradient_mint"
+                android:padding="16dp"
+                android:elevation="4dp"
+                android:layout_marginBottom="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/white_card_bg"
+                    android:padding="12dp">
+
+                    <LinearLayout
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/gradient_mint"
+                        android:layout_marginEnd="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mint_green"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="?attr/colorOnSurface" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/mintStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/not_applied"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:padding="8dp"
                         android:clickable="true"
                         android:focusable="true"
@@ -558,7 +617,7 @@
                             android:text="@string/magenta_blue"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="#2C3E66" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -569,7 +628,7 @@
                         android:text="@string/not_applied"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="#7F8C8D"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:padding="8dp"
                         android:clickable="true"
                         android:focusable="true"
@@ -578,6 +637,65 @@
                 </LinearLayout>
 
             </LinearLayout>
+            <!-- Sunset Orange Theme Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/gradient_sunset"
+                android:padding="16dp"
+                android:elevation="4dp"
+                android:layout_marginBottom="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/white_card_bg"
+                    android:padding="12dp">
+
+                    <LinearLayout
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/gradient_sunset"
+                        android:layout_marginEnd="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sunset_orange"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="?attr/colorOnSurface" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/sunsetStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/not_applied"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:padding="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="@null" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
@@ -588,7 +706,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#FFFFFF"
+        android:background="?attr/colorSurface"
         android:elevation="8dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
@@ -597,27 +715,27 @@
 
         <LinearLayout android:id="@+id/navHome" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🏠" android:textSize="22sp" />
-            <TextView android:id="@+id/navHomeText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_home" android:textSize="11sp" android:textColor="#7F8C8D" />
+            <TextView android:id="@+id/navHomeText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_home" android:textSize="11sp" android:textColor="?attr/colorOnSurfaceVariant" />
         </LinearLayout>
 
         <LinearLayout android:id="@+id/navCalendar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📅" android:textSize="22sp" />
-            <TextView android:id="@+id/navCalendarText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_calendar" android:textSize="11sp" android:textColor="#7F8C8D" />
+            <TextView android:id="@+id/navCalendarText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_calendar" android:textSize="11sp" android:textColor="?attr/colorOnSurfaceVariant" />
         </LinearLayout>
 
         <LinearLayout android:id="@+id/navShop" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🛒" android:textSize="22sp" />
-            <TextView android:id="@+id/navShopText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_shop" android:textSize="11sp" android:textColor="#7F8C8D" />
+            <TextView android:id="@+id/navShopText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_shop" android:textSize="11sp" android:textColor="?attr/colorOnSurfaceVariant" />
         </LinearLayout>
 
         <LinearLayout android:id="@+id/navThemes" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🎨" android:textSize="22sp" />
-            <TextView android:id="@+id/navThemesText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_themes" android:textSize="11sp" android:textColor="#9C27B0" android:textStyle="bold" />
+            <TextView android:id="@+id/navThemesText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_themes" android:textSize="11sp" android:textColor="?attr/colorPrimary" android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout android:id="@+id/navProfile" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="👤" android:textSize="22sp" />
-            <TextView android:id="@+id/navProfileText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/profile" android:textSize="11sp" android:textColor="#7F8C8D" />
+            <TextView android:id="@+id/navProfileText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/profile" android:textSize="11sp" android:textColor="?attr/colorOnSurfaceVariant" />
         </LinearLayout>
 
     </LinearLayout>

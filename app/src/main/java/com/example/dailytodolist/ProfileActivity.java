@@ -23,6 +23,8 @@ import android.widget.ArrayAdapter;
 import android.graphics.Color;
 import android.content.Context;
 
+import com.example.dailytodolist.util.ThemeColors;
+
 public class ProfileActivity extends BaseActivity {
 
     private TextView userName, userType, memberSince, tasksCompleted, totalCoins;
@@ -144,34 +146,35 @@ public class ProfileActivity extends BaseActivity {
         // FIX: Always get fresh dark mode value from SharedPreferences
         isDarkMode = ThemeManager.isDarkMode(this);
 
-        // Update profile title - WHITE in both modes (visible on gradient backgrounds)
-        if (profileTitle != null) {
-            profileTitle.setTextColor(Color.WHITE);
-            profileTitle.setText(R.string.profile);
-            profileTitle.invalidate();
-        }
-
-        // Update user name and type
+        // Update profile title - readable on whichever theme gradient is active
         String currentTheme = sharedPreferences.getString("selected_theme", ThemeManager.THEME_DEFAULT);
         int[] gradientColors = ThemeManager.getThemeGradientColors(this, currentTheme);
         int accentColor = gradientColors[0];
 
+        if (profileTitle != null) {
+            profileTitle.setTextColor(ThemeColors.onGradient(gradientColors[0], gradientColors[1]));
+            profileTitle.setText(R.string.profile);
+            profileTitle.invalidate();
+        }
+
+        // The name and stats sit on a card (see below), so they take the card's
+        // own text role instead of being derived from the gradient.
         if (userName != null) {
-            userName.setTextColor(isDarkMode ? android.graphics.Color.parseColor("#FFFFFF") : accentColor);
+            userName.setTextColor(accentColor);
         }
         if (userType != null) {
-            userType.setTextColor(isDarkMode ? android.graphics.Color.parseColor("#CCCCCC") : android.graphics.Color.parseColor("#7F8C8D"));
+            userType.setTextColor(ThemeColors.onSurfaceVariant(userType));
         }
 
         // Update stats values
         if (memberSince != null) {
-            memberSince.setTextColor(isDarkMode ? android.graphics.Color.parseColor("#FFFFFF") : accentColor);
+            memberSince.setTextColor(accentColor);
         }
         if (tasksCompleted != null) {
-            tasksCompleted.setTextColor(isDarkMode ? android.graphics.Color.parseColor("#FFFFFF") : accentColor);
+            tasksCompleted.setTextColor(accentColor);
         }
         if (totalCoins != null) {
-            totalCoins.setTextColor(isDarkMode ? android.graphics.Color.parseColor("#FFFFFF") : accentColor);
+            totalCoins.setTextColor(accentColor);
         }
 
         // Find and update the avatar circle background
@@ -187,15 +190,11 @@ public class ProfileActivity extends BaseActivity {
                         if (cardInner.getChildCount() > 0 && cardInner.getChildAt(0) instanceof LinearLayout) {
                             LinearLayout avatarCircle = (LinearLayout) cardInner.getChildAt(0);
                             if (avatarCircle != null) {
-                                if (isDarkMode) {
-                                    GradientDrawable grayCircleBg = new GradientDrawable();
-                                    grayCircleBg.setShape(GradientDrawable.RECTANGLE);
-                                    grayCircleBg.setCornerRadius(40 * getResources().getDisplayMetrics().density);
-                                    grayCircleBg.setColor(android.graphics.Color.parseColor("#3D3D3D"));
-                                    avatarCircle.setBackground(grayCircleBg);
-                                } else {
-                                    avatarCircle.setBackgroundResource(R.drawable.avatar_circle_bg);
-                                }
+                                GradientDrawable circleBg = new GradientDrawable();
+                                circleBg.setShape(GradientDrawable.RECTANGLE);
+                                circleBg.setCornerRadius(40 * getResources().getDisplayMetrics().density);
+                                circleBg.setColor(ThemeColors.surfaceVariant(avatarCircle));
+                                avatarCircle.setBackground(circleBg);
                             }
                         }
                     }
@@ -203,26 +202,19 @@ public class ProfileActivity extends BaseActivity {
             }
         }
 
-        // Update card backgrounds
+        // Update card backgrounds. The card and its inner layout both take the
+        // themed surface role, so every palette supplies its own shade.
         for (CardView card : cards) {
             if (card != null) {
-                if (isDarkMode) {
-                    if (card.getChildAt(0) instanceof LinearLayout) {
-                        LinearLayout innerLayout = (LinearLayout) card.getChildAt(0);
-                        GradientDrawable darkCardBg = new GradientDrawable();
-                        darkCardBg.setShape(GradientDrawable.RECTANGLE);
-                        darkCardBg.setCornerRadius(16 * getResources().getDisplayMetrics().density);
-                        darkCardBg.setColor(android.graphics.Color.parseColor("#1E1E1E"));
-                        innerLayout.setBackground(darkCardBg);
-                    }
-                    card.setCardBackgroundColor(android.graphics.Color.TRANSPARENT);
-                } else {
-                    if (card.getChildAt(0) instanceof LinearLayout) {
-                        LinearLayout innerLayout = (LinearLayout) card.getChildAt(0);
-                        innerLayout.setBackgroundResource(R.drawable.white_card_bg);
-                    }
-                    card.setCardBackgroundColor(android.graphics.Color.parseColor("#FFFFFF"));
+                if (card.getChildAt(0) instanceof LinearLayout) {
+                    LinearLayout innerLayout = (LinearLayout) card.getChildAt(0);
+                    GradientDrawable cardBg = new GradientDrawable();
+                    cardBg.setShape(GradientDrawable.RECTANGLE);
+                    cardBg.setCornerRadius(16 * getResources().getDisplayMetrics().density);
+                    cardBg.setColor(ThemeColors.surface(card));
+                    innerLayout.setBackground(cardBg);
                 }
+                card.setCardBackgroundColor(android.graphics.Color.TRANSPARENT);
             }
         }
 
@@ -243,17 +235,17 @@ public class ProfileActivity extends BaseActivity {
         // Update section titles
         TextView accountSettingsTitle = findViewById(R.id.accountSettingsTitle);
         if (accountSettingsTitle != null) {
-            accountSettingsTitle.setTextColor(isDarkMode ? android.graphics.Color.parseColor("#FFFFFF") : android.graphics.Color.parseColor("#2C3E66"));
+            accountSettingsTitle.setTextColor(ThemeColors.onSurface(accountSettingsTitle));
         }
 
         TextView appearanceTitle = findViewById(R.id.appearanceTitle);
         if (appearanceTitle != null) {
-            appearanceTitle.setTextColor(isDarkMode ? android.graphics.Color.parseColor("#FFFFFF") : android.graphics.Color.parseColor("#2C3E66"));
+            appearanceTitle.setTextColor(ThemeColors.onSurface(appearanceTitle));
         }
 
         TextView darkLightText = findViewById(R.id.darkLightText);
         if (darkLightText != null) {
-            darkLightText.setTextColor(isDarkMode ? android.graphics.Color.parseColor("#CCCCCC") : android.graphics.Color.parseColor("#49607C"));
+            darkLightText.setTextColor(ThemeColors.onSurfaceVariant(darkLightText));
         }
 
         // Night mode is a tri-state toggle group whose colours come from theme
@@ -269,19 +261,12 @@ public class ProfileActivity extends BaseActivity {
                 TextView textView = (TextView) child;
                 String text = textView.getText().toString();
                 if (!text.equals("›")) {
-                    if (isDarkMode) {
-                        if (textView.getTextSize() > 16 && textView.getText().toString().matches(".*[A-Z].*")) {
-                            textView.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
-                        } else {
-                            textView.setTextColor(android.graphics.Color.parseColor("#CCCCCC"));
-                        }
-                    } else {
-                        if (textView.getTextSize() > 16 && textView.getText().toString().matches(".*[A-Z].*")) {
-                            textView.setTextColor(android.graphics.Color.parseColor("#2C3E66"));
-                        } else {
-                            textView.setTextColor(android.graphics.Color.parseColor("#49607C"));
-                        }
-                    }
+                    // Heading rows are larger and start with a capital; body text
+                    // is the supporting role. Both come from the active theme.
+                    boolean isHeading = textView.getTextSize() > 16 && text.matches(".*[A-Z].*");
+                    textView.setTextColor(isHeading
+                            ? ThemeColors.onSurface(textView)
+                            : ThemeColors.onSurfaceVariant(textView));
                 }
             } else if (child instanceof LinearLayout) {
                 updateTextViewColorsInLayout((LinearLayout) child);
@@ -312,37 +297,21 @@ public class ProfileActivity extends BaseActivity {
             arrowView.setText(arrow);
         }
 
-        // Apply colors
-        if (isDarkMode) {
-            if (labelView != null) {
-                if (stringResId == R.string.logout) {
-                    labelView.setTextColor(android.graphics.Color.parseColor("#FF6B6B"));
-                } else {
-                    labelView.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
-                }
-            }
-            if (arrowView != null) {
-                if (stringResId == R.string.logout) {
-                    arrowView.setTextColor(android.graphics.Color.parseColor("#FF6B6B"));
-                } else {
-                    arrowView.setTextColor(android.graphics.Color.parseColor("#9C27B0"));
-                }
-            }
-        } else {
-            if (labelView != null) {
-                if (stringResId == R.string.logout) {
-                    labelView.setTextColor(android.graphics.Color.parseColor("#E94560"));
-                } else {
-                    labelView.setTextColor(android.graphics.Color.parseColor("#49607C"));
-                }
-            }
-            if (arrowView != null) {
-                if (stringResId == R.string.logout) {
-                    arrowView.setTextColor(android.graphics.Color.parseColor("#E94560"));
-                } else {
-                    arrowView.setTextColor(android.graphics.Color.parseColor("#9C27B0"));
-                }
-            }
+        // Apply colors. Logout is destructive; everything else uses the theme's
+        // text roles and accent, so no palette needs its own branch here.
+        boolean destructive = stringResId == R.string.logout;
+        int labelColor = destructive
+                ? androidx.core.content.ContextCompat.getColor(this, R.color.destructive)
+                : ThemeColors.onSurfaceVariant(menuItem);
+        int arrowColor = destructive
+                ? androidx.core.content.ContextCompat.getColor(this, R.color.destructive)
+                : ThemeColors.primary(menuItem);
+
+        if (labelView != null) {
+            labelView.setTextColor(labelColor);
+        }
+        if (arrowView != null) {
+            arrowView.setTextColor(arrowColor);
         }
     }
 
@@ -353,14 +322,10 @@ public class ProfileActivity extends BaseActivity {
         }
 
         if (footerNav != null) {
-            if (isDarkMode) {
-                GradientDrawable blackFooterBg = new GradientDrawable();
-                blackFooterBg.setShape(GradientDrawable.RECTANGLE);
-                blackFooterBg.setColor(android.graphics.Color.parseColor("#000000"));
-                footerNav.setBackground(blackFooterBg);
-            } else {
-                footerNav.setBackgroundColor(android.graphics.Color.parseColor("#FFFFFF"));
-            }
+            GradientDrawable footerBg = new GradientDrawable();
+            footerBg.setShape(GradientDrawable.RECTANGLE);
+            footerBg.setColor(ThemeColors.surface(footerNav));
+            footerNav.setBackground(footerBg);
         }
 
         LinearLayout navHome = findViewById(R.id.navHome);
@@ -399,21 +364,14 @@ public class ProfileActivity extends BaseActivity {
             }
         }
 
-        if (isDarkMode) {
-            if (iconView != null) {
-                iconView.setTextColor(isCurrentPage ? android.graphics.Color.parseColor("#9C27B0") : android.graphics.Color.parseColor("#FFFFFF"));
-            }
-            if (textView != null) {
-                textView.setTextColor(isCurrentPage ? android.graphics.Color.parseColor("#9C27B0") : android.graphics.Color.parseColor("#FFFFFF"));
-            }
-        } else {
-            int grayColor = android.graphics.Color.parseColor("#7F8C8D");
-            if (iconView != null) {
-                iconView.setTextColor(isCurrentPage ? android.graphics.Color.parseColor("#9C27B0") : grayColor);
-            }
-            if (textView != null) {
-                textView.setTextColor(isCurrentPage ? android.graphics.Color.parseColor("#9C27B0") : grayColor);
-            }
+        int navColor = isCurrentPage
+                ? ThemeColors.primary(navItem)
+                : ThemeColors.onSurfaceVariant(navItem);
+        if (iconView != null) {
+            iconView.setTextColor(navColor);
+        }
+        if (textView != null) {
+            textView.setTextColor(navColor);
         }
     }
 
@@ -544,34 +502,21 @@ public class ProfileActivity extends BaseActivity {
             int[] gradientColors = ThemeManager.getThemeGradientColors(this, currentTheme);
             int accentColor = gradientColors[0];
 
-            if (isDarkMode) {
-                GradientDrawable darkDialogBg = new GradientDrawable();
-                darkDialogBg.setShape(GradientDrawable.RECTANGLE);
-                darkDialogBg.setCornerRadius(25);
-                darkDialogBg.setColor(android.graphics.Color.parseColor("#2D2D2D"));
-                dialogView.setBackground(darkDialogBg);
+            GradientDrawable dialogBg = new GradientDrawable();
+            dialogBg.setShape(GradientDrawable.RECTANGLE);
+            dialogBg.setCornerRadius(25);
+            dialogBg.setColor(ThemeColors.surface(dialogView));
+            dialogView.setBackground(dialogBg);
 
-                dialogTitle.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
+            dialogTitle.setTextColor(ThemeColors.onSurface(dialogTitle));
+            editNameInput.setTextColor(ThemeColors.onSurface(editNameInput));
+            editNameInput.setHintTextColor(ThemeColors.onSurfaceVariant(editNameInput));
 
-                editNameInput.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
-                editNameInput.setHintTextColor(android.graphics.Color.parseColor("#A0A0A0"));
-                GradientDrawable darkInputBg = new GradientDrawable();
-                darkInputBg.setShape(GradientDrawable.RECTANGLE);
-                darkInputBg.setCornerRadius(12);
-                darkInputBg.setColor(android.graphics.Color.parseColor("#1E1E1E"));
-                editNameInput.setBackground(darkInputBg);
-            } else {
-                GradientDrawable lightDialogBg = new GradientDrawable();
-                lightDialogBg.setShape(GradientDrawable.RECTANGLE);
-                lightDialogBg.setCornerRadius(25);
-                lightDialogBg.setColor(android.graphics.Color.parseColor("#FFFFFF"));
-                dialogView.setBackground(lightDialogBg);
-
-                dialogTitle.setTextColor(android.graphics.Color.parseColor("#2C3E66"));
-                editNameInput.setTextColor(android.graphics.Color.parseColor("#2C3E66"));
-                editNameInput.setHintTextColor(android.graphics.Color.parseColor("#95A5A6"));
-                editNameInput.setBackgroundResource(R.drawable.input_field_bg);
-            }
+            GradientDrawable inputBg = new GradientDrawable();
+            inputBg.setShape(GradientDrawable.RECTANGLE);
+            inputBg.setCornerRadius(12);
+            inputBg.setColor(ThemeColors.surfaceVariant(editNameInput));
+            editNameInput.setBackground(inputBg);
 
             if (saveButton != null) {
                 GradientDrawable buttonGradient = new GradientDrawable(
@@ -580,7 +525,7 @@ public class ProfileActivity extends BaseActivity {
                 );
                 buttonGradient.setCornerRadius(22);
                 saveButton.setBackground(buttonGradient);
-                saveButton.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
+                saveButton.setTextColor(ThemeColors.onGradient(gradientColors[0], gradientColors[1]));
             }
             if (cancelButton != null) cancelButton.setTextColor(accentColor);
         }
@@ -633,70 +578,41 @@ public class ProfileActivity extends BaseActivity {
         buttonGradient.setCornerRadius(22 * getResources().getDisplayMetrics().density);
         cancelButton.setBackground(buttonGradient);
 
-        // Apply dark mode styling
-        if (isDarkMode) {
-            // Set dialog background to dark
-            if (dialog.getWindow() != null) {
-                GradientDrawable darkDialogBg = new GradientDrawable();
-                darkDialogBg.setShape(GradientDrawable.RECTANGLE);
-                darkDialogBg.setCornerRadius(16 * getResources().getDisplayMetrics().density);
-                darkDialogBg.setColor(android.graphics.Color.parseColor("#1E1E1E")); // Dark background
-                dialog.getWindow().setBackgroundDrawable(darkDialogBg);
-            }
-
-            // Title text - WHITE
-            if (titleText != null) {
-                titleText.setTextColor(android.graphics.Color.WHITE);
-            }
-
-            // English and Chinese text - WHITE
-            if (englishText != null) {
-                englishText.setTextColor(android.graphics.Color.WHITE);
-            }
-            if (chineseText != null) {
-                chineseText.setTextColor(android.graphics.Color.WHITE);
-            }
-
-            // Arrow icons - ACCENT color (purple)
-            if (englishArrow != null) {
-                englishArrow.setTextColor(accentColor);
-            }
-            if (chineseArrow != null) {
-                chineseArrow.setTextColor(accentColor);
-            }
-
-            // Cancel button text - WHITE (button background already has gradient)
-            cancelButton.setTextColor(android.graphics.Color.WHITE);
-
-            // Update option backgrounds for dark mode
-            GradientDrawable darkOptionBg = new GradientDrawable();
-            darkOptionBg.setShape(GradientDrawable.RECTANGLE);
-            darkOptionBg.setCornerRadius(12 * getResources().getDisplayMetrics().density);
-            darkOptionBg.setColor(android.graphics.Color.parseColor("#2D2D2D"));
-            englishOption.setBackground(darkOptionBg);
-            chineseOption.setBackground(darkOptionBg);
-
-        } else {
-            // Light mode - restore default colors
-            if (dialog.getWindow() != null) {
-                dialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
-            }
-
-            if (titleText != null) {
-                titleText.setTextColor(android.graphics.Color.parseColor("#2C3E66"));
-            }
-
-            if (englishText != null) {
-                englishText.setTextColor(android.graphics.Color.parseColor("#2C3E66"));
-            }
-            if (chineseText != null) {
-                chineseText.setTextColor(android.graphics.Color.parseColor("#2C3E66"));
-            }
-
-            // Restore option backgrounds for light mode
-            englishOption.setBackgroundResource(R.drawable.language_option_bg);
-            chineseOption.setBackgroundResource(R.drawable.language_option_bg);
+        // Dialog surface, text roles and option rows all come from the theme.
+        if (dialog.getWindow() != null) {
+            GradientDrawable dialogBg = new GradientDrawable();
+            dialogBg.setShape(GradientDrawable.RECTANGLE);
+            dialogBg.setCornerRadius(16 * getResources().getDisplayMetrics().density);
+            dialogBg.setColor(ThemeColors.surface(dialogView));
+            dialog.getWindow().setBackgroundDrawable(dialogBg);
         }
+
+        if (titleText != null) {
+            titleText.setTextColor(ThemeColors.onSurface(titleText));
+        }
+        if (englishText != null) {
+            englishText.setTextColor(ThemeColors.onSurface(englishText));
+        }
+        if (chineseText != null) {
+            chineseText.setTextColor(ThemeColors.onSurface(chineseText));
+        }
+
+        // Arrows are accents; the cancel button sits on the theme gradient, so
+        // its label is chosen from that gradient.
+        if (englishArrow != null) {
+            englishArrow.setTextColor(accentColor);
+        }
+        if (chineseArrow != null) {
+            chineseArrow.setTextColor(accentColor);
+        }
+        cancelButton.setTextColor(ThemeColors.onGradient(gradientColors[0], gradientColors[1]));
+
+        GradientDrawable optionBg = new GradientDrawable();
+        optionBg.setShape(GradientDrawable.RECTANGLE);
+        optionBg.setCornerRadius(12 * getResources().getDisplayMetrics().density);
+        optionBg.setColor(ThemeColors.surfaceVariant(englishOption));
+        englishOption.setBackground(optionBg);
+        chineseOption.setBackground(optionBg);
 
         englishOption.setOnClickListener(v -> {
             changeLanguage(LanguageManager.LANGUAGE_ENGLISH);
@@ -712,23 +628,18 @@ public class ProfileActivity extends BaseActivity {
     }
 
     private void applyDialogTheme(View dialogView, AlertDialog dialog) {
-        if (dialog.getWindow() != null) {
-            boolean isDarkMode = ThemeManager.isDarkMode(this);
+        if (dialog.getWindow() == null) {
+            return;
+        }
+        GradientDrawable dialogBg = new GradientDrawable();
+        dialogBg.setShape(GradientDrawable.RECTANGLE);
+        dialogBg.setCornerRadius(25);
+        dialogBg.setColor(ThemeColors.surface(dialogView));
+        dialog.getWindow().setBackgroundDrawable(dialogBg);
 
-            if (isDarkMode) {
-                GradientDrawable darkDialogBg = new GradientDrawable();
-                darkDialogBg.setShape(GradientDrawable.RECTANGLE);
-                darkDialogBg.setCornerRadius(25);
-                darkDialogBg.setColor(android.graphics.Color.parseColor("#2D2D2D"));
-                dialog.getWindow().setBackgroundDrawable(darkDialogBg);
-
-                TextView dialogTitle = dialogView.findViewById(R.id.dialogTitle);
-                if (dialogTitle != null) dialogTitle.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
-
-                // Set text colors for options
-                TextView englishText = dialogView.findViewById(R.id.englishOption).findViewById(android.R.id.text1);
-                TextView chineseText = dialogView.findViewById(R.id.chineseOption).findViewById(android.R.id.text1);
-            }
+        TextView dialogTitle = dialogView.findViewById(R.id.dialogTitle);
+        if (dialogTitle != null) {
+            dialogTitle.setTextColor(ThemeColors.onSurface(dialogTitle));
         }
     }
 
@@ -786,82 +697,44 @@ public class ProfileActivity extends BaseActivity {
                 );
                 buttonGradient.setCornerRadius(22);
                 cancelButton.setBackground(buttonGradient);
-                cancelButton.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
+                cancelButton.setTextColor(ThemeColors.onGradient(gradientColors[0], gradientColors[1]));
             }
 
-            if (isDarkMode) {
-                // Dark mode background
-                GradientDrawable darkDialogBg = new GradientDrawable();
-                darkDialogBg.setShape(GradientDrawable.RECTANGLE);
-                darkDialogBg.setCornerRadius(25);
-                darkDialogBg.setColor(android.graphics.Color.parseColor("#2D2D2D"));
-                dialog.getWindow().setBackgroundDrawable(darkDialogBg);
+            // Dialog surface, option rows and their text all come from the theme.
+            GradientDrawable dialogBg = new GradientDrawable();
+            dialogBg.setShape(GradientDrawable.RECTANGLE);
+            dialogBg.setCornerRadius(25);
+            dialogBg.setColor(ThemeColors.surface(dialogView));
+            dialog.getWindow().setBackgroundDrawable(dialogBg);
 
-                // Title text color - WHITE
-                if (titleText != null) {
-                    titleText.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
-                }
-
-                // Option backgrounds - dark gray
-                GradientDrawable darkOptionBg = new GradientDrawable();
-                darkOptionBg.setShape(GradientDrawable.RECTANGLE);
-                darkOptionBg.setCornerRadius(12);
-                darkOptionBg.setColor(android.graphics.Color.parseColor("#1E1E1E"));
-                guestAccountLayout.setBackground(darkOptionBg);
-                localAccountLayout.setBackground(darkOptionBg);
-                googleAccountLayout.setBackground(darkOptionBg);
-
-                // Get text views and set colors (now at index 0 since no icon)
-                TextView guestText = (TextView) guestAccountLayout.getChildAt(0);
-                TextView localText = (TextView) localAccountLayout.getChildAt(0);
-                TextView googleText = (TextView) googleAccountLayout.getChildAt(0);
-
-                TextView guestArrow = (TextView) guestAccountLayout.getChildAt(1);
-                TextView localArrow = (TextView) localAccountLayout.getChildAt(1);
-                TextView googleArrow = (TextView) googleAccountLayout.getChildAt(1);
-
-                if (guestText != null) guestText.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
-                if (localText != null) localText.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
-                if (googleText != null) googleText.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
-
-                if (guestArrow != null) guestArrow.setTextColor(accentColor);
-                if (localArrow != null) localArrow.setTextColor(accentColor);
-                if (googleArrow != null) googleArrow.setTextColor(accentColor);
-
-            } else {
-                // Light mode background
-                GradientDrawable lightDialogBg = new GradientDrawable();
-                lightDialogBg.setShape(GradientDrawable.RECTANGLE);
-                lightDialogBg.setCornerRadius(25);
-                lightDialogBg.setColor(android.graphics.Color.parseColor("#FFFFFF"));
-                dialog.getWindow().setBackgroundDrawable(lightDialogBg);
-
-                // Option backgrounds - light gray
-                GradientDrawable lightOptionBg = new GradientDrawable();
-                lightOptionBg.setShape(GradientDrawable.RECTANGLE);
-                lightOptionBg.setCornerRadius(12);
-                lightOptionBg.setColor(android.graphics.Color.parseColor("#F5F5F5"));
-                guestAccountLayout.setBackground(lightOptionBg);
-                localAccountLayout.setBackground(lightOptionBg);
-                googleAccountLayout.setBackground(lightOptionBg);
-
-                // Get text views and set colors (now at index 0 since no icon)
-                TextView guestText = (TextView) guestAccountLayout.getChildAt(0);
-                TextView localText = (TextView) localAccountLayout.getChildAt(0);
-                TextView googleText = (TextView) googleAccountLayout.getChildAt(0);
-
-                TextView guestArrow = (TextView) guestAccountLayout.getChildAt(1);
-                TextView localArrow = (TextView) localAccountLayout.getChildAt(1);
-                TextView googleArrow = (TextView) googleAccountLayout.getChildAt(1);
-
-                if (guestText != null) guestText.setTextColor(android.graphics.Color.parseColor("#2C3E66"));
-                if (localText != null) localText.setTextColor(android.graphics.Color.parseColor("#2C3E66"));
-                if (googleText != null) googleText.setTextColor(android.graphics.Color.parseColor("#2C3E66"));
-
-                if (guestArrow != null) guestArrow.setTextColor(accentColor);
-                if (localArrow != null) localArrow.setTextColor(accentColor);
-                if (googleArrow != null) googleArrow.setTextColor(accentColor);
+            if (titleText != null) {
+                titleText.setTextColor(ThemeColors.onSurface(titleText));
             }
+
+            GradientDrawable optionBg = new GradientDrawable();
+            optionBg.setShape(GradientDrawable.RECTANGLE);
+            optionBg.setCornerRadius(12);
+            optionBg.setColor(ThemeColors.surfaceVariant(guestAccountLayout));
+            guestAccountLayout.setBackground(optionBg);
+            localAccountLayout.setBackground(optionBg);
+            googleAccountLayout.setBackground(optionBg);
+
+            // Child 0 is the label, child 1 the arrow.
+            TextView guestText = (TextView) guestAccountLayout.getChildAt(0);
+            TextView localText = (TextView) localAccountLayout.getChildAt(0);
+            TextView googleText = (TextView) googleAccountLayout.getChildAt(0);
+
+            TextView guestArrow = (TextView) guestAccountLayout.getChildAt(1);
+            TextView localArrow = (TextView) localAccountLayout.getChildAt(1);
+            TextView googleArrow = (TextView) googleAccountLayout.getChildAt(1);
+
+            if (guestText != null) guestText.setTextColor(ThemeColors.onSurface(guestText));
+            if (localText != null) localText.setTextColor(ThemeColors.onSurface(localText));
+            if (googleText != null) googleText.setTextColor(ThemeColors.onSurface(googleText));
+
+            if (guestArrow != null) guestArrow.setTextColor(accentColor);
+            if (localArrow != null) localArrow.setTextColor(accentColor);
+            if (googleArrow != null) googleArrow.setTextColor(accentColor);
         }
 
         // Set click listeners
@@ -954,95 +827,50 @@ public class ProfileActivity extends BaseActivity {
                 );
                 buttonGradient.setCornerRadius(22);
                 cancelButton.setBackground(buttonGradient);
-                cancelButton.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
+                cancelButton.setTextColor(ThemeColors.onGradient(gradientColors[0], gradientColors[1]));
             }
 
-            if (isDarkMode) {
-                // Dark mode background
-                GradientDrawable darkDialogBg = new GradientDrawable();
-                darkDialogBg.setShape(GradientDrawable.RECTANGLE);
-                darkDialogBg.setCornerRadius(25);
-                darkDialogBg.setColor(android.graphics.Color.parseColor("#2D2D2D"));
-                dialog.getWindow().setBackgroundDrawable(darkDialogBg);
+            // Dialog surface, option rows and their text all come from the theme.
+            // Delete Account keeps the destructive colour, which has a
+            // night-qualified twin so it stays legible on both surfaces.
+            GradientDrawable dialogBg = new GradientDrawable();
+            dialogBg.setShape(GradientDrawable.RECTANGLE);
+            dialogBg.setCornerRadius(25);
+            dialogBg.setColor(ThemeColors.surface(dialogView));
+            dialog.getWindow().setBackgroundDrawable(dialogBg);
 
-                // Title text color - WHITE
-                if (titleText != null) {
-                    titleText.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
-                }
+            if (titleText != null) {
+                titleText.setTextColor(ThemeColors.onSurface(titleText));
+            }
 
-                // Option backgrounds - dark gray
-                GradientDrawable darkOptionBg = new GradientDrawable();
-                darkOptionBg.setShape(GradientDrawable.RECTANGLE);
-                darkOptionBg.setCornerRadius(12);
-                darkOptionBg.setColor(android.graphics.Color.parseColor("#1E1E1E"));
-                changePasswordLayout.setBackground(darkOptionBg);
-                updateEmailLayout.setBackground(darkOptionBg);
-                deleteAccountLayout.setBackground(darkOptionBg);
+            GradientDrawable optionBg = new GradientDrawable();
+            optionBg.setShape(GradientDrawable.RECTANGLE);
+            optionBg.setCornerRadius(12);
+            optionBg.setColor(ThemeColors.surfaceVariant(changePasswordLayout));
+            changePasswordLayout.setBackground(optionBg);
+            updateEmailLayout.setBackground(optionBg);
+            deleteAccountLayout.setBackground(optionBg);
 
-                // Change Password text - WHITE
-                if (changePasswordText != null) {
-                    changePasswordText.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
-                }
-                if (changePasswordArrow != null) {
-                    changePasswordArrow.setTextColor(accentColor);
-                }
+            if (changePasswordText != null) {
+                changePasswordText.setTextColor(ThemeColors.onSurface(changePasswordText));
+            }
+            if (changePasswordArrow != null) {
+                changePasswordArrow.setTextColor(accentColor);
+            }
 
-                // Update Email text - WHITE
-                if (updateEmailText != null) {
-                    updateEmailText.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
-                }
-                if (updateEmailArrow != null) {
-                    updateEmailArrow.setTextColor(accentColor);
-                }
+            if (updateEmailText != null) {
+                updateEmailText.setTextColor(ThemeColors.onSurface(updateEmailText));
+            }
+            if (updateEmailArrow != null) {
+                updateEmailArrow.setTextColor(accentColor);
+            }
 
-                // Delete Account text - RED
-                if (deleteAccountText != null) {
-                    deleteAccountText.setTextColor(android.graphics.Color.parseColor("#FF6B6B"));
-                }
-                if (deleteAccountArrow != null) {
-                    deleteAccountArrow.setTextColor(android.graphics.Color.parseColor("#FF6B6B"));
-                }
-
-            } else {
-                // Light mode background
-                GradientDrawable lightDialogBg = new GradientDrawable();
-                lightDialogBg.setShape(GradientDrawable.RECTANGLE);
-                lightDialogBg.setCornerRadius(25);
-                lightDialogBg.setColor(android.graphics.Color.parseColor("#FFFFFF"));
-                dialog.getWindow().setBackgroundDrawable(lightDialogBg);
-
-                // Option backgrounds - light gray
-                GradientDrawable lightOptionBg = new GradientDrawable();
-                lightOptionBg.setShape(GradientDrawable.RECTANGLE);
-                lightOptionBg.setCornerRadius(12);
-                lightOptionBg.setColor(android.graphics.Color.parseColor("#F5F5F5"));
-                changePasswordLayout.setBackground(lightOptionBg);
-                updateEmailLayout.setBackground(lightOptionBg);
-                deleteAccountLayout.setBackground(lightOptionBg);
-
-                // Change Password text
-                if (changePasswordText != null) {
-                    changePasswordText.setTextColor(android.graphics.Color.parseColor("#2C3E66"));
-                }
-                if (changePasswordArrow != null) {
-                    changePasswordArrow.setTextColor(accentColor);
-                }
-
-                // Update Email text
-                if (updateEmailText != null) {
-                    updateEmailText.setTextColor(android.graphics.Color.parseColor("#2C3E66"));
-                }
-                if (updateEmailArrow != null) {
-                    updateEmailArrow.setTextColor(accentColor);
-                }
-
-                // Delete Account text - RED
-                if (deleteAccountText != null) {
-                    deleteAccountText.setTextColor(android.graphics.Color.parseColor("#E94560"));
-                }
-                if (deleteAccountArrow != null) {
-                    deleteAccountArrow.setTextColor(android.graphics.Color.parseColor("#E94560"));
-                }
+            int destructiveColor = androidx.core.content.ContextCompat.getColor(this, R.color.destructive);
+            if (deleteAccountText != null) {
+                deleteAccountText.setTextColor(destructiveColor);
+            }
+            if (deleteAccountArrow != null) {
+                deleteAccountArrow.setTextColor(destructiveColor);
             }
         }
 
@@ -1065,15 +893,15 @@ public class ProfileActivity extends BaseActivity {
         cancelButton.setOnClickListener(v -> dialog.dismiss());
     }
 
-    // Helper method to make all TextViews white
+    // Helper method: normalise every label in a dialog to the themed text role.
     private void makeAllTextViewsWhite(View view) {
         if (view instanceof TextView) {
             TextView textView = (TextView) view;
-            // Don't change cancel button color (keep it purple)
+            // Cancel keeps the accent so it reads as the secondary action.
             if (!textView.getText().toString().equals("Cancel")) {
-                textView.setTextColor(android.graphics.Color.parseColor("#FFFFFF"));
+                textView.setTextColor(ThemeColors.onSurface(textView));
             } else {
-                textView.setTextColor(android.graphics.Color.parseColor("#9C27B0"));
+                textView.setTextColor(ThemeColors.primary(textView));
             }
         } else if (view instanceof ViewGroup) {
             ViewGroup viewGroup = (ViewGroup) view;
@@ -1090,21 +918,7 @@ public class ProfileActivity extends BaseActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        if (dialog.getWindow() != null) {
-            if (isDarkMode) {
-                GradientDrawable darkDialogBg = new GradientDrawable();
-                darkDialogBg.setShape(GradientDrawable.RECTANGLE);
-                darkDialogBg.setCornerRadius(25);
-                darkDialogBg.setColor(android.graphics.Color.parseColor("#2D2D2D"));
-                dialog.getWindow().setBackgroundDrawable(darkDialogBg);
-            } else {
-                GradientDrawable lightDialogBg = new GradientDrawable();
-                lightDialogBg.setShape(GradientDrawable.RECTANGLE);
-                lightDialogBg.setCornerRadius(25);
-                lightDialogBg.setColor(android.graphics.Color.parseColor("#FFFFFF"));
-                dialog.getWindow().setBackgroundDrawable(lightDialogBg);
-            }
-        }
+        applyDialogSurface(dialogView, dialog);
     }
 
     private void showUpdateEmailDialog() {
@@ -1114,21 +928,19 @@ public class ProfileActivity extends BaseActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        if (dialog.getWindow() != null) {
-            if (isDarkMode) {
-                GradientDrawable darkDialogBg = new GradientDrawable();
-                darkDialogBg.setShape(GradientDrawable.RECTANGLE);
-                darkDialogBg.setCornerRadius(25);
-                darkDialogBg.setColor(android.graphics.Color.parseColor("#2D2D2D"));
-                dialog.getWindow().setBackgroundDrawable(darkDialogBg);
-            } else {
-                GradientDrawable lightDialogBg = new GradientDrawable();
-                lightDialogBg.setShape(GradientDrawable.RECTANGLE);
-                lightDialogBg.setCornerRadius(25);
-                lightDialogBg.setColor(android.graphics.Color.parseColor("#FFFFFF"));
-                dialog.getWindow().setBackgroundDrawable(lightDialogBg);
-            }
+        applyDialogSurface(dialogView, dialog);
+    }
+
+    /** Paints a dialog window with the themed surface role. */
+    private void applyDialogSurface(View dialogView, AlertDialog dialog) {
+        if (dialog.getWindow() == null) {
+            return;
         }
+        GradientDrawable dialogBg = new GradientDrawable();
+        dialogBg.setShape(GradientDrawable.RECTANGLE);
+        dialogBg.setCornerRadius(25);
+        dialogBg.setColor(ThemeColors.surface(dialogView));
+        dialog.getWindow().setBackgroundDrawable(dialogBg);
     }
 
     private void showDeleteAccountConfirmation() {
@@ -1274,43 +1086,27 @@ public class ProfileActivity extends BaseActivity {
         buttonGradient.setCornerRadius(22 * getResources().getDisplayMetrics().density);
         logoutButton.setBackground(buttonGradient);
 
-        // Apply dark mode styling
-        if (isDarkMode) {
-            if (dialog.getWindow() != null) {
-                GradientDrawable darkDialogBg = new GradientDrawable();
-                darkDialogBg.setShape(GradientDrawable.RECTANGLE);
-                darkDialogBg.setCornerRadius(16 * getResources().getDisplayMetrics().density);
-                darkDialogBg.setColor(android.graphics.Color.parseColor("#2D2D2D"));
-                dialog.getWindow().setBackgroundDrawable(darkDialogBg);
-            }
-
-            titleText.setTextColor(android.graphics.Color.WHITE);
-            messageText.setTextColor(android.graphics.Color.parseColor("#CCCCCC"));
-
-            GradientDrawable cancelBg = new GradientDrawable();
-            cancelBg.setShape(GradientDrawable.RECTANGLE);
-            cancelBg.setCornerRadius(22 * getResources().getDisplayMetrics().density);
-            cancelBg.setStroke(2, android.graphics.Color.parseColor("#9C27B0"));
-            cancelBg.setColor(android.graphics.Color.TRANSPARENT);
-            cancelButton.setBackground(cancelBg);
-            cancelButton.setTextColor(android.graphics.Color.parseColor("#9C27B0"));
-
-        } else {
-            if (dialog.getWindow() != null) {
-                dialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
-            }
-
-            titleText.setTextColor(android.graphics.Color.parseColor("#2C3E66"));
-            messageText.setTextColor(android.graphics.Color.parseColor("#49607C"));
-
-            GradientDrawable cancelBg = new GradientDrawable();
-            cancelBg.setShape(GradientDrawable.RECTANGLE);
-            cancelBg.setCornerRadius(22 * getResources().getDisplayMetrics().density);
-            cancelBg.setStroke(2, android.graphics.Color.parseColor("#9C27B0"));
-            cancelBg.setColor(android.graphics.Color.TRANSPARENT);
-            cancelButton.setBackground(cancelBg);
-            cancelButton.setTextColor(android.graphics.Color.parseColor("#9C27B0"));
+        // Dialog surface, text roles and the outlined cancel button all come
+        // from the theme; the logout button sits on the gradient above.
+        if (dialog.getWindow() != null) {
+            GradientDrawable dialogBg = new GradientDrawable();
+            dialogBg.setShape(GradientDrawable.RECTANGLE);
+            dialogBg.setCornerRadius(16 * getResources().getDisplayMetrics().density);
+            dialogBg.setColor(ThemeColors.surface(dialogView));
+            dialog.getWindow().setBackgroundDrawable(dialogBg);
         }
+
+        titleText.setTextColor(ThemeColors.onSurface(titleText));
+        messageText.setTextColor(ThemeColors.onSurfaceVariant(messageText));
+        logoutButton.setTextColor(ThemeColors.onGradient(gradientColors[0], gradientColors[1]));
+
+        GradientDrawable cancelBg = new GradientDrawable();
+        cancelBg.setShape(GradientDrawable.RECTANGLE);
+        cancelBg.setCornerRadius(22 * getResources().getDisplayMetrics().density);
+        cancelBg.setStroke(2, ThemeColors.primary(cancelButton));
+        cancelBg.setColor(android.graphics.Color.TRANSPARENT);
+        cancelButton.setBackground(cancelBg);
+        cancelButton.setTextColor(ThemeColors.primary(cancelButton));
 
         cancelButton.setOnClickListener(v -> dialog.dismiss());
 

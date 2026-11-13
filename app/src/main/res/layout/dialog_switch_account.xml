@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:text="›"
             android:textSize="20sp"
-            android:textColor="#9C27B0" />
+            android:textColor="?attr/colorPrimary" />
 
     </LinearLayout>
 
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:text="›"
             android:textSize="20sp"
-            android:textColor="#9C27B0" />
+            android:textColor="?attr/colorPrimary" />
 
     </LinearLayout>
 
@@ -120,7 +120,7 @@
             android:layout_height="wrap_content"
             android:text="›"
             android:textSize="20sp"
-            android:textColor="#9C27B0" />
+            android:textColor="?attr/colorPrimary" />
 
     </LinearLayout>
 
@@ -132,7 +132,7 @@
         android:text="@string/cancel"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:textColor="#FFFFFF"
+        android:textColor="?attr/colorOnSurface"
         android:gravity="center"
         android:clickable="true"
         android:focusable="true" />

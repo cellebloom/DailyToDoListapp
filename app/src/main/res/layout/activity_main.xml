@@ -6,33 +6,66 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Header Section -->
+    <!-- Header Section: title on the start, sleek AI entry at the far end. -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:paddingLeft="24dp"
-        android:paddingRight="24dp"
+        android:paddingRight="16dp"
         android:paddingTop="25dp"
         android:paddingBottom="8dp">
 
         <TextView
             android:id="@+id/titleText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/app_name"
             android:textSize="28sp"
             android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="8dp" />
+            android:textColor="?attr/colorOnSurface" />
+
+        <!-- Icon-only, circular MaterialButton. TonalButton supplies a real
+             filled container; overriding its tint with colorPrimary gives the
+             sleek accent disc. With no text, iconGravity="textStart" centres
+             the drawable. All colours are theme attrs, never hex. -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAskAi"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            android:padding="0dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            app:icon="@drawable/ic_ai_sparkle"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="24dp"
+            app:iconTint="?attr/colorOnPrimary"
+            app:backgroundTint="?attr/colorPrimary"
+            app:cornerRadius="24dp"
+            app:elevation="6dp"
+            android:contentDescription="@string/ask_ai" />
 
     </LinearLayout>
 
-    <!-- Main Content -->
-    <ScrollView
+    <!-- Main Content. A FrameLayout so the timeline's FAB can float over the
+         scrolling content instead of sitting in the scroll flow. -->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="1">
+
+    <ScrollView
+        android:id="@+id/mainScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:fillViewport="true">
 
         <LinearLayout
@@ -89,8 +122,7 @@
                     android:textColor="@color/theme_text_primary"
                     android:layout_marginBottom="12dp" />
 
-                <!-- Top 3 Priorities. Hidden entirely when the day has none,
-                     so the section never renders as an empty shell. -->
+                <!-- Top 3 Priorities. Hidden entirely when the day has none. -->
                 <LinearLayout
                     android:id="@+id/prioritiesSection"
                     android:layout_width="match_parent"
@@ -122,8 +154,7 @@
                     </HorizontalScrollView>
                 </LinearLayout>
 
-                <!-- List / Timeline switch. Colours come from theme attributes
-                     so it follows light and dark mode like the rest of the card. -->
+                <!-- List / Timeline switch. -->
                 <com.google.android.material.button.MaterialButtonToggleGroup
                     android:id="@+id/viewToggleGroup"
                     android:layout_width="match_parent"
@@ -152,10 +183,6 @@
                         android:textSize="14sp" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
 
-                <!-- Height must wrap the content, not take weight: this card is
-                     wrap_content with a minHeight, so a 0dp/weight child would be
-                     squeezed into whatever the 550dp floor leaves over and clip
-                     the timeline to about five hours. -->
                 <LinearLayout
                     android:id="@+id/tasksContainer"
                     android:layout_width="match_parent"
@@ -206,8 +233,7 @@
                         android:orientation="vertical"
                         android:visibility="gone" />
 
-                    <!-- Backlog: Anytime tasks, which have no interval and so
-                         cannot be positioned on the hour grid. -->
+                    <!-- Backlog: Anytime tasks, which have no interval. -->
                     <LinearLayout
                         android:id="@+id/backlogSection"
                         android:layout_width="match_parent"
@@ -237,11 +263,21 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal" />
                         </HorizontalScrollView>
+
+                        <!-- AI auto-schedule. Lives in the backlog section, so it
+                             only appears when there are Anytime tasks to move
+                             onto the grid. -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAutoSchedule"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/btn_auto_schedule"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="16dp" />
+
                     </LinearLayout>
 
-                    <!-- Horizontal day selector, like the top row of a paper
-                         planner. Sits above the grid and drives which date the
-                         timeline renders. hidden in List view. -->
+                    <!-- Horizontal day selector -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/daySelectorRecyclerView"
                         android:layout_width="match_parent"
@@ -254,10 +290,7 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:visibility="gone" />
 
-                    <!-- Inline empty hint for the timeline. Shown only when the
-                         day has no scheduled tasks; the hour grid below it
-                         stays visible so the view still reads as a timeline
-                         rather than a blank or broken screen. -->
+                    <!-- Inline empty hint for the timeline. -->
                     <TextView
                         android:id="@+id/timelineEmptyHint"
                         android:layout_width="match_parent"
@@ -270,16 +303,44 @@
                         android:paddingBottom="4dp"
                         android:visibility="gone" />
 
-                    <!-- Timeline view. Only scheduled tasks are laid out here;
-                         Anytime tasks stay in the list, because they have no
-                         interval to position on a time axis.
+                    <!-- Softer day header: a calendar glyph plus "Thu, Nov 12"
+                         in a rounded pill, replacing the rigid TIME | THU
+                         table band. The date text is filled in at runtime from
+                         the selected ISO date (bindTimelineHeader). -->
+                    <LinearLayout
+                        android:id="@+id/timelineHeaderRow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_day_header_pill"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingTop="7dp"
+                        android:paddingEnd="14dp"
+                        android:paddingBottom="7dp"
+                        android:visibility="gone">
 
-                         WrapHeightRecyclerView (not a plain RecyclerView) is
-                         required: wrap_content alone still clamps to the
-                         viewport under an AT_MOST parent spec, which truncated
-                         the grid at about 14:00. It measures against
-                         UNSPECIFIED so all 18 hours from 06:00 to 23:00 are
-                         laid out and the outer ScrollView can reach the end. -->
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_marginEnd="7dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_calendar_small"
+                            app:tint="?attr/colorOnSurfaceVariant" />
+
+                        <TextView
+                            android:id="@+id/timelineHeaderDay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="?attr/colorOnSurface" />
+                    </LinearLayout>
+
+                    <!-- Timeline view. -->
                     <com.example.dailytodolist.WrapHeightRecyclerView
                         android:id="@+id/timelineRecyclerView"
                         android:layout_width="match_parent"
@@ -291,7 +352,7 @@
 
                 </LinearLayout>
 
-                <!-- Divider WITH ID -->
+                <!-- Divider -->
                 <View
                     android:id="@+id/divider"
                     android:layout_width="match_parent"
@@ -300,40 +361,30 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp" />
 
-                <LinearLayout
+                <!-- Opens the Add Task page. Replaces the old inline text field,
+                     which looked like it saved in place but actually navigated
+                     away, so the typed text was thrown away.
+
+                     app:backgroundTint="@null" is required: without it the
+                     MaterialButton style's colorPrimary tint is re-applied on top
+                     of the gradient installed in code, so the button renders as
+                     flat blue instead of blue-to-purple. -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/addTaskButton"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:layout_height="52dp"
+                    android:text="@string/add_task_title"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="false"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    app:backgroundTint="@null"
+                    app:cornerRadius="26dp" />
 
-                    <EditText
-                        android:id="@+id/newTaskInput"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:hint="@string/add_new_task_hint"
-                        android:textSize="14sp"
-                        android:textColor="@color/theme_text_primary"
-                        android:background="@drawable/input_field_bg"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp" />
-
-                    <TextView
-                        android:id="@+id/addTaskButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="48dp"
-                        android:text="@string/add"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="#FFFFFF"
-                        android:gravity="center"
-                        android:paddingLeft="24dp"
-                        android:paddingRight="24dp"
-                        android:layout_marginStart="12dp"
-                        android:clickable="true"
-                        android:focusable="true" />
-
-                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp" />
 
             </LinearLayout>
 
@@ -363,7 +414,7 @@
                         android:text="@string/daily_quote"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="@color/theme_accent" />
+                        android:textColor="?attr/colorPrimary" />
 
                     <TextView
                         android:id="@+id/editQuoteButton"
@@ -371,14 +422,13 @@
                         android:layout_height="wrap_content"
                         android:text="@string/edit"
                         android:textSize="12sp"
-                        android:textColor="@color/theme_accent"
+                        android:textColor="?attr/colorPrimary"
                         android:padding="4dp"
                         android:clickable="true"
                         android:focusable="true" />
 
                 </LinearLayout>
 
-                <!-- Quote Text -->
                 <TextView
                     android:id="@+id/quoteText"
                     android:layout_width="wrap_content"
@@ -386,27 +436,29 @@
                     android:text="@string/default_quote"
                     android:textSize="18sp"
                     android:textStyle="italic"
-                    android:textColor="@color/theme_text_primary"
+                    android:textColor="?attr/colorOnSurface"
                     android:gravity="center"
                     android:layout_marginBottom="12dp"
                     android:layout_marginTop="8dp"
                     android:layout_gravity="center" />
 
-                <!-- Quote Author -->
                 <TextView
                     android:id="@+id/quoteAuthor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/default_quote_author"
                     android:textSize="14sp"
-                    android:textColor="@color/theme_accent"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold"
                     android:gravity="center"
                     android:layout_gravity="center" />
 
             </LinearLayout>
 
-            <!-- End of Day Review entry -->
+            <!-- End of Day Review entry. The gradient comes from
+                 GradientHelper.applyPill() in MainActivity, like the Add Task
+                 button, so this pill follows the theme instead of a fixed
+                 purple fill. textColor here is only the pre-theme fallback. -->
             <TextView
                 android:id="@+id/openReviewButton"
                 android:layout_width="match_parent"
@@ -418,12 +470,33 @@
                 android:layout_marginBottom="20dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="@drawable/action_button_bg"
-                android:textColor="@android:color/white" />
+                android:textColor="?attr/colorOnPrimary" />
 
         </LinearLayout>
 
     </ScrollView>
+
+    <!-- Timeline FAB: floats over the content, bottom-right, and is only
+         visible in Timeline view (MainActivity#setTimelineView). The gradient
+         fill is applied in code with GradientHelper.applyPill so it matches the
+         active theme, which a static backgroundTint cannot express. -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:contentDescription="@string/add_task_title"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="?attr/colorPrimary"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        app:fabSize="normal"
+        app:tint="?attr/colorOnPrimary"
+        android:visibility="gone" />
+
+    </FrameLayout>
 
     <!-- Bottom Navigation Bar -->
     <LinearLayout
@@ -431,14 +504,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#FFFFFF"
+        android:background="?attr/colorSurface"
         android:elevation="8dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
-        <!-- Home - Active -->
         <LinearLayout
             android:id="@+id/navHome"
             android:layout_width="0dp"
@@ -459,11 +531,10 @@
                 android:layout_height="wrap_content"
                 android:text="@string/nav_home"
                 android:textSize="12sp"
-                android:textColor="#9C27B0"
+                android:textColor="?attr/colorPrimary"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Calendar -->
         <LinearLayout
             android:id="@+id/navCalendar"
             android:layout_width="0dp"
@@ -484,11 +555,10 @@
                 android:layout_height="wrap_content"
                 android:text="@string/nav_calendar"
                 android:textSize="12sp"
-                android:textColor="#555555"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Shop -->
         <LinearLayout
             android:id="@+id/navShop"
             android:layout_width="0dp"
@@ -509,11 +579,10 @@
                 android:layout_height="wrap_content"
                 android:text="@string/nav_shop"
                 android:textSize="12sp"
-                android:textColor="#555555"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Themes -->
         <LinearLayout
             android:id="@+id/navThemes"
             android:layout_width="0dp"
@@ -534,11 +603,10 @@
                 android:layout_height="wrap_content"
                 android:text="@string/nav_themes"
                 android:textSize="12sp"
-                android:textColor="#555555"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Profile -->
         <LinearLayout
             android:id="@+id/navProfile"
             android:layout_width="0dp"
@@ -559,7 +627,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/profile"
                 android:textSize="12sp"
-                android:textColor="#555555"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textStyle="bold" />
         </LinearLayout>
 

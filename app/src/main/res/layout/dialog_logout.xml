@@ -51,7 +51,7 @@
             android:text="@string/log_out"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:textColor="#FFFFFF"
+            android:textColor="?attr/colorOnSurface"
             android:gravity="center"
             android:clickable="true"
             android:focusable="true" />

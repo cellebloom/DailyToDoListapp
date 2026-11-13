@@ -112,7 +112,6 @@
     <string name="todays_tasks">今日任务</string>
     <string name="no_tasks_today">今天没有任务！</string>
     <string name="take_a_break">休息一下，放松身心。您值得拥有！😊</string>
-    <string name="add_new_task_hint">添加新任务...</string>
     <string name="daily_quote">每日名言</string>
     <string name="edit">✏️ 编辑</string>
     <string name="default_quote">追逐你的梦想</string>
@@ -220,6 +219,43 @@
     <string name="weekday_sun">周日</string>
     <string name="backlog_header">随时任务</string>
     <string name="top_priorities_header">今日前三优先级</string>
+
+    <!-- Timeline interactions -->
+    <string name="delete_past_task_title">删除这个任务？</string>
+    <string name="delete_past_task_message">要删除「%1$s」，还是留作当天的记录？</string>
+    <string name="reschedule_hint">拖动任务块可改时间，左右滑动可删除</string>
+    <string name="reschedule_no_room">凌晨前已没有空位</string>
+    <string name="reschedule_success">已改到 %1$s</string>
+    <!-- Add-task date picker + past-time handling -->
+    <string name="select_date">选择日期</string>
+    <string name="today">今天</string>
+    <string name="past_time_warning">这个时间今天已经过了，改为安排到明天？</string>
+    <string name="past_time_rescheduled">时间已过，已改到明天</string>
+    <!-- Planner-style grid header -->
+    <!-- Calendar month view -> Home timeline -->
+    <string name="view_day_timeline">查看当天时间轴</string>
+
+    <!-- AI auto-schedule (2.0 preview, see docs/PRD.md §5) -->
+    <string name="btn_auto_schedule">✨ AI 自动排程</string>
+    <string name="ai_thinking">AI 正在思考…</string>
+    <string name="ai_schedule_no_anytime">这一天没有待安排的随时任务</string>
+    <string name="ai_schedule_empty">AI 没有返回排程结果</string>
+    <string name="ai_schedule_success">已安排 %1$d 个任务</string>
+    <string name="ai_schedule_failed">无法连接 AI 排程服务：%1$s</string>
+
+    <!-- AI Q&A chat / DailyToDo-AI (2.0 preview, see docs/PRD.md §5) -->
+    <string name="ask_ai">问 AI</string>
+    <string name="chat_title">AI 助手</string>
+    <string name="chat_hint">问问你的任务安排…</string>
+    <string name="chat_send">发送</string>
+    <string name="chat_welcome">你好！我可以看到你的任务，关于今天想问什么？</string>
+    <string name="chat_error">无法连接 AI：%1$s</string>
+    <string name="chat_empty_answer">AI 没有返回内容</string>
+    <string name="chat_context_header">当前任务（日期、时间、分类、优先级）：</string>
+    <string name="chat_back">返回</string>
+    <string name="chat_back_arrow">&#8249;</string>
+    <string name="chat_task_added">已将「%1$s」加入任务</string>
+    <string name="chat_task_added_anytime">已将「%1$s」加入随时任务</string>
     <string name="logout">退出登录</string>
 
     <!-- Time block reminders -->
@@ -240,4 +276,9 @@
     <string name="improve_hint">我可以如何改进？</string>
     <string name="save_review">保存复盘</string>
     <string name="review_saved">复盘已保存</string>
+    <string name="permission_dialog_title">允许 Daily To Do List 向你发送通知？</string>
+    <string name="permission_dialog_subtitle">及时获取任务提醒、截止时间和重要通知。</string>
+    <string name="permission_dialog_allow">允许</string>
+    <string name="permission_dialog_deny">不允许</string>
+    <string name="permission_dialog_close">关闭</string>
 </resources>

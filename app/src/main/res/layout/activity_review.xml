@@ -166,6 +166,6 @@
         android:textStyle="bold"
         android:clickable="true"
         android:focusable="true"
-        android:textColor="@android:color/white" />
+        android:textColor="?attr/colorOnPrimary" />
 
 </LinearLayout>

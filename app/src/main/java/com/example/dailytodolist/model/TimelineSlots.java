@@ -119,8 +119,14 @@ public final class TimelineSlots {
         return bucket == null ? new ArrayList<>() : bucket;
     }
 
-    /** Label for a slot, e.g. {@code 09:00}. */
+    /** Label for a slot, e.g. {@code 09:00 - 10:00}.
+     *
+     * <p>The range form matches a paper planner's TIME column, where each row
+     * names the hour it covers rather than a single instant.</p>
+     */
     public String getSlotLabel(int index) {
-        return TimeCategory.formatMinuteOfDay(hourAt(index) * 60);
+        int start = hourAt(index) * 60;
+        return TimeCategory.formatMinuteOfDay(start)
+                + " - " + TimeCategory.formatMinuteOfDay(Math.min(start + 60, 24 * 60));
     }
 }

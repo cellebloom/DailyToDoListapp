@@ -32,4 +32,25 @@
         <item name="colorOutline">@color/dark_text_secondary</item>
     </style>
 
+    <!-- MaterialDatePicker overlays. Same palette pinning as the time pickers:
+         the calendar dialog must follow the app's light/dark choice, not the
+         system's, or it renders unreadable when the two disagree. -->
+    <style name="ThemeOverlay.DailyToDoList.DatePicker.Light"
+        parent="ThemeOverlay.Material3.MaterialCalendar">
+        <item name="colorSurface">@color/default_surface_light</item>
+        <item name="colorOnSurface">@color/default_text_primary_light</item>
+        <item name="colorOnSurfaceVariant">@color/default_text_secondary_light</item>
+        <item name="colorSurfaceVariant">@color/base_bg</item>
+        <item name="colorOutline">@color/base_card_border</item>
+    </style>
+
+    <style name="ThemeOverlay.DailyToDoList.DatePicker.Dark"
+        parent="ThemeOverlay.Material3.MaterialCalendar">
+        <item name="colorSurface">@color/default_surface_dark</item>
+        <item name="colorOnSurface">@color/default_text_primary_dark</item>
+        <item name="colorOnSurfaceVariant">@color/default_text_secondary_dark</item>
+        <item name="colorSurfaceVariant">@color/dark_input_bg</item>
+        <item name="colorOutline">@color/dark_text_secondary</item>
+    </style>
+
 </resources>

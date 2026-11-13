@@ -1,44 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- One hour row on the timeline: time label on the left, task blocks on the
-     right. Text colours are theme attributes so this stays readable in both
-     light and dark mode. -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+  One hour row of the vertical timeline.
+
+  Layout model (a Notion-Calendar style spine, not a table):
+      [ 08:00 ]  |  (dot)  [ task card ... ]
+                  ^ spine runs the full row height, so consecutive rows join
+                    into one continuous line without any grid borders.
+
+  The spine is a 1dp View pinned top-to-bottom, and the dot is centred on it at
+  the top of the hour. The time label is top-aligned to sit level with the dot,
+  which is what makes the hours read as tick marks on a line rather than as
+  table rows.
+
+  slotBlocks stays a vertical container: several tasks can start in the same
+  hour, and the drag-and-drop listener is attached to this container, so task
+  cards are inflated into it by TimelineAdapter rather than inlined here.
+-->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:minHeight="64dp">
+    android:minHeight="64dp"
+    android:paddingEnd="4dp">
 
+    <!-- Hour label, top-aligned so it lines up with the dot on the spine. -->
     <TextView
         android:id="@+id/slotTimeLabel"
-        android:layout_width="60dp"
-        android:layout_height="match_parent"
-        android:paddingTop="10dp"
+        android:layout_width="52dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:gravity="end"
         android:paddingEnd="8dp"
-        android:gravity="end|top"
-        android:textSize="12sp"
-        android:textColor="?attr/colorOnSurfaceVariant" />
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- The spine: a hairline running the full height of the row. Rows are
+         stacked with no gaps, so these segments visually form one line. -->
+    <View
+        android:id="@+id/slotSpine"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="?attr/colorOutlineVariant"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/slotTimeLabel"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Hour marker centred horizontally on the spine, at the top of the hour.
+         Start/end pinned to the spine and centred by the 9dp width against a
+         1dp line, so the dot straddles the line evenly. -->
+    <View
+        android:id="@+id/slotDot"
+        android:layout_width="9dp"
+        android:layout_height="9dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_timeline_dot"
+        app:layout_constraintEnd_toEndOf="@id/slotSpine"
+        app:layout_constraintStart_toStartOf="@id/slotSpine"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Task area: cards for tasks starting in this hour, stacked vertically. -->
     <LinearLayout
+        android:id="@+id/slotBlocks"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_marginStart="10dp"
+        android:minHeight="64dp"
         android:orientation="vertical"
-        android:paddingStart="10dp"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp">
+        android:paddingTop="4dp"
+        android:paddingBottom="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/slotSpine"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Blocks starting in this hour are added here. -->
-        <LinearLayout
-            android:id="@+id/slotBlocks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="6dp"
-            android:background="?attr/colorOutline" />
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,43 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- A task block inside an hour slot. The background is tinted at runtime with
-     the task's colour, and the text colour is chosen for contrast against it,
-     so the block stays legible on any category colour. -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+  A task card on the vertical timeline.
+
+  Structure: [ category dot ] [ title / time ] [ category pill ]
+
+  Colours here are theme attributes; the category tint (dot fill + pill fill and
+  label) is applied at runtime in TimelineAdapter from TimeCategory, because it
+  depends on the task, not the theme.
+
+  A MaterialCardView rather than a plain rounded drawable: the 12dp corner plus
+  the hairline outline is what makes this read as a card on the timeline instead
+  of another list row.
+
+  The fill is colorSurface with a colorOutline hairline, not the low-alpha
+  colorSurfaceVariant the brief suggested. colorSurfaceVariant is #F0F0F0, only
+  15/255 away from the white card it sits on, so a variant fill disappeared and
+  left the timeline looking empty. A hairline gives the card an edge without
+  needing a colour that competes with the task text.
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/blockCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="6dp"
-    android:orientation="vertical"
-    android:background="@drawable/bg_timeline_block"
-    android:paddingStart="12dp"
-    android:paddingEnd="12dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp"
+    app:strokeColor="?attr/colorOutline"
+    app:strokeWidth="1dp">
 
-    <TextView
-        android:id="@+id/blockTitle"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:maxLines="2"
-        android:ellipsize="end" />
+        android:minHeight="48dp"
+        android:paddingStart="12dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="10dp">
 
-    <TextView
-        android:id="@+id/blockTimeRange"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:textSize="11sp" />
+        <!-- Category colour indicator. -->
+        <View
+            android:id="@+id/blockCategoryDot"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:background="@drawable/bg_category_dot"
+            app:layout_constraintBottom_toBottomOf="@id/blockTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/blockTitle" />
 
-    <!-- Optional description inside the block. Hidden when empty. -->
-    <TextView
-        android:id="@+id/blockDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:textSize="11sp"
-        android:maxLines="2"
-        android:ellipsize="end"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/blockTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/blockCategoryPill"
+            app:layout_constraintStart_toEndOf="@id/blockCategoryDot"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+        <!-- Category pill, far right. Background and label colour are applied at
+             runtime so the pill matches the dot beside the title. -->
+        <TextView
+            android:id="@+id/blockCategoryPill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/bg_category_pill"
+            android:maxLines="1"
+            android:paddingStart="8dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="2dp"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/blockTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/blockTitle" />
+
+        <TextView
+            android:id="@+id/blockTimeRange"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="3dp"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="11sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/blockCategoryDot"
+            app:layout_constraintTop_toBottomOf="@id/blockTitle" />
+
+        <!-- Optional description. Hidden when empty.
+
+             Its bottom is pinned to the parent so the vertical chain terminates.
+             Without a bottom constraint the whole wrap_content ConstraintLayout
+             collapses to zero height inside the card, and every card renders as
+             an empty sliver. A GONE view still resolves the chain: ConstraintLayout
+             collapses it to a point at its top, so the card measures correctly
+             whether or not a description is present. -->
+        <TextView
+            android:id="@+id/blockDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="3dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="11sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/blockCategoryDot"
+            app:layout_constraintTop_toBottomOf="@id/blockTimeRange" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

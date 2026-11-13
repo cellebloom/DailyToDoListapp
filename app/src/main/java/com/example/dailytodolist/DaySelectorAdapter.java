@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dailytodolist.model.WeekDay;
+import com.example.dailytodolist.util.GradientContrast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,17 +123,23 @@ public class DaySelectorAdapter extends RecyclerView.Adapter<DaySelectorAdapter.
 
             GradientDrawable shape = new GradientDrawable();
             shape.setShape(GradientDrawable.RECTANGLE);
-            shape.setCornerRadius(12 * context.getResources().getDisplayMetrics().density);
+            // Softer pill than the old 12dp cell: a full-round chip reads as a
+            // date token rather than a table cell.
+            shape.setCornerRadius(18 * context.getResources().getDisplayMetrics().density);
 
             if (selected) {
                 // Filled with the accent, so the text has to be chosen from the
                 // fill colour: a light accent needs dark text to stay readable.
                 shape.setColor(accentColor);
-                int onAccent = isDark(accentColor) ? android.graphics.Color.WHITE
-                        : android.graphics.Color.parseColor("#1F2B48");
+                int onAccent = GradientContrast.onColorFor(accentColor);
                 weekday.setTextColor(onAccent);
                 dayOfMonth.setTextColor(onAccent);
             } else {
+                // Unselected chips are the card surface with a hairline outline.
+                // colorSurfaceVariant (#F0F0F0) was tried here and vanished: it
+                // is only 15/255 away from the white card behind it, so the
+                // strip lost its chip boundaries entirely. The 18dp radius is
+                // what makes these read as date tokens rather than table cells.
                 shape.setColor(surfaceColor());
                 shape.setStroke(
                         Math.round(context.getResources().getDisplayMetrics().density),
@@ -154,14 +161,6 @@ public class DaySelectorAdapter extends RecyclerView.Adapter<DaySelectorAdapter.
                 }
             });
         }
-    }
-
-    /** True when a colour is dark enough to need light text on it. */
-    private static boolean isDark(int color) {
-        double luminance = (0.299 * android.graphics.Color.red(color)
-                + 0.587 * android.graphics.Color.green(color)
-                + 0.114 * android.graphics.Color.blue(color)) / 255.0;
-        return luminance < 0.6;
     }
 
     // Theme roles are resolved through the current theme rather than a fixed

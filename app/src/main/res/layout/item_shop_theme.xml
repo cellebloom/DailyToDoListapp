@@ -6,7 +6,7 @@
     android:layout_margin="8dp"
     app:cardCornerRadius="20dp"
     app:cardElevation="4dp"
-    app:cardBackgroundColor="#2A2A2A">
+    app:cardBackgroundColor="?attr/colorSurfaceVariant">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
             android:text="Default Theme"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/colorOnPrimary"
             android:gravity="center"
             android:maxLines="2"/>
 
@@ -42,8 +42,8 @@
             android:text="💰 150 Coins"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:backgroundTint="#2196F3"
+            android:textColor="?attr/colorOnPrimary"
+            android:backgroundTint="?attr/colorPrimary"
             android:layout_marginTop="16dp"
             app:cornerRadius="20dp"/>
 

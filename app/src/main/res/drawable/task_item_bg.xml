@@ -12,7 +12,7 @@
         android:id="@+id/taskCheckbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:buttonTint="#9C27B0"
+        android:buttonTint="?attr/colorPrimary"
         android:layout_marginEnd="12dp" />
 
     <TextView
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textSize="14sp"
-        android:textColor="#1E293B" />
+        android:textColor="?attr/colorSurface" />
 
     <TextView
         android:id="@+id/deleteTask"

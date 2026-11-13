@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Rounded container for a timeline block. The solid colour is applied at
-     runtime from the task (see TimelineAdapter), which is why it is white here
-     as a neutral placeholder rather than a hardcoded brand colour. -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <corners android:radius="10dp" />
-    <solid android:color="#FFFFFF" />
-</shape>

@@ -12,10 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.dailytodolist.util.ThemeColors;
+
 public class ThemeActivity extends AppCompatActivity {
 
     private TextView defaultThemeStatus, hotpinkStatus, cyanHotpinkStatus, limeStatus, cyanIndigoStatus;
     private TextView yellowRedStatus, creamRoseStatus, yellowCyanStatus, magentaBlueStatus;
+    private TextView mintStatus, sunsetStatus;
     private TextView themeTitle, themesAvailableText;
     private LinearLayout mainLayout;
     private SharedPreferences sharedPreferences;
@@ -23,8 +26,8 @@ public class ThemeActivity extends AppCompatActivity {
     private boolean isDarkMode = false; // FIX: Initialize with default value
 
     // Store all card backgrounds and theme names
-    private LinearLayout[] cardInnerLayouts = new LinearLayout[9];
-    private TextView[] themeNameTexts = new TextView[9];
+    private LinearLayout[] cardInnerLayouts = new LinearLayout[11];
+    private TextView[] themeNameTexts = new TextView[11];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,8 @@ public class ThemeActivity extends AppCompatActivity {
         creamRoseStatus = findViewById(R.id.creamRoseStatus);
         yellowCyanStatus = findViewById(R.id.yellowCyanStatus);
         magentaBlueStatus = findViewById(R.id.magentaBlueStatus);
+        mintStatus = findViewById(R.id.mintStatus);
+        sunsetStatus = findViewById(R.id.sunsetStatus);
 
         // Find header texts using IDs from updated XML
         themeTitle = findViewById(R.id.themesTitle);
@@ -71,7 +76,7 @@ public class ThemeActivity extends AppCompatActivity {
             ViewGroup scrollContent = (ViewGroup) scrollView.getChildAt(0);
             if (scrollContent instanceof LinearLayout) {
                 LinearLayout contentLayout = (LinearLayout) scrollContent;
-                for (int i = 0; i < contentLayout.getChildCount() && i < 9; i++) {
+                for (int i = 0; i < contentLayout.getChildCount(); i++) {
                     View themeCard = contentLayout.getChildAt(i);
                     if (themeCard instanceof LinearLayout) {
                         LinearLayout outerCard = (LinearLayout) themeCard;
@@ -107,34 +112,32 @@ public class ThemeActivity extends AppCompatActivity {
         // FIX: Always get fresh dark mode value from SharedPreferences
         isDarkMode = ThemeManager.isDarkMode(this);
 
-        // Update header colors - Light mode = White, Dark mode = Black
+        // Header text sits on the theme gradient, so it is derived from that
+        // gradient rather than from a fixed dark/light pair.
+        String currentTheme = sharedPreferences.getString("selected_theme", ThemeManager.THEME_DEFAULT);
+        int[] gradientColors = ThemeManager.getThemeGradientColors(this, currentTheme);
+        int onGradient = ThemeColors.onGradient(gradientColors[0], gradientColors[1]);
+
         if (themeTitle != null) {
-            themeTitle.setTextColor(isDarkMode ? android.graphics.Color.parseColor("#000000") : android.graphics.Color.parseColor("#FFFFFF"));
+            themeTitle.setTextColor(onGradient);
         }
 
         if (themesAvailableText != null) {
-            themesAvailableText.setTextColor(isDarkMode ? android.graphics.Color.parseColor("#000000") : android.graphics.Color.parseColor("#E0E0E0"));
+            themesAvailableText.setTextColor(onGradient);
         }
 
         // Update all theme cards
         for (int i = 0; i < cardInnerLayouts.length; i++) {
             if (cardInnerLayouts[i] != null) {
-                if (isDarkMode) {
-                    // Dark mode - make inner card BLACK
-                    GradientDrawable darkCardBg = new GradientDrawable();
-                    darkCardBg.setShape(GradientDrawable.RECTANGLE);
-                    darkCardBg.setCornerRadius(12 * getResources().getDisplayMetrics().density);
-                    darkCardBg.setColor(android.graphics.Color.parseColor("#1E1E1E"));
-                    cardInnerLayouts[i].setBackground(darkCardBg);
-                } else {
-                    // Light mode - restore white card
-                    cardInnerLayouts[i].setBackgroundResource(R.drawable.white_card_bg);
-                }
+                GradientDrawable cardBg = new GradientDrawable();
+                cardBg.setShape(GradientDrawable.RECTANGLE);
+                cardBg.setCornerRadius(12 * getResources().getDisplayMetrics().density);
+                cardBg.setColor(ThemeColors.surface(cardInnerLayouts[i]));
+                cardInnerLayouts[i].setBackground(cardBg);
             }
 
-            // Update theme name colors - WHITE in dark mode
             if (themeNameTexts[i] != null) {
-                themeNameTexts[i].setTextColor(isDarkMode ? android.graphics.Color.parseColor("#FFFFFF") : android.graphics.Color.parseColor("#2C3E66"));
+                themeNameTexts[i].setTextColor(ThemeColors.onSurface(themeNameTexts[i]));
             }
         }
 
@@ -153,16 +156,10 @@ public class ThemeActivity extends AppCompatActivity {
         }
 
         if (footerNav != null) {
-            if (isDarkMode) {
-                // DARK MODE - BLACK background
-                GradientDrawable blackFooterBg = new GradientDrawable();
-                blackFooterBg.setShape(GradientDrawable.RECTANGLE);
-                blackFooterBg.setColor(android.graphics.Color.parseColor("#000000"));
-                footerNav.setBackground(blackFooterBg);
-            } else {
-                // LIGHT MODE - WHITE background
-                footerNav.setBackgroundColor(android.graphics.Color.parseColor("#FFFFFF"));
-            }
+            GradientDrawable footerBg = new GradientDrawable();
+            footerBg.setShape(GradientDrawable.RECTANGLE);
+            footerBg.setColor(ThemeColors.surface(footerNav));
+            footerNav.setBackground(footerBg);
         }
 
         // Find all navigation items and set their colors
@@ -205,23 +202,14 @@ public class ThemeActivity extends AppCompatActivity {
             }
         }
 
-        if (isDarkMode) {
-            // Dark mode - WHITE text and icons (except current page)
-            if (iconView != null) {
-                iconView.setTextColor(isCurrentPage ? android.graphics.Color.parseColor("#9C27B0") : android.graphics.Color.parseColor("#FFFFFF"));
-            }
-            if (textView != null) {
-                textView.setTextColor(isCurrentPage ? android.graphics.Color.parseColor("#9C27B0") : android.graphics.Color.parseColor("#FFFFFF"));
-            }
-        } else {
-            // Light mode - dark gray text and icons (except current page)
-            int grayColor = android.graphics.Color.parseColor("#7F8C8D");
-            if (iconView != null) {
-                iconView.setTextColor(isCurrentPage ? android.graphics.Color.parseColor("#9C27B0") : grayColor);
-            }
-            if (textView != null) {
-                textView.setTextColor(isCurrentPage ? android.graphics.Color.parseColor("#9C27B0") : grayColor);
-            }
+        int navColor = isCurrentPage
+                ? ThemeColors.primary(navItem)
+                : ThemeColors.onSurfaceVariant(navItem);
+        if (iconView != null) {
+            iconView.setTextColor(navColor);
+        }
+        if (textView != null) {
+            textView.setTextColor(navColor);
         }
     }
 
@@ -252,7 +240,9 @@ public class ThemeActivity extends AppCompatActivity {
         updateThemeStatus(yellowRedStatus, ThemeManager.THEME_YELLOW_RED, currentTheme, R.string.yellow_red);
         updateThemeStatus(creamRoseStatus, ThemeManager.THEME_CREAM_ROSE, currentTheme, R.string.cream_rose);
         updateThemeStatus(yellowCyanStatus, ThemeManager.THEME_YELLOW_CYAN, currentTheme, R.string.yellow_cyan);
+        updateThemeStatus(mintStatus, ThemeManager.THEME_MINT, currentTheme, R.string.mint_green);
         updateThemeStatus(magentaBlueStatus, ThemeManager.THEME_MAGENTA_BLUE, currentTheme, R.string.magenta_blue);
+        updateThemeStatus(sunsetStatus, ThemeManager.THEME_SUNSET, currentTheme, R.string.sunset_orange);
     }
 
     private void updateThemeStatus(TextView statusView, String themeId, String currentTheme, int themeNameResId) {
@@ -263,11 +253,10 @@ public class ThemeActivity extends AppCompatActivity {
             statusView.setTextColor(getColor(R.color.accent_green));
         } else {
             statusView.setText(getString(R.string.not_applied));
-            if (isDarkMode) {
-                statusView.setTextColor(android.graphics.Color.parseColor("#FF6B6B"));
-            } else {
-                statusView.setTextColor(getColor(R.color.base_text_secondary));
-            }
+            // colorOnSurfaceVariant is the secondary-text role: it is guaranteed
+            // to keep AA contrast against colorSurface in every palette, which a
+            // fixed grey does not (text_muted measured 2.68:1 on white).
+            statusView.setTextColor(ThemeColors.onSurfaceVariant(statusView));
         }
         statusView.setBackgroundColor(0);
     }
@@ -302,6 +291,10 @@ public class ThemeActivity extends AppCompatActivity {
                 return getString(R.string.yellow_cyan);
             case ThemeManager.THEME_MAGENTA_BLUE:
                 return getString(R.string.magenta_blue);
+            case ThemeManager.THEME_MINT:
+                return getString(R.string.mint_green);
+            case ThemeManager.THEME_SUNSET:
+                return getString(R.string.sunset_orange);
             default:
                 return getString(R.string.default_theme);
         }
@@ -316,7 +309,9 @@ public class ThemeActivity extends AppCompatActivity {
         yellowRedStatus.setOnClickListener(v -> applyTheme(ThemeManager.THEME_YELLOW_RED));
         creamRoseStatus.setOnClickListener(v -> applyTheme(ThemeManager.THEME_CREAM_ROSE));
         yellowCyanStatus.setOnClickListener(v -> applyTheme(ThemeManager.THEME_YELLOW_CYAN));
+        mintStatus.setOnClickListener(v -> applyTheme(ThemeManager.THEME_MINT));
         magentaBlueStatus.setOnClickListener(v -> applyTheme(ThemeManager.THEME_MAGENTA_BLUE));
+        sunsetStatus.setOnClickListener(v -> applyTheme(ThemeManager.THEME_SUNSET));
     }
 
     private void setupNavigation() {

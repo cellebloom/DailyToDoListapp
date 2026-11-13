@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Primary-action pill. The stops come from the active theme's primary and
+     secondary roles, so the same drawable follows all ten palettes instead of
+     pinning the old purple-to-blue brand colours. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <gradient
-        android:startColor="#9C27B0"
-        android:endColor="#2196F3"
+        android:startColor="?attr/colorPrimary"
+        android:endColor="?attr/colorSecondary"
         android:angle="135"/>
     <corners android:radius="27dp" />
 </shape>

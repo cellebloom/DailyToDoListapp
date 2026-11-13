@@ -31,4 +31,23 @@
     <color name="text_secondary">#A9B7D4</color>
     <color name="text_hint">#8892A6</color>
 
+    <!-- Semantic status colours, lightened so they keep their contrast
+         against the dark surfaces above (see values/colors.xml). -->
+    <color name="status_owned">#66BB6A</color>
+    <color name="status_free">#64B5F6</color>
+    <color name="status_locked">#9E9E9E</color>
+    <color name="price_gold">#FFD54F</color>
+    <color name="destructive">#FF6B6B</color>
+    <color name="text_muted">#6E6E6E</color>
+
+    <!-- Category text colours, lightened so the label stays readable on the
+         dark card surfaces. The block_* fills are unchanged: they are read as
+         backgrounds, and their labels come from GradientContrast. -->
+    <color name="block_study_text">#8FBEF5</color>
+    <color name="block_classes_text">#A99BF8</color>
+    <color name="block_assignments_text">#F273A6</color>
+    <color name="block_personal_text">#FFC761</color>
+    <color name="block_break_text">#A8E86E</color>
+    <color name="block_other_text">#B8B8B8</color>
+
 </resources>

@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.widget.LinearLayout;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +14,14 @@ import java.util.Locale;
 
 public class BaseActivity extends AppCompatActivity {
 
-    protected LinearLayout mainLayout;
+    /**
+     * Root view for the theme gradient. Typed as {@link View}, not
+     * {@code LinearLayout}: most screens declare their own (shadowing) field,
+     * and at least one screen uses a ConstraintLayout root. Widening this one
+     * keeps {@link #applyGradientBackground()} from casting the root and
+     * crashing on configuration changes.
+     */
+    protected View mainLayout;
     protected SharedPreferences sharedPreferences;
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceListener;
 

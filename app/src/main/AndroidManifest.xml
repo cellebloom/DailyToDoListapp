@@ -10,6 +10,10 @@
     <!-- For Android 13+ (API 33) -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
+    <!-- Network access: Firebase sign-in plus the optional local AI scheduler
+         (AIService, plain HttpURLConnection — there is no Retrofit dependency). -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <!-- Time-block reminders. POST_NOTIFICATIONS is runtime-granted on
          Android 13+; SCHEDULE_EXACT_ALARM lets the reminder land on the exact
          minute instead of whenever the system feels like batching it. -->
@@ -28,6 +32,7 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.DailyToDoList"
         android:requestLegacyExternalStorage="true"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
         <!-- Login Activity with Modern Theme -->
@@ -42,10 +47,13 @@
             </intent-filter>
         </activity>
 
-        <!-- Main Activity -->
+        <!-- Main Activity. singleTop so a "View This Day's Timeline" jump from
+             the Calendar reuses this instance instead of stacking a second
+             Home, which is what delivers the day via onNewIntent. -->
         <activity
             android:name=".MainActivity"
             android:theme="@style/Base.Theme.DailyToDoList"
+            android:launchMode="singleTop"
             android:configChanges="uiMode|screenLayout|screenSize|orientation|locale"
             android:exported="false" />
 
@@ -59,13 +67,6 @@
         <!-- Profile Activity -->
         <activity
             android:name=".ProfileActivity"
-            android:theme="@style/Base.Theme.DailyToDoList"
-            android:configChanges="uiMode|screenLayout|screenSize|orientation|locale"
-            android:exported="false" />
-
-        <!-- Settings Activity -->
-        <activity
-            android:name=".SettingsActivity"
             android:theme="@style/Base.Theme.DailyToDoList"
             android:configChanges="uiMode|screenLayout|screenSize|orientation|locale"
             android:exported="false" />
@@ -96,6 +97,15 @@
             android:name=".ReviewActivity"
             android:theme="@style/Base.Theme.DailyToDoList"
             android:configChanges="uiMode|screenLayout|screenSize|orientation|locale"
+            android:exported="false" />
+
+        <!-- AI Q&A chat / DailyToDo-AI (2.0 preview, see docs/PRD.md §5).
+             adjustResize keeps the composer above the soft keyboard. -->
+        <activity
+            android:name=".ChatActivity"
+            android:theme="@style/Base.Theme.DailyToDoList"
+            android:configChanges="uiMode|screenLayout|screenSize|orientation|locale"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
 
         <!-- Delivers "starts in 5 minutes" notifications. Not exported: only

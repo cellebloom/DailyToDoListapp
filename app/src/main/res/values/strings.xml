@@ -112,7 +112,6 @@
     <string name="todays_tasks">Today\'s Tasks</string>
     <string name="no_tasks_today">No tasks for today!</string>
     <string name="take_a_break">Take a break and relax. You\'ve earned it! 😊</string>
-    <string name="add_new_task_hint">Add a new task...</string>
     <string name="daily_quote">Daily Quote</string>
     <string name="edit">✏️ Edit</string>
     <string name="default_quote">Chase Your Dream</string>
@@ -223,6 +222,43 @@
     <string name="backlog_header">Anytime</string>
     <string name="top_priorities_header">Top 3 Priorities</string>
 
+    <!-- Timeline interactions -->
+    <string name="delete_past_task_title">Delete this task?</string>
+    <string name="delete_past_task_message">Delete “%1$s”, or keep it as a record of the day?</string>
+    <string name="reschedule_hint">Drag any block to move it; swipe a block to delete it</string>
+    <string name="reschedule_no_room">No room left before midnight</string>
+    <string name="reschedule_success">Moved to %1$s</string>
+    <!-- Add-task date picker + past-time handling -->
+    <string name="select_date">Select Date</string>
+    <string name="today">Today</string>
+    <string name="past_time_warning">This time has already passed today. Scheduling for tomorrow instead?</string>
+    <string name="past_time_rescheduled">Time already passed — scheduled for tomorrow instead</string>
+    <!-- Planner-style grid header -->
+    <!-- Calendar month view -> Home timeline -->
+    <string name="view_day_timeline">View This Day\'s Timeline</string>
+
+    <!-- AI auto-schedule (2.0 preview, see docs/PRD.md §5) -->
+    <string name="btn_auto_schedule">✨ Auto-Schedule with AI</string>
+    <string name="ai_thinking">AI is thinking…</string>
+    <string name="ai_schedule_no_anytime">No Anytime tasks to schedule for this day</string>
+    <string name="ai_schedule_empty">The AI returned no schedule</string>
+    <string name="ai_schedule_success">Scheduled %1$d task(s)</string>
+    <string name="ai_schedule_failed">Could not reach the AI scheduler: %1$s</string>
+
+    <!-- AI Q&A chat / DailyToDo-AI (2.0 preview, see docs/PRD.md §5) -->
+    <string name="ask_ai">Ask AI</string>
+    <string name="chat_title">DailyToDo-AI</string>
+    <string name="chat_hint">Ask about your tasks…</string>
+    <string name="chat_send">Send</string>
+    <string name="chat_welcome">Hi! I can see your tasks. Ask me anything about your day.</string>
+    <string name="chat_error">Could not reach the AI: %1$s</string>
+    <string name="chat_empty_answer">The AI returned an empty answer</string>
+    <string name="chat_context_header">Current tasks (dates, times, categories, priorities):</string>
+    <string name="chat_back">Back</string>
+    <string name="chat_back_arrow">&#8249;</string>
+    <string name="chat_task_added">Added “%1$s” to your tasks</string>
+    <string name="chat_task_added_anytime">Added “%1$s” to Anytime</string>
+
     <!-- Time block reminders -->
     <string name="reminder_channel_description">Notifies you 5 minutes before a scheduled time block begins.</string>
     <string name="reminder_title">Upcoming time block</string>
@@ -241,4 +277,9 @@
     <string name="improve_hint">What can I improve?</string>
     <string name="save_review">Save Review</string>
     <string name="review_saved">Review saved</string>
+    <string name="permission_dialog_title">Allow Daily To Do List to send you notifications?</string>
+    <string name="permission_dialog_subtitle">Stay updated with task reminders, deadlines and important alerts.</string>
+    <string name="permission_dialog_allow">Allow</string>
+    <string name="permission_dialog_deny">Don\'t Allow</string>
+    <string name="permission_dialog_close">Close</string>
 </resources>

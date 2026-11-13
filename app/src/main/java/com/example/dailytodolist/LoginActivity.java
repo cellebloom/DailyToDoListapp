@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -15,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.example.dailytodolist.util.ThemeColors;
 
 public class LoginActivity extends BaseActivity {
 
@@ -178,163 +179,111 @@ public class LoginActivity extends BaseActivity {
     private void applyDarkMode() {
         isDarkMode = ThemeManager.isDarkMode(this);
 
-        if (isDarkMode) {
-            // ===== HEADER COLORS FOR DARK MODE =====
-            if (checkIcon != null) checkIcon.setTextColor(android.graphics.Color.BLACK);
-            if (appTitle != null) appTitle.setTextColor(android.graphics.Color.BLACK);
-            if (tagline != null) tagline.setTextColor(android.graphics.Color.BLACK);
+        String currentTheme = sharedPreferences.getString("selected_theme", ThemeManager.THEME_DEFAULT);
+        int[] gradientColors = ThemeManager.getThemeGradientColors(this, currentTheme);
+        int accentColor = gradientColors[0];
+        // The whole login screen sits on the theme gradient, so the header text
+        // is chosen from that gradient instead of a fixed dark/light pair.
+        int onGradient = ThemeColors.onGradient(gradientColors[0], gradientColors[1]);
 
-            // ===== WHITE SQUARE (outerIconFrame) becomes BLACK in dark mode =====
-            if (outerIconFrame != null) {
-                GradientDrawable darkFrameBg = new GradientDrawable();
-                darkFrameBg.setShape(GradientDrawable.RECTANGLE);
-                darkFrameBg.setCornerRadius(30 * getResources().getDisplayMetrics().density);
-                darkFrameBg.setColor(android.graphics.Color.parseColor("#1E1E1E"));
-                darkFrameBg.setStroke(2, android.graphics.Color.parseColor("#333333"));
-                outerIconFrame.setBackground(darkFrameBg);
-            }
+        if (checkIcon != null) checkIcon.setTextColor(onGradient);
+        if (appTitle != null) appTitle.setTextColor(onGradient);
+        if (tagline != null) tagline.setTextColor(onGradient);
 
-            // Login card background - dark
-            if (loginCard != null) loginCard.setBackgroundResource(R.drawable.dark_card_bg);
-
-            // Email and Password field containers - set dark background
-            if (emailFieldContainer != null) {
-                GradientDrawable darkFieldBg = new GradientDrawable();
-                darkFieldBg.setShape(GradientDrawable.RECTANGLE);
-                darkFieldBg.setCornerRadius(12 * getResources().getDisplayMetrics().density);
-                darkFieldBg.setColor(android.graphics.Color.parseColor("#2D2D2D"));
-                emailFieldContainer.setBackground(darkFieldBg);
-            }
-
-            if (passwordFieldContainer != null) {
-                GradientDrawable darkFieldBg = new GradientDrawable();
-                darkFieldBg.setShape(GradientDrawable.RECTANGLE);
-                darkFieldBg.setCornerRadius(12 * getResources().getDisplayMetrics().density);
-                darkFieldBg.setColor(android.graphics.Color.parseColor("#2D2D2D"));
-                passwordFieldContainer.setBackground(darkFieldBg);
-            }
-
-            // Text colors
-            TextView emailLabel = findViewById(R.id.emailLabel);
-            TextView passwordLabel = findViewById(R.id.passwordLabel);
-            TextView dontHaveAccount = findViewById(R.id.dontHaveAccount);
-            TextView orText = findViewById(R.id.orText);
-            TextView orContinueText = findViewById(R.id.orContinueText);
-            TextView googleText = findViewById(R.id.googleText);
-
-            if (emailLabel != null) emailLabel.setTextColor(getColor(R.color.white));
-            if (passwordLabel != null) passwordLabel.setTextColor(getColor(R.color.white));
-            if (dontHaveAccount != null) dontHaveAccount.setTextColor(getColor(R.color.dark_text_secondary));
-            if (orText != null) orText.setTextColor(getColor(R.color.dark_text_secondary));
-            if (orContinueText != null) orContinueText.setTextColor(getColor(R.color.dark_text_secondary));
-            if (googleText != null) googleText.setTextColor(getColor(R.color.white));
-
-            // EditText styles
-            if (emailInput != null) {
-                emailInput.setTextColor(getColor(R.color.white));
-                emailInput.setHintTextColor(android.graphics.Color.parseColor("#A0A0A0"));
-            }
-
-            if (passwordInput != null) {
-                passwordInput.setTextColor(getColor(R.color.white));
-                passwordInput.setHintTextColor(android.graphics.Color.parseColor("#A0A0A0"));
-            }
-
-            // Checkbox text color
-            if (rememberCheckbox != null) {
-                rememberCheckbox.setTextColor(getColor(R.color.white));
-                rememberCheckbox.setButtonTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#9C27B0")));
-            }
-
-            // Guest button styling for dark mode
-            if (guestLink != null) {
-                guestLink.setTextColor(android.graphics.Color.parseColor("#A0A0A0"));
-                GradientDrawable guestBg = new GradientDrawable();
-                guestBg.setShape(GradientDrawable.RECTANGLE);
-                guestBg.setCornerRadius(25 * getResources().getDisplayMetrics().density);
-                guestBg.setStroke(2, android.graphics.Color.parseColor("#404040"));
-                guestBg.setColor(android.graphics.Color.TRANSPARENT);
-                guestLink.setBackground(guestBg);
-            }
-
-            // Google button styling for dark mode
-            if (googleButton != null) {
-                GradientDrawable googleBg = new GradientDrawable();
-                googleBg.setShape(GradientDrawable.RECTANGLE);
-                googleBg.setCornerRadius(25 * getResources().getDisplayMetrics().density);
-                googleBg.setStroke(2, android.graphics.Color.parseColor("#404040"));
-                googleBg.setColor(android.graphics.Color.TRANSPARENT);
-                googleButton.setBackground(googleBg);
-            }
-
-            // Forgot password link color
-            if (forgotPasswordLink != null) {
-                String currentTheme = sharedPreferences.getString("selected_theme", ThemeManager.THEME_DEFAULT);
-                int[] gradientColors = ThemeManager.getThemeGradientColors(this, currentTheme);
-                int accentColor = gradientColors[0];
-                forgotPasswordLink.setTextColor(accentColor);
-            }
-
-            // Bottom link color
-            if (bottomLink != null) {
-                String currentTheme = sharedPreferences.getString("selected_theme", ThemeManager.THEME_DEFAULT);
-                int[] gradientColors = ThemeManager.getThemeGradientColors(this, currentTheme);
-                int accentColor = gradientColors[0];
-                bottomLink.setTextColor(accentColor);
-            }
-
-        } else {
-            // ===== HEADER COLORS FOR LIGHT MODE =====
-            if (checkIcon != null) checkIcon.setTextColor(android.graphics.Color.WHITE);
-            if (appTitle != null) appTitle.setTextColor(android.graphics.Color.WHITE);
-            if (tagline != null) tagline.setTextColor(android.graphics.Color.WHITE);
-
-            // ===== WHITE SQUARE (outerIconFrame) back to WHITE in light mode =====
-            if (outerIconFrame != null) {
-                outerIconFrame.setBackgroundResource(R.drawable.outer_icon_frame);
-            }
-
-            // Light mode - restore original
-            if (loginCard != null) loginCard.setBackgroundResource(R.drawable.white_card_bg);
-
-            // Restore email field container
-            if (emailFieldContainer != null) {
-                emailFieldContainer.setBackgroundResource(R.drawable.input_field_bg);
-            }
-
-            // Restore password field container
-            if (passwordFieldContainer != null) {
-                passwordFieldContainer.setBackgroundResource(R.drawable.input_field_bg);
-            }
-
-            // Restore EditText styles
-            if (emailInput != null) {
-                emailInput.setTextColor(getColor(R.color.theme_text_primary));
-                emailInput.setHintTextColor(getColor(R.color.theme_text_secondary));
-            }
-
-            if (passwordInput != null) {
-                passwordInput.setTextColor(getColor(R.color.theme_text_primary));
-                passwordInput.setHintTextColor(getColor(R.color.theme_text_secondary));
-            }
-
-            // Restore guest button
-            if (guestLink != null) {
-                guestLink.setTextColor(getColor(R.color.login_guest_text));
-                guestLink.setBackgroundResource(R.drawable.guest_button_bg);
-            }
-
-            // Restore Google button
-            if (googleButton != null) {
-                googleButton.setBackgroundResource(R.drawable.google_button_bg);
-            }
-
-            // Restore checkbox text
-            if (rememberCheckbox != null) {
-                rememberCheckbox.setTextColor(getColor(R.color.login_text_primary));
-                rememberCheckbox.setButtonTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#9C27B0")));
-            }
+        // Icon frame: themed surface with a themed hairline border.
+        if (outerIconFrame != null) {
+            GradientDrawable frameBg = new GradientDrawable();
+            frameBg.setShape(GradientDrawable.RECTANGLE);
+            frameBg.setCornerRadius(30 * getResources().getDisplayMetrics().density);
+            frameBg.setColor(ThemeColors.surface(outerIconFrame));
+            frameBg.setStroke(2, ThemeColors.outline(outerIconFrame));
+            outerIconFrame.setBackground(frameBg);
         }
+
+        // Login card background.
+        if (loginCard != null) {
+            GradientDrawable cardBg = new GradientDrawable();
+            cardBg.setShape(GradientDrawable.RECTANGLE);
+            cardBg.setCornerRadius(16 * getResources().getDisplayMetrics().density);
+            cardBg.setColor(ThemeColors.surface(loginCard));
+            cardBg.setStroke(1, ThemeColors.outline(loginCard));
+            loginCard.setBackground(cardBg);
+        }
+
+        // Email and Password field containers.
+        if (emailFieldContainer != null) {
+            emailFieldContainer.setBackground(fieldBackground(emailFieldContainer));
+        }
+        if (passwordFieldContainer != null) {
+            passwordFieldContainer.setBackground(fieldBackground(passwordFieldContainer));
+        }
+
+        // Text colors.
+        TextView emailLabel = findViewById(R.id.emailLabel);
+        TextView passwordLabel = findViewById(R.id.passwordLabel);
+        TextView dontHaveAccount = findViewById(R.id.dontHaveAccount);
+        TextView orText = findViewById(R.id.orText);
+        TextView orContinueText = findViewById(R.id.orContinueText);
+        TextView googleText = findViewById(R.id.googleText);
+
+        if (emailLabel != null) emailLabel.setTextColor(ThemeColors.onSurface(emailLabel));
+        if (passwordLabel != null) passwordLabel.setTextColor(ThemeColors.onSurface(passwordLabel));
+        if (dontHaveAccount != null) dontHaveAccount.setTextColor(ThemeColors.onSurfaceVariant(dontHaveAccount));
+        if (orText != null) orText.setTextColor(ThemeColors.onSurfaceVariant(orText));
+        if (orContinueText != null) orContinueText.setTextColor(ThemeColors.onSurfaceVariant(orContinueText));
+        if (googleText != null) googleText.setTextColor(ThemeColors.onSurface(googleText));
+
+        // EditText styles.
+        if (emailInput != null) {
+            emailInput.setTextColor(ThemeColors.onSurface(emailInput));
+            emailInput.setHintTextColor(ThemeColors.onSurfaceVariant(emailInput));
+        }
+        if (passwordInput != null) {
+            passwordInput.setTextColor(ThemeColors.onSurface(passwordInput));
+            passwordInput.setHintTextColor(ThemeColors.onSurfaceVariant(passwordInput));
+        }
+
+        // Checkbox text and tint.
+        if (rememberCheckbox != null) {
+            rememberCheckbox.setTextColor(ThemeColors.onSurface(rememberCheckbox));
+            rememberCheckbox.setButtonTintList(
+                    android.content.res.ColorStateList.valueOf(ThemeColors.primary(rememberCheckbox)));
+        }
+
+        // Guest button: outlined, transparent fill.
+        if (guestLink != null) {
+            guestLink.setTextColor(ThemeColors.onSurfaceVariant(guestLink));
+            GradientDrawable guestBg = new GradientDrawable();
+            guestBg.setShape(GradientDrawable.RECTANGLE);
+            guestBg.setCornerRadius(25 * getResources().getDisplayMetrics().density);
+            guestBg.setStroke(2, ThemeColors.outline(guestLink));
+            guestBg.setColor(android.graphics.Color.TRANSPARENT);
+            guestLink.setBackground(guestBg);
+        }
+
+        // Google button: outlined, transparent fill.
+        if (googleButton != null) {
+            GradientDrawable googleBg = new GradientDrawable();
+            googleBg.setShape(GradientDrawable.RECTANGLE);
+            googleBg.setCornerRadius(25 * getResources().getDisplayMetrics().density);
+            googleBg.setStroke(2, ThemeColors.outline(googleButton));
+            googleBg.setColor(android.graphics.Color.TRANSPARENT);
+            googleButton.setBackground(googleBg);
+        }
+
+        // Accent links.
+        if (forgotPasswordLink != null) forgotPasswordLink.setTextColor(accentColor);
+        if (bottomLink != null) bottomLink.setTextColor(accentColor);
+    }
+
+    /** Rounded field container painted with the recessed surface role. */
+    private GradientDrawable fieldBackground(View field) {
+        GradientDrawable fieldBg = new GradientDrawable();
+        fieldBg.setShape(GradientDrawable.RECTANGLE);
+        fieldBg.setCornerRadius(12 * getResources().getDisplayMetrics().density);
+        fieldBg.setColor(ThemeColors.surfaceVariant(field));
+        fieldBg.setStroke(1, ThemeColors.outline(field));
+        return fieldBg;
     }
 
     private void applyAllGradients() {
@@ -359,6 +308,13 @@ public class LoginActivity extends BaseActivity {
             );
             buttonGradient.setCornerRadius(27 * getResources().getDisplayMetrics().density);
             actionButton.setBackground(buttonGradient);
+
+            // The label sits on the gradient, not on the surface, so its colour
+            // has to come from the gradient. Leaving the layout's colorOnSurface
+            // here made the label dark-on-dark on hotpink (1.40:1), because that
+            // gradient ends at pure black.
+            actionButton.setTextColor(
+                    ThemeColors.onGradient(gradientColors[0], gradientColors[1]));
         }
 
         // 3. Apply gradient to Inner Square Icon

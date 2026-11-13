@@ -124,6 +124,28 @@
                         android:textColorHint="?attr/colorOnSurfaceVariant" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Date selection. Defaults to "Today"; tapping opens
+                     MaterialDatePicker. Sits above the Time Block section so a
+                     task can be scheduled for tomorrow or later tonight. -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_date"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSelectDate"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:text="@string/today"
+                    android:textSize="15sp"
+                    android:textAllCaps="false" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

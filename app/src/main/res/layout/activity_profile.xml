@@ -57,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#FFFFFF"
+                    android:background="?attr/colorSurface"
                     android:padding="20dp">
 
                     <LinearLayout
@@ -84,7 +84,7 @@
                         android:text="@string/guest"
                         android:textSize="22sp"
                         android:textStyle="bold"
-                        android:textColor="#2C3E66"
+                        android:textColor="?attr/colorOnSurface"
                         android:layout_gravity="center"
                         android:layout_marginBottom="4dp" />
 
@@ -94,7 +94,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/guest_account"
                         android:textSize="14sp"
-                        android:textColor="#7F8C8D"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:layout_gravity="center" />
 
                 </LinearLayout>
@@ -113,7 +113,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#FFFFFF"
+                    android:background="?attr/colorSurface"
                     android:padding="16dp">
 
                     <LinearLayout
@@ -129,7 +129,7 @@
                             android:layout_weight="1"
                             android:text="@string/member_since"
                             android:textSize="14sp"
-                            android:textColor="#49607C" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <TextView
                             android:id="@+id/memberSince"
@@ -138,7 +138,7 @@
                             android:text="May 23, 2026"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="#2C3E66" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -155,7 +155,7 @@
                             android:layout_weight="1"
                             android:text="@string/tasks_completed"
                             android:textSize="14sp"
-                            android:textColor="#49607C" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <TextView
                             android:id="@+id/tasksCompleted"
@@ -164,7 +164,7 @@
                             android:text="0"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="#2C3E66" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -179,7 +179,7 @@
                             android:layout_weight="1"
                             android:text="@string/total_coins"
                             android:textSize="14sp"
-                            android:textColor="#49607C" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <TextView
                             android:id="@+id/totalCoins"
@@ -188,7 +188,7 @@
                             android:text="0"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="#2C3E66" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -208,7 +208,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#FFFFFF"
+                    android:background="?attr/colorSurface"
                     android:padding="16dp">
 
                     <TextView
@@ -218,7 +218,7 @@
                         android:text="@string/account_settings"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:textColor="#2C3E66"
+                        android:textColor="?attr/colorOnSurface"
                         android:layout_marginBottom="12dp" />
 
                     <LinearLayout
@@ -239,14 +239,14 @@
                             android:layout_weight="1"
                             android:text="@string/edit_profile_name"
                             android:textSize="14sp"
-                            android:textColor="#49607C" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="›"
                             android:textSize="20sp"
-                            android:textColor="#9C27B0" />
+                            android:textColor="?attr/colorPrimary" />
 
                     </LinearLayout>
 
@@ -268,14 +268,14 @@
                             android:layout_weight="1"
                             android:text="@string/switch_account"
                             android:textSize="14sp"
-                            android:textColor="#49607C" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="›"
                             android:textSize="20sp"
-                            android:textColor="#9C27B0" />
+                            android:textColor="?attr/colorPrimary" />
 
                     </LinearLayout>
 
@@ -298,14 +298,14 @@
                             android:layout_weight="1"
                             android:text="@string/manage_account"
                             android:textSize="14sp"
-                            android:textColor="#49607C" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="›"
                             android:textSize="20sp"
-                            android:textColor="#9C27B0" />
+                            android:textColor="?attr/colorPrimary" />
 
                     </LinearLayout>
 
@@ -327,14 +327,14 @@
                             android:layout_weight="1"
                             android:text="@string/theme_preferences"
                             android:textSize="14sp"
-                            android:textColor="#49607C" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="›"
                             android:textSize="20sp"
-                            android:textColor="#9C27B0" />
+                            android:textColor="?attr/colorPrimary" />
 
                     </LinearLayout>
 
@@ -356,14 +356,14 @@
                             android:layout_weight="1"
                             android:text="@string/language"
                             android:textSize="14sp"
-                            android:textColor="#49607C" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="›"
                             android:textSize="20sp"
-                            android:textColor="#9C27B0" />
+                            android:textColor="?attr/colorPrimary" />
 
                     </LinearLayout>
 
@@ -385,14 +385,14 @@
                             android:layout_weight="1"
                             android:text="@string/logout"
                             android:textSize="14sp"
-                            android:textColor="#E94560" />
+                            android:textColor="@color/destructive" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="›"
                             android:textSize="20sp"
-                            android:textColor="#E94560" />
+                            android:textColor="@color/destructive" />
 
                     </LinearLayout>
 
@@ -411,7 +411,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#FFFFFF"
+                    android:background="?attr/colorSurface"
                     android:padding="16dp">
 
                     <TextView
@@ -421,7 +421,7 @@
                         android:text="@string/appearance"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:textColor="#2C3E66"
+                        android:textColor="?attr/colorOnSurface"
                         android:layout_marginBottom="12dp" />
 
                     <LinearLayout
@@ -499,7 +499,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#FFFFFF"
+        android:background="?attr/colorSurface"
         android:elevation="8dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
@@ -508,27 +508,27 @@
 
         <LinearLayout android:id="@+id/navHome" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🏠" android:textSize="22sp" />
-            <TextView android:id="@+id/navHomeText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_home" android:textSize="11sp" android:textColor="#7F8C8D" />
+            <TextView android:id="@+id/navHomeText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_home" android:textSize="11sp" android:textColor="?attr/colorOnSurfaceVariant" />
         </LinearLayout>
 
         <LinearLayout android:id="@+id/navCalendar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📅" android:textSize="22sp" />
-            <TextView android:id="@+id/navCalendarText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_calendar" android:textSize="11sp" android:textColor="#7F8C8D" />
+            <TextView android:id="@+id/navCalendarText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_calendar" android:textSize="11sp" android:textColor="?attr/colorOnSurfaceVariant" />
         </LinearLayout>
 
         <LinearLayout android:id="@+id/navShop" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🛒" android:textSize="22sp" />
-            <TextView android:id="@+id/navShopText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_shop" android:textSize="11sp" android:textColor="#7F8C8D" />
+            <TextView android:id="@+id/navShopText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_shop" android:textSize="11sp" android:textColor="?attr/colorOnSurfaceVariant" />
         </LinearLayout>
 
         <LinearLayout android:id="@+id/navThemes" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🎨" android:textSize="22sp" />
-            <TextView android:id="@+id/navThemesText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_themes" android:textSize="11sp" android:textColor="#7F8C8D" />
+            <TextView android:id="@+id/navThemesText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_themes" android:textSize="11sp" android:textColor="?attr/colorOnSurfaceVariant" />
         </LinearLayout>
 
         <LinearLayout android:id="@+id/navProfile" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="👤" android:textSize="22sp" />
-            <TextView android:id="@+id/navProfileText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/profile" android:textSize="11sp" android:textColor="#9C27B0" android:textStyle="bold" />
+            <TextView android:id="@+id/navProfileText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/profile" android:textSize="11sp" android:textColor="?attr/colorPrimary" android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>

@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.dailytodolist.util.ThemeColors;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
@@ -20,6 +22,7 @@ public class ShopActivity extends BaseActivity {
 
     private TextView defaultThemeStatus, hotpinkStatus, cyanHotpinkStatus, limeStatus, cyanIndigoStatus;
     private TextView yellowRedStatus, creamRoseStatus, yellowCyanStatus, magentaBlueStatus;
+    private TextView mintStatus, sunsetStatus;
     private TextView coinCountText;
     private TextView shopTitle;
     private TextView themesAvailableText;
@@ -29,8 +32,8 @@ public class ShopActivity extends BaseActivity {
     private boolean isDarkMode = false;
 
     // Store all card backgrounds
-    private LinearLayout[] cardInnerLayouts = new LinearLayout[9];
-    private TextView[] themeNameTexts = new TextView[9];
+    private LinearLayout[] cardInnerLayouts = new LinearLayout[11];
+    private TextView[] themeNameTexts = new TextView[11];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,8 @@ public class ShopActivity extends BaseActivity {
         creamRoseStatus = findViewById(R.id.creamRoseStatus);
         yellowCyanStatus = findViewById(R.id.yellowCyanStatus);
         magentaBlueStatus = findViewById(R.id.magentaBlueStatus);
+        mintStatus = findViewById(R.id.mintStatus);
+        sunsetStatus = findViewById(R.id.sunsetStatus);
 
         // Update header texts with string resources
         if (shopTitle != null) {
@@ -88,7 +93,7 @@ public class ShopActivity extends BaseActivity {
             ViewGroup scrollContent = (ViewGroup) scrollView.getChildAt(0);
             if (scrollContent instanceof LinearLayout) {
                 LinearLayout contentLayout = (LinearLayout) scrollContent;
-                for (int i = 0; i < contentLayout.getChildCount() && i < 9; i++) {
+                for (int i = 0; i < contentLayout.getChildCount(); i++) {
                     View themeCard = contentLayout.getChildAt(i);
                     if (themeCard instanceof LinearLayout) {
                         LinearLayout outerCard = (LinearLayout) themeCard;
@@ -116,35 +121,36 @@ public class ShopActivity extends BaseActivity {
         // FIX: Always get fresh dark mode value from SharedPreferences
         isDarkMode = ThemeManager.isDarkMode(this);
 
-        // Update header colors
+        // Header text sits on the theme gradient, so it is derived from that
+        // gradient rather than from a fixed dark/light pair.
+        String currentTheme = sharedPreferences.getString("selected_theme", ThemeManager.THEME_DEFAULT);
+        int[] gradientColors = ThemeManager.getThemeGradientColors(this, currentTheme);
+        int onGradient = ThemeColors.onGradient(gradientColors[0], gradientColors[1]);
+
         if (shopTitle != null) {
-            shopTitle.setTextColor(isDarkMode ? android.graphics.Color.parseColor("#000000") : android.graphics.Color.parseColor("#FFFFFF"));
+            shopTitle.setTextColor(onGradient);
         }
 
         if (themesAvailableText != null) {
-            themesAvailableText.setTextColor(isDarkMode ? android.graphics.Color.parseColor("#000000") : android.graphics.Color.parseColor("#E0E0E0"));
+            themesAvailableText.setTextColor(onGradient);
         }
 
         if (coinCountText != null) {
-            coinCountText.setTextColor(isDarkMode ? android.graphics.Color.parseColor("#000000") : android.graphics.Color.parseColor("#FFFFFF"));
+            coinCountText.setTextColor(onGradient);
         }
 
         // Update all theme cards
         for (int i = 0; i < cardInnerLayouts.length; i++) {
             if (cardInnerLayouts[i] != null) {
-                if (isDarkMode) {
-                    GradientDrawable darkCardBg = new GradientDrawable();
-                    darkCardBg.setShape(GradientDrawable.RECTANGLE);
-                    darkCardBg.setCornerRadius(12 * getResources().getDisplayMetrics().density);
-                    darkCardBg.setColor(android.graphics.Color.parseColor("#1E1E1E"));
-                    cardInnerLayouts[i].setBackground(darkCardBg);
-                } else {
-                    cardInnerLayouts[i].setBackgroundResource(R.drawable.white_card_bg);
-                }
+                GradientDrawable cardBg = new GradientDrawable();
+                cardBg.setShape(GradientDrawable.RECTANGLE);
+                cardBg.setCornerRadius(12 * getResources().getDisplayMetrics().density);
+                cardBg.setColor(ThemeColors.surface(cardInnerLayouts[i]));
+                cardInnerLayouts[i].setBackground(cardBg);
             }
 
             if (themeNameTexts[i] != null) {
-                themeNameTexts[i].setTextColor(isDarkMode ? android.graphics.Color.parseColor("#FFFFFF") : android.graphics.Color.parseColor("#2C3E66"));
+                themeNameTexts[i].setTextColor(ThemeColors.onSurface(themeNameTexts[i]));
             }
         }
 
@@ -159,14 +165,10 @@ public class ShopActivity extends BaseActivity {
         }
 
         if (footerNav != null) {
-            if (isDarkMode) {
-                GradientDrawable blackFooterBg = new GradientDrawable();
-                blackFooterBg.setShape(GradientDrawable.RECTANGLE);
-                blackFooterBg.setColor(android.graphics.Color.parseColor("#000000"));
-                footerNav.setBackground(blackFooterBg);
-            } else {
-                footerNav.setBackgroundColor(android.graphics.Color.parseColor("#FFFFFF"));
-            }
+            GradientDrawable footerBg = new GradientDrawable();
+            footerBg.setShape(GradientDrawable.RECTANGLE);
+            footerBg.setColor(ThemeColors.surface(footerNav));
+            footerNav.setBackground(footerBg);
         }
 
         LinearLayout navHome = findViewById(R.id.navHome);
@@ -205,21 +207,14 @@ public class ShopActivity extends BaseActivity {
             }
         }
 
-        if (isDarkMode) {
-            if (iconView != null) {
-                iconView.setTextColor(isShop ? android.graphics.Color.parseColor("#9C27B0") : android.graphics.Color.parseColor("#FFFFFF"));
-            }
-            if (textView != null) {
-                textView.setTextColor(isShop ? android.graphics.Color.parseColor("#9C27B0") : android.graphics.Color.parseColor("#FFFFFF"));
-            }
-        } else {
-            int grayColor = android.graphics.Color.parseColor("#7F8C8D");
-            if (iconView != null) {
-                iconView.setTextColor(isShop ? android.graphics.Color.parseColor("#9C27B0") : grayColor);
-            }
-            if (textView != null) {
-                textView.setTextColor(isShop ? android.graphics.Color.parseColor("#9C27B0") : grayColor);
-            }
+        int navColor = isShop
+                ? ThemeColors.primary(navItem)
+                : ThemeColors.onSurfaceVariant(navItem);
+        if (iconView != null) {
+            iconView.setTextColor(navColor);
+        }
+        if (textView != null) {
+            textView.setTextColor(navColor);
         }
     }
 
@@ -276,7 +271,9 @@ public class ShopActivity extends BaseActivity {
         updateThemeStatus(yellowRedStatus, "yellow_red", "200 " + coinString);
         updateThemeStatus(creamRoseStatus, "cream_rose", "200 " + coinString);
         updateThemeStatus(yellowCyanStatus, "yellow_cyan", "200 " + coinString);
+        updateThemeStatus(mintStatus, ThemeManager.THEME_MINT, "200 " + coinString);
         updateThemeStatus(magentaBlueStatus, "magenta_blue", "200 " + coinString);
+        updateThemeStatus(sunsetStatus, ThemeManager.THEME_SUNSET, "200 " + coinString);
     }
 
     private void updateThemeStatus(TextView statusView, String themeId, String priceText) {
@@ -287,11 +284,7 @@ public class ShopActivity extends BaseActivity {
             statusView.setTextColor(ContextCompat.getColor(this, R.color.accent_green));
         } else {
             statusView.setText(priceText);
-            if (isDarkMode) {
-                statusView.setTextColor(android.graphics.Color.parseColor("#FF6B6B"));
-            } else {
-                statusView.setTextColor(ContextCompat.getColor(this, R.color.accent_red));
-            }
+            statusView.setTextColor(ContextCompat.getColor(this, R.color.price_gold));
         }
         statusView.setBackgroundColor(0);
     }
@@ -397,11 +390,27 @@ public class ShopActivity extends BaseActivity {
             }
         });
 
+        mintStatus.setOnClickListener(v -> {
+            if (isThemeOwned(ThemeManager.THEME_MINT)) {
+                applyTheme(ThemeManager.THEME_MINT, getString(R.string.mint_green));
+            } else {
+                purchaseTheme(ThemeManager.THEME_MINT, getString(R.string.mint_green), 200);
+            }
+        });
+
         magentaBlueStatus.setOnClickListener(v -> {
             if (isThemeOwned("magenta_blue")) {
                 applyTheme("magenta_blue", getString(R.string.magenta_blue));
             } else {
                 purchaseTheme("magenta_blue", getString(R.string.magenta_blue), 200);
+            }
+        });
+
+        sunsetStatus.setOnClickListener(v -> {
+            if (isThemeOwned(ThemeManager.THEME_SUNSET)) {
+                applyTheme(ThemeManager.THEME_SUNSET, getString(R.string.sunset_orange));
+            } else {
+                purchaseTheme(ThemeManager.THEME_SUNSET, getString(R.string.sunset_orange), 200);
             }
         });
     }

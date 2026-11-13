@@ -17,21 +17,24 @@ import com.example.dailytodolist.R;
  */
 public enum TimeCategory {
 
-    STUDY("Study", R.string.cat_study, R.color.block_study),
-    CLASSES("Classes", R.string.cat_classes, R.color.block_classes),
-    ASSIGNMENTS("Assignments", R.string.cat_assignments, R.color.block_assignments),
-    PERSONAL("Personal", R.string.cat_personal, R.color.block_personal),
-    BREAK("Break", R.string.cat_break, R.color.block_break),
-    OTHER("Other", R.string.cat_other, R.color.block_other);
+    STUDY("Study", R.string.cat_study, R.color.block_study, R.color.block_study_text),
+    CLASSES("Classes", R.string.cat_classes, R.color.block_classes, R.color.block_classes_text),
+    ASSIGNMENTS("Assignments", R.string.cat_assignments, R.color.block_assignments,
+            R.color.block_assignments_text),
+    PERSONAL("Personal", R.string.cat_personal, R.color.block_personal, R.color.block_personal_text),
+    BREAK("Break", R.string.cat_break, R.color.block_break, R.color.block_break_text),
+    OTHER("Other", R.string.cat_other, R.color.block_other, R.color.block_other_text);
 
     private final String storageKey;
     private final int labelRes;
     private final int colorRes;
+    private final int textColorRes;
 
-    TimeCategory(String storageKey, int labelRes, int colorRes) {
+    TimeCategory(String storageKey, int labelRes, int colorRes, int textColorRes) {
         this.storageKey = storageKey;
         this.labelRes = labelRes;
         this.colorRes = colorRes;
+        this.textColorRes = textColorRes;
     }
 
     /** Stable value written to storage. Never localised. */
@@ -44,9 +47,25 @@ public enum TimeCategory {
         return labelRes;
     }
 
-    /** Colour resource id for this category. */
+    /**
+     * Fill colour resource id for this category: used to paint a timeline block.
+     * The label drawn on top is chosen from this fill by GradientContrast.
+     */
     public int getColorRes() {
         return colorRes;
+    }
+
+    /**
+     * Text colour resource id for this category, for drawing the category name
+     * directly on a card surface rather than on a filled block.
+     *
+     * <p>Kept separate from {@link #getColorRes()} on purpose: the fill ramp is
+     * tuned to look like a coloured block, and several of those hues are far too
+     * light to read as small text (Break is 1.87:1 on white). Each has a
+     * night-qualified twin, so one name works in both modes.</p>
+     */
+    public int getTextColorRes() {
+        return textColorRes;
     }
 
     /**

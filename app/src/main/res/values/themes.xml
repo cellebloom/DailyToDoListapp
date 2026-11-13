@@ -27,7 +27,6 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:navigationBarColor">@color/white</item>
         <item name="android:windowLightNavigationBar">false</item>
-        <item name="colorControlNormal">#6B8DB5</item>
         <item name="colorControlActivated">@color/login_remember_me</item>
     </style>
 
@@ -50,7 +49,6 @@
         <item name="colorOutline">@color/base_card_border</item>
         <item name="android:statusBarColor">@color/default_start</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="colorControlNormal">#6B8DB5</item>
         <item name="colorControlActivated">@color/default_primary</item>
     </style>
 
@@ -70,7 +68,6 @@
         <item name="colorOutline">@color/dark_text_secondary</item>
         <item name="android:statusBarColor">@color/default_start</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="colorControlNormal">#6B8DB5</item>
         <item name="colorControlActivated">@color/default_secondary</item>
     </style>
 
@@ -90,7 +87,6 @@
         <item name="colorOutline">@color/base_card_border</item>
         <item name="android:statusBarColor">@color/hotpink_start</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="colorControlNormal">#6B8DB5</item>
         <item name="colorControlActivated">@color/hotpink_primary</item>
     </style>
 
@@ -110,7 +106,6 @@
         <item name="colorOutline">@color/dark_text_secondary</item>
         <item name="android:statusBarColor">@color/hotpink_start</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="colorControlNormal">#6B8DB5</item>
         <item name="colorControlActivated">@color/hotpink_secondary</item>
     </style>
 
@@ -130,7 +125,6 @@
         <item name="colorOutline">@color/base_card_border</item>
         <item name="android:statusBarColor">@color/lime_start</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="colorControlNormal">#6B8DB5</item>
         <item name="colorControlActivated">@color/lime_primary</item>
     </style>
 
@@ -150,7 +144,6 @@
         <item name="colorOutline">@color/dark_text_secondary</item>
         <item name="android:statusBarColor">@color/lime_start</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="colorControlNormal">#6B8DB5</item>
         <item name="colorControlActivated">@color/lime_secondary</item>
     </style>
 
@@ -170,7 +163,6 @@
         <item name="colorOutline">@color/base_card_border</item>
         <item name="android:statusBarColor">@color/mint_start</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="colorControlNormal">#6B8DB5</item>
         <item name="colorControlActivated">@color/mint_primary</item>
     </style>
 
@@ -190,7 +182,6 @@
         <item name="colorOutline">@color/dark_text_secondary</item>
         <item name="android:statusBarColor">@color/mint_start</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="colorControlNormal">#6B8DB5</item>
         <item name="colorControlActivated">@color/mint_secondary</item>
     </style>
 
@@ -210,7 +201,6 @@
         <item name="colorOutline">@color/base_card_border</item>
         <item name="android:statusBarColor">@color/sunset_start</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="colorControlNormal">#6B8DB5</item>
         <item name="colorControlActivated">@color/sunset_primary</item>
     </style>
 
@@ -230,7 +220,6 @@
         <item name="colorOutline">@color/dark_text_secondary</item>
         <item name="android:statusBarColor">@color/sunset_start</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="colorControlNormal">#6B8DB5</item>
         <item name="colorControlActivated">@color/sunset_secondary</item>
     </style>
 

@@ -240,8 +240,42 @@
     <color name="block_break">#7ED321</color>
     <color name="block_other">#808080</color>
 
+    <!-- ============================================ -->
+    <!-- Semantic status colours                      -->
+    <!--   These are meanings, not theme roles: a      -->
+    <!--   "purchased" badge stays green whichever     -->
+    <!--   theme is active, but must still be legible  -->
+    <!--   on a light surface and on a dark one. So    -->
+    <!--   each one has a night-qualified twin in      -->
+    <!--   values-night/colors.xml.                    -->
+    <!--   Everything else in the UI is themed through -->
+    <!--   Material role attributes so the ten         -->
+    <!--   palettes drive it.                          -->
+    <!-- ============================================ -->
+    <color name="status_owned">#2E7D32</color>
+    <color name="status_free">#1565C0</color>
+    <color name="status_locked">#757575</color>
+    <color name="price_gold">#8A6D00</color>
+    <color name="destructive">#D32F2F</color>
+    <color name="text_muted">#9E9E9E</color>
 
-
+    <!-- ============================================ -->
+    <!--   Category TEXT colours.                      -->
+    <!--   The block_* colours above are FILLS: they   -->
+    <!--   paint a timeline block and get their label  -->
+    <!--   from GradientContrast. Reusing a fill as a  -->
+    <!--   text colour is what made "Break" (1.87:1)   -->
+    <!--   and "Personal" (2.03:1) unreadable on a     -->
+    <!--   light card, so text gets its own darker     -->
+    <!--   ramp here and a lighter ramp in             -->
+    <!--   values-night/colors.xml.                    -->
+    <!-- ============================================ -->
+    <color name="block_study_text">#1F6FC4</color>
+    <color name="block_classes_text">#4527A0</color>
+    <color name="block_assignments_text">#A8114F</color>
+    <color name="block_personal_text">#8A5A00</color>
+    <color name="block_break_text">#3F6E0A</color>
+    <color name="block_other_text">#5F5F5F</color>
 
 
 </resources>

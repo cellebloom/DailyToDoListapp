@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.dailytodolist.model.DailyReview;
 import com.example.dailytodolist.util.ReviewStore;
+import com.example.dailytodolist.util.ThemeColors;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
@@ -136,7 +137,9 @@ public class ReviewActivity extends BaseActivity {
 
         int rating = review.getEnergy(slot);
         int filled = ThemeHelper.getCurrentThemeAccentColor(this);
-        int empty = getColor(R.color.base_text_secondary);
+        // Unfilled stars are supporting text on the themed surface; a static
+        // palette constant would be invisible on the darker palettes.
+        int empty = ThemeColors.onSurfaceVariant(stars);
 
         for (int i = 0; i < stars.getChildCount(); i++) {
             TextView star = (TextView) stars.getChildAt(i);
@@ -178,7 +181,10 @@ public class ReviewActivity extends BaseActivity {
                     GradientDrawable.Orientation.LEFT_RIGHT, gradient);
             shape.setCornerRadius(26 * getResources().getDisplayMetrics().density);
             saveReviewButton.setBackground(shape);
-            saveReviewButton.setTextColor(getColor(R.color.white));
+            // The label sits on the theme gradient, so it is picked from the
+            // gradient: a fixed white disappears on the light end of sunset
+            // (#FFE53B).
+            saveReviewButton.setTextColor(ThemeColors.onGradient(gradient[0], gradient[1]));
         }
         if (backButton != null) {
             backButton.setTextColor(ThemeHelper.getCurrentThemeAccentColor(this));
